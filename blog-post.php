@@ -151,7 +151,26 @@ function getDisplayImageUrl($image_path) {
 
 // Helper function to get full post URL
 function getFullPostUrl($slug) {
-    return SITE_URL . '/blog-post.php?slug=' . urlencode($slug);
+    return SITE_URL . '/blog-post?slug=' . urlencode($slug);
+}
+
+// Resolve post slug from query string or pretty URL (/blog-post/my-slug)
+function resolveBlogPostSlug() {
+    if (!empty($_GET['slug'])) {
+        return trim((string) $_GET['slug']);
+    }
+
+    $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
+    if (preg_match('#/blog-post/([^/]+)/?$#', $path, $matches)) {
+        return urldecode($matches[1]);
+    }
+
+    return '';
+}
+
+function getBlogListUrl() {
+    $base = defined('BASE_PATH') ? BASE_PATH : '';
+    return ($base !== '' ? $base : '') . '/blog.php';
 }
 
 // Helper function to get excerpt for meta description
@@ -177,10 +196,10 @@ function getMetaDescription($excerpt, $content, $length = 160) {
 }
 
 // Get post slug from URL
-$slug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
+$slug = resolveBlogPostSlug();
 
 if (empty($slug)) {
-    header('Location: blog.php');
+    header('Location: ' . getBlogListUrl());
     exit();
 }
 
@@ -188,8 +207,7 @@ if (empty($slug)) {
 $post = getPostBySlug($slug);
 
 if (!$post) {
-    // Post not found, redirect to blog
-    header('Location: blog.php');
+    header('Location: ' . getBlogListUrl());
     exit();
 }
 
@@ -212,7 +230,7 @@ $author = $author_result->fetch_assoc();
 $author_profile_image = getSetting('blog_author_profile_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
 $author_name = getSetting('about_name', 'Refreshing Dews');
 $author_bio = getSetting('about_bio', 'Hello! I\'m the voice and heart behind Refreshing Dews. I created this space to share honest thoughts, daily experiences, and audio messages that I hope will inspire, encourage, and connect with you on your own journey.');
-$author_sidebar_name = 'HEREMEF';
+$author_sidebar_name = getSetting('blog_author_name', 'COMANDA1');
 
 // Get related posts (same category or recent)
 $related_stmt = $conn->prepare("SELECT * FROM posts WHERE id != ? AND status = 'published' AND category = ? ORDER BY created_at DESC LIMIT 3");
@@ -300,6 +318,25 @@ $blog_link_color = getSetting('blog_button_color', '#4a7c59');
 $blog_link_hover_color = getSetting('blog_button_hover_color', '#2c4a3b');
 $blog_code_background = getSetting('blog_code_background', '#2d2d2d');
 $blog_code_color = getSetting('blog_code_color', '#f8f9fa');
+
+// Blog/post header (Admin → Blog Settings → Header Live Preview)
+$blog_header_bg_type = getSetting('blog_header_background_type', 'gradient');
+$blog_header_text_color = getSetting('blog_header_text_color', '#ffffff');
+$blog_header_gradient_start = getSetting('blog_header_background_gradient_start', '#2563eb');
+$blog_header_gradient_end = getSetting('blog_header_background_gradient_end', '#4a7c59');
+$blog_header_solid_color = getSetting('blog_header_background_color', '#4a7c59');
+$blog_header_bg_image = getSetting('blog_header_background_image', '');
+
+$post_header_bg_style = '';
+if ($blog_header_bg_type === 'gradient') {
+    $post_header_bg_style = "background: linear-gradient(135deg, {$blog_header_gradient_start}, {$blog_header_gradient_end});";
+} elseif ($blog_header_bg_type === 'solid') {
+    $post_header_bg_style = "background: {$blog_header_solid_color};";
+} elseif ($blog_header_bg_type === 'image' && !empty($blog_header_bg_image)) {
+    $post_header_bg_style = "background: url('{$blog_header_bg_image}') center/cover no-repeat;";
+} else {
+    $post_header_bg_style = "background: linear-gradient(135deg, {$blog_header_gradient_start} 0%, {$blog_header_gradient_end} 100%);";
+}
 
 // Social media links - Only Facebook, Instagram, Pinterest
 $social_links = [
@@ -395,10 +432,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment']) && 
     }
 }
 
-// Function to get header background style
+// Function to get header background style (uses Admin → Blog Settings header)
 function getHeaderStyle() {
-    global $primary_color;
-    return "background: linear-gradient(135deg, {$primary_color} 0%, #2c4a3b 100%);";
+    global $post_header_bg_style;
+    return $post_header_bg_style;
 }
 
 // Function to get author avatar URL
@@ -512,10 +549,10 @@ function getAuthorAvatarUrl() {
             padding: 0 15px;
         }
 
-        /* Post Header — dimensions via getPageHeroStyles(); background set per page */
+        /* Post Header — dimensions via getPageHeroStyles(); background from Admin → Blog Settings */
         .post-header {
             <?php echo getHeaderStyle(); ?>
-            color: white;
+            color: <?php echo $blog_header_text_color; ?>;
         }
 
         <?php if ($enable_animated_bg == '1'): ?>
@@ -597,8 +634,15 @@ function getAuthorAvatarUrl() {
         .post-main {
             background: white;
             border-radius: 15px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: var(--shadow-sm);
+        }
+
+        /* Critical content must stay visible even if AOS fails to load */
+        .post-main,
+        .post-body {
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         .post-featured-image {
@@ -1459,7 +1503,7 @@ function getAuthorAvatarUrl() {
         <div class="container">
             <div class="post-layout">
                 <!-- Main Content -->
-                <article class="post-main" data-aos="fade-right">
+                <article class="post-main">
                     <?php if (!empty($post['featured_image'])): ?>
                     <img src="<?php echo getDisplayImageUrl($post['featured_image']); ?>" 
                          alt="<?php echo htmlspecialchars($post['title']); ?>" 

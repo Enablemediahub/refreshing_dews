@@ -948,7 +948,7 @@ body {
     overflow: hidden;
 }
 
-.hero-overlay {
+.hero .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;

@@ -82,7 +82,7 @@ self.addEventListener('fetch', event => {
   // API-like requests - network first
   if (url.pathname.includes('/admin/') || 
       url.pathname.includes('/includes/') ||
-      url.pathname.includes('blog-post.php') ||
+      url.pathname.includes('blog-post') ||
       url.pathname.includes('audio-player.php')) {
     
     event.respondWith(

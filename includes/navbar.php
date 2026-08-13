@@ -317,33 +317,33 @@ if ($navbar_background_type == 'frosted') {
 }
 
 /* Hero overlay: light nav text on dark hero */
-.modern-navbar.hero-overlay .nav-links li a,
-.modern-navbar.hero-overlay .mobile-toggle-inner,
-.modern-navbar.hero-overlay .mobile-toggle-inner::before,
-.modern-navbar.hero-overlay .mobile-toggle-inner::after {
+.modern-navbar.nav-on-hero .nav-links li a,
+.modern-navbar.nav-on-hero .mobile-toggle-inner,
+.modern-navbar.nav-on-hero .mobile-toggle-inner::before,
+.modern-navbar.nav-on-hero .mobile-toggle-inner::after {
     color: #ffffff;
 }
 
-.modern-navbar.hero-overlay:not(.scrolled) .nav-links li a {
+.modern-navbar.nav-on-hero:not(.scrolled) .nav-links li a {
     color: rgba(255, 255, 255, 0.92);
 }
 
-.modern-navbar.hero-overlay:not(.scrolled) .nav-links li a i {
+.modern-navbar.nav-on-hero:not(.scrolled) .nav-links li a i {
     color: rgba(255, 255, 255, 0.75);
 }
 
-.modern-navbar.hero-overlay:not(.scrolled) .nav-links li a:hover {
+.modern-navbar.nav-on-hero:not(.scrolled) .nav-links li a:hover {
     background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
 }
 
-.modern-navbar.hero-overlay:not(.scrolled) .mobile-toggle-inner,
-.modern-navbar.hero-overlay:not(.scrolled) .mobile-toggle-inner::before,
-.modern-navbar.hero-overlay:not(.scrolled) .mobile-toggle-inner::after {
+.modern-navbar.nav-on-hero:not(.scrolled) .mobile-toggle-inner,
+.modern-navbar.nav-on-hero:not(.scrolled) .mobile-toggle-inner::before,
+.modern-navbar.nav-on-hero:not(.scrolled) .mobile-toggle-inner::after {
     background: #ffffff;
 }
 
-.modern-navbar.hero-overlay:not(.scrolled) .mobile-toggle {
+.modern-navbar.nav-on-hero:not(.scrolled) .mobile-toggle {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
@@ -581,7 +581,7 @@ body.dark-theme .mobile-drawer-footer {
 }
 </style>
 
-<nav class="modern-navbar<?php echo $use_hero_overlay ? ' hero-overlay' : ''; ?>" id="modernNavbar">
+<nav class="modern-navbar<?php echo $use_hero_overlay ? ' nav-on-hero' : ''; ?>" id="modernNavbar">
     <div class="navbar-inner">
         <div class="navbar-bar">
             <a href="<?php echo htmlspecialchars($menu_home_link); ?>" class="logo">

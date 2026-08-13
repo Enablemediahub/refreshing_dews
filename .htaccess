@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Pretty URL for individual blog posts: /blog-post/post-slug
+RewriteRule ^blog-post/([^/]+)/?$ blog-post.php?slug=$1 [L,QSA]
+
 # 1. Remove .php extension by redirecting if it's in the URL
 # If a user types 'index.php', it redirects to just 'index'
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.php [NC]

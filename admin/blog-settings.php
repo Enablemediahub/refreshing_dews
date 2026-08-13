@@ -94,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'blog_sidebar_enabled' => isset($_POST['blog_sidebar_enabled']) ? '1' : '0',
                     'blog_featured_enabled' => isset($_POST['blog_featured_enabled']) ? '1' : '0',
                     'blog_author_profile_image' => $_POST['blog_author_profile_image'] ?? '',
+                    'blog_author_name' => trim($_POST['blog_author_name'] ?? 'COMANDA1'),
                     
                     // Newsletter settings
                     'blog_newsletter_enabled' => isset($_POST['blog_newsletter_enabled']) ? '1' : '0',
@@ -205,6 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'blog_sidebar_enabled' => '1',
                     'blog_featured_enabled' => '1',
                     'blog_author_profile_image' => '',
+                    'blog_author_name' => 'COMANDA1',
                     
                     // Newsletter settings
                     'blog_newsletter_enabled' => '1',
@@ -900,14 +902,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="settings-panel">
                     <div class="panel-header">
                         <h2>Blog Page Settings</h2>
-                        <p>Configure the header, grid, newsletter section, and colors</p>
+                        <p>Configure headers for the blog listing and individual post pages, grid, newsletter, and colors</p>
                     </div>
                     
                     <form method="POST" action="" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="update_blog_settings">
                         
                         <!-- Blog Header Section -->
-                        <h3 class="section-title"><i class="fas fa-header"></i> Blog Header</h3>
+                        <h3 class="section-title"><i class="fas fa-header"></i> Blog &amp; Post Header</h3>
+                        <p style="margin: -8px 0 20px; color: #666; font-size: 14px;">Applies to the main blog page header and the hero on every individual blog post page.</p>
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label><i class="fas fa-heading"></i> Header Title</label>
@@ -992,6 +995,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- Header Live Preview -->
                         <div class="preview-section">
                             <div class="preview-title"><i class="fas fa-eye"></i> Header Live Preview</div>
+                            <p style="margin: 0 0 12px; color: #666; font-size: 13px;">Blog page shows the title below. Post pages use the same background with the article title.</p>
                             <div id="header_preview" class="blog-header-preview" style="background: linear-gradient(135deg, <?php echo getSettingValue('blog_header_background_gradient_start', '#4a7c59'); ?>, <?php echo getSettingValue('blog_header_background_gradient_end', '#2c4a3b'); ?>); color: <?php echo getSettingValue('blog_header_text_color', '#ffffff'); ?>;">
                                 <h1 id="preview_title"><?php echo htmlspecialchars(getSettingValue('blog_header_title', 'The Blog')); ?></h1>
                                 <p id="preview_subtitle"><?php echo htmlspecialchars(getSettingValue('blog_header_subtitle', 'Thoughts, stories, and experiences from the everyday. Honest and unfiltered.')); ?></p>
@@ -1028,6 +1032,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="checkbox" name="blog_featured_enabled" id="blog_featured_enabled" <?php echo getSettingValue('blog_featured_enabled', '1') == '1' ? 'checked' : ''; ?>>
                                     <label for="blog_featured_enabled">Show Featured Post</label>
                                 </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Writer Display Name</label>
+                                <input type="text" name="blog_author_name" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('blog_author_name', 'COMANDA1')); ?>" placeholder="COMANDA1">
+                                <div class="file-info">Shown in the &ldquo;The Writer&rdquo; box on individual blog post pages.</div>
                             </div>
 
                             <div class="form-group full-width">
