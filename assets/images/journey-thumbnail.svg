@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e4d72"/>
+      <stop offset="50%" style="stop-color:#2d6a9f"/>
+      <stop offset="100%" style="stop-color:#3b82b0"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4c5ae"/>
+      <stop offset="100%" style="stop-color:#baa68e"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4a7c59" stop-opacity="0"/>
+      <stop offset="50%" style="stop-color:#4a7c59" stop-opacity="0.6"/>
+      <stop offset="100%" style="stop-color:#baa68e" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#sky)"/>
+  <circle cx="680" cy="80" r="60" fill="#f5e6d3" opacity="0.15"/>
+  <circle cx="720" cy="60" r="40" fill="#ffffff" opacity="0.08"/>
+  <path d="M0 320 Q200 280 400 300 T800 290 L800 400 L0 400 Z" fill="#2c4a3b" opacity="0.35"/>
+  <path d="M0 340 Q250 310 500 330 T800 320 L800 400 L0 400 Z" fill="#4a7c59" opacity="0.25"/>
+  <path d="M120 400 Q300 260 480 320 T760 240" fill="none" stroke="url(#path)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="480" cy="320" r="8" fill="#baa68e"/>
+  <circle cx="480" cy="320" r="16" fill="none" stroke="#baa68e" stroke-width="1.5" opacity="0.5"/>
+  <g transform="translate(380, 200)" opacity="0.9">
+    <path d="M0 -40 L12 -8 L48 -8 L18 12 L30 44 L0 24 L-30 44 L-18 12 L-48 -8 L-12 -8 Z" fill="url(#gold)" opacity="0.85"/>
+  </g>
+  <text x="400" y="370" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#f5e6d3" opacity="0.85" letter-spacing="4">EXPLORE THE JOURNEY</text>
+</svg>

@@ -1,0 +1,55 @@
+{
+  "name": "Refreshing Dews",
+  "short_name": "RefreshDews",
+  "description": "Daily inspiration, honest reflections, and audio messages for spiritual refreshment.",
+  "start_url": "/refreshing_dews/index.php",
+  "scope": "/refreshing_dews/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#4a7c59",
+  "theme_color": "#4a7c59",
+  "categories": ["blog", "lifestyle", "personal development"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read latest blog posts",
+      "url": "/refreshing_dews/blog.php",
+      "icons": [
+        {
+          "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Audio",
+      "short_name": "Audio",
+      "description": "Listen to audio messages",
+      "url": "/refreshing_dews/audio.php",
+      "icons": [
+        {
+          "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

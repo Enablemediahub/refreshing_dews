@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Offline - Refreshing Dews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4a7c59 0%, #2c4a3b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .offline-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #4a7c59;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: #4a7c59;
+        }
+        
+        .cached-pages {
+            margin-top: 30px;
+            text-align: left;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+        }
+        
+        .cached-pages h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .cached-pages ul {
+            list-style: none;
+        }
+        
+        .cached-pages li {
+            margin-bottom: 10px;
+        }
+        
+        .cached-pages a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        
+        .cached-pages a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .cached-pages i {
+            width: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .btn {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <i class="fas fa-wifi-slash"></i>
+        </div>
+        <h1>You're Offline</h1>
+        <p>It seems you've lost your internet connection. Don't worry, you can still access cached content.</p>
+        
+        <a href="javascript:location.reload()" class="btn">
+            <i class="fas fa-sync-alt"></i> Try Again
+        </a>
+        <a href="index.php" class="btn btn-outline">
+            <i class="fas fa-home"></i> Go Home
+        </a>
+        
+        <div class="cached-pages">
+            <h3><i class="fas fa-check-circle"></i> Available offline:</h3>
+            <ul>
+                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="blog.php"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="audio.php"><i class="fas fa-headphones"></i> Audio</a></li>
+                <li><a href="about.php"><i class="fas fa-user"></i> About</a></li>
+                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

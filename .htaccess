@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# 1. Remove .php extension by redirecting if it's in the URL
+# If a user types 'index.php', it redirects to just 'index'
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.php [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# 2. Map the clean URL back to the .php file internally
+# Check that the request is not an existing directory
+RewriteCond %{REQUEST_FILENAME} !-d
+# Check if the requested name with .php added exists as a file
+RewriteCond %{REQUEST_FILENAME}\.php -f
+# Internally rewrite to the .php file
+RewriteRule ^(.*)$ $1.php [L]
+
+# Custom error pages (Relative path works for both)
+ErrorDocument 404 /404.php
+
+# Security: Protect sensitive files
+<FilesMatch "\.(sql|log|ini)$">
+    Require all denied
+</FilesMatch>
+
+# Security: Prevent directory browsing
+Options -Indexes

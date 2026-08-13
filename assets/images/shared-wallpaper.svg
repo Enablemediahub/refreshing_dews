@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f4ed"/>
+      <stop offset="45%" style="stop-color:#efe6d8"/>
+      <stop offset="100%" style="stop-color:#e8ddd0"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="24" r="1.2" fill="#baa68e" opacity="0.18"/>
+    </pattern>
+    <pattern id="waves" x="0" y="0" width="320" height="160" patternUnits="userSpaceOnUse">
+      <path d="M0 80 Q80 40 160 80 T320 80" fill="none" stroke="#4a7c59" stroke-width="0.8" opacity="0.08"/>
+      <path d="M0 120 Q80 80 160 120 T320 120" fill="none" stroke="#baa68e" stroke-width="0.6" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#dots)"/>
+  <rect width="1920" height="1080" fill="url(#waves)"/>
+  <ellipse cx="200" cy="180" rx="280" ry="200" fill="#baa68e" opacity="0.06"/>
+  <ellipse cx="1700" cy="900" rx="360" ry="260" fill="#4a7c59" opacity="0.05"/>
+  <ellipse cx="960" cy="540" rx="420" ry="300" fill="#d4c5ae" opacity="0.04"/>
+</svg>

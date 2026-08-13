@@ -1,0 +1,22 @@
+# Local secrets — copy includes/config.example.php to includes/config.php
+includes/config.php
+
+# Runtime / generated
+cache/
+backups/
+*.log
+
+# OS & editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# User uploads (keep folder structure via index.html files)
+uploads/**/*
+!uploads/**/index.html
+!uploads/.htaccess
+
+assets/uploads/**/*
+!assets/uploads/**/.gitkeep

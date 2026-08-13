@@ -1,0 +1,143 @@
+/**
+ * Refreshing Dews Admin Theme — Blue & Grass Green (logo colors)
+ */
+:root {
+    --theme-blue: #2563eb;
+    --theme-blue-dark: #1d4ed8;
+    --theme-blue-light: rgba(37, 99, 235, 0.1);
+    --theme-green: #4a7c59;
+    --theme-green-dark: #2c4a3b;
+    --theme-green-light: rgba(74, 124, 89, 0.12);
+}
+
+/* Primary buttons */
+.btn-primary,
+button.btn-primary,
+input[type="submit"].btn-primary {
+    background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%) !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+button.btn-primary:hover {
+    background: linear-gradient(135deg, var(--theme-blue-dark) 0%, var(--theme-green-dark) 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Tab navigation */
+.tab-btn.active {
+    background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%) !important;
+    color: #fff !important;
+}
+
+.tab-btn:hover {
+    color: var(--theme-blue) !important;
+    border-color: var(--theme-blue) !important;
+}
+
+/* Sidebar active / hover */
+.sidebar-menu-item:hover,
+.sidebar-menu-item.active {
+    border-left-color: var(--theme-green) !important;
+    background: rgba(74, 124, 89, 0.15) !important;
+}
+
+.sidebar-menu-item.active {
+    color: #fff !important;
+}
+
+/* Form focus states */
+.form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--theme-blue) !important;
+    box-shadow: 0 0 0 3px var(--theme-blue-light) !important;
+}
+
+/* Accent headings & labels */
+.panel-header h2,
+.settings-panel h3,
+.form-group label i,
+h3[style*="color"] {
+    color: var(--theme-blue) !important;
+}
+
+/* Links */
+a:not(.btn):not(.sidebar-menu-item) {
+    color: var(--theme-blue);
+}
+
+a:not(.btn):not(.sidebar-menu-item):hover {
+    color: var(--theme-green);
+}
+
+/* File upload labels */
+.file-upload-label {
+    background: var(--theme-blue-light) !important;
+    color: var(--theme-blue) !important;
+    border: 1px dashed var(--theme-blue) !important;
+}
+
+.file-upload-label:hover {
+    background: var(--theme-green-light) !important;
+    color: var(--theme-green-dark) !important;
+    border-color: var(--theme-green) !important;
+}
+
+/* Stat cards & accent bars */
+.stat-card::before {
+    background: linear-gradient(135deg, var(--theme-blue), var(--theme-green)) !important;
+}
+
+.stat-icon i {
+    color: var(--theme-green) !important;
+}
+
+.stat-icon {
+    background: var(--theme-green-light) !important;
+}
+
+/* Page header gradient */
+.page-header,
+.admin-header {
+    background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%) !important;
+}
+
+/* Welcome preview */
+.welcome-preview {
+    background: linear-gradient(135deg, var(--theme-blue), var(--theme-green)) !important;
+}
+
+/* Checkbox accent */
+input[type="checkbox"]:checked {
+    accent-color: var(--theme-green);
+}
+
+/* Range slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+    background: var(--theme-blue);
+}
+
+input[type="range"]::-moz-range-thumb {
+    background: var(--theme-blue);
+}
+
+/* Table row hover */
+table tr:hover td {
+    background: var(--theme-blue-light);
+}
+
+/* Badge / tag */
+.badge-primary,
+.status-active {
+    background: var(--theme-green) !important;
+    color: #fff !important;
+}
+
+/* Mobile menu toggle */
+.mobile-menu-btn {
+    background: var(--theme-blue) !important;
+}
