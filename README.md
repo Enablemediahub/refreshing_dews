@@ -17,3 +17,7 @@ A personal website for sharing daily life experiences through written blog posts
 Site logo: `assets/logo/refreshing-dews-logo.png`
 
 Replace this file with your client's logo if needed, then update it in Admin → Site Settings.
+
+## Credits
+
+Designed and Developed by **DALE QUIST** [Enable Technologies]
