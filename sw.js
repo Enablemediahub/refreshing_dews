@@ -1,18 +1,18 @@
-// Service Worker for Refreshing Dews PWA
-const CACHE_NAME = 'refreshing-dews-v1';
+// Service Worker for Painlesslyf PWA
+const CACHE_NAME = 'painlesslyf-v1';
 
 // Assets to cache on install
 const urlsToCache = [
-  '/refreshing_dews/',
-  '/refreshing_dews/index.php',
-  '/refreshing_dews/blog.php',
-  '/refreshing_dews/audio.php',
-  '/refreshing_dews/about.php',
-  '/refreshing_dews/contact.php',
-  '/refreshing_dews/manifest.json',
-  '/refreshing_dews/assets/css/style.css',
-  '/refreshing_dews/assets/js/main.js',
-  '/refreshing_dews/assets/logo/refreshing-dews-logo.png',
+  '/painlesslyf/',
+  '/painlesslyf/index.php',
+  '/painlesslyf/blog.php',
+  '/painlesslyf/audio.php',
+  '/painlesslyf/about.php',
+  '/painlesslyf/contact.php',
+  '/painlesslyf/manifest.json',
+  '/painlesslyf/assets/css/style.css',
+  '/painlesslyf/assets/js/main.js',
+  '/painlesslyf/assets/logo/painlesslyf-logo.png',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
   'https://unpkg.com/aos@2.3.1/dist/aos.css',
@@ -63,7 +63,6 @@ self.addEventListener('activate', event => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests like analytics, etc.
   if (!event.request.url.startsWith(self.location.origin) && 
       !event.request.url.includes('fonts.googleapis.com') &&
       !event.request.url.includes('cdnjs.cloudflare.com') &&
@@ -71,15 +70,12 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // Skip POST requests
   if (event.request.method !== 'GET') {
     return;
   }
   
-  // Handle different strategies based on URL patterns
   const url = new URL(event.request.url);
   
-  // API-like requests - network first
   if (url.pathname.includes('/admin/') || 
       url.pathname.includes('/includes/') ||
       url.pathname.includes('blog-post') ||
@@ -89,7 +85,6 @@ self.addEventListener('fetch', event => {
       networkFirst(event.request)
     );
   } 
-  // Static assets - cache first
   else if (url.pathname.includes('/assets/') || 
            url.pathname.includes('/uploads/') ||
            url.pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff2?)$/)) {
@@ -98,7 +93,6 @@ self.addEventListener('fetch', event => {
       cacheFirst(event.request)
     );
   } 
-  // HTML pages - stale while revalidate
   else {
     event.respondWith(
       staleWhileRevalidate(event.request)
@@ -106,7 +100,6 @@ self.addEventListener('fetch', event => {
   }
 });
 
-// Cache First Strategy
 async function cacheFirst(request) {
   const cachedResponse = await caches.match(request);
   if (cachedResponse) {
@@ -122,15 +115,13 @@ async function cacheFirst(request) {
     return networkResponse;
   } catch (error) {
     console.log('Cache First: Network request failed', request.url, error);
-    // Return a fallback for images
     if (request.url.match(/\.(png|jpg|jpeg|gif|svg)$/)) {
-      return caches.match('/refreshing_dews/assets/images/default-post.jpg');
+      return caches.match('/painlesslyf/assets/images/default-post.jpg');
     }
     return new Response('Network error', { status: 408 });
   }
 }
 
-// Network First Strategy
 async function networkFirst(request) {
   try {
     const networkResponse = await fetch(request);
@@ -152,7 +143,6 @@ async function networkFirst(request) {
   }
 }
 
-// Stale While Revalidate Strategy
 async function staleWhileRevalidate(request) {
   const cachedResponse = await caches.match(request);
   
@@ -168,11 +158,9 @@ async function staleWhileRevalidate(request) {
       console.log('Stale While Revalidate: Network request failed', request.url, error);
     });
   
-  // Return cached response immediately if available, otherwise wait for network
   return cachedResponse || networkPromise;
 }
 
-// Background Sync for offline actions (optional)
 self.addEventListener('sync', event => {
   console.log('Service Worker: Background sync', event);
   if (event.tag === 'sync-posts') {
@@ -180,26 +168,24 @@ self.addEventListener('sync', event => {
   }
 });
 
-// Push notifications (optional)
 self.addEventListener('push', event => {
   console.log('Service Worker: Push notification received', event);
   
   const options = {
     body: event.data.text(),
-    icon: '/refreshing_dews/assets/logo/refreshing-dews-logo.png',
-    badge: '/refreshing_dews/assets/logo/refreshing-dews-logo.png',
+    icon: '/painlesslyf/assets/logo/painlesslyf-logo.png',
+    badge: '/painlesslyf/assets/logo/painlesslyf-logo.png',
     vibrate: [200, 100, 200],
     data: {
-      url: '/refreshing_dews/'
+      url: '/painlesslyf/'
     }
   };
   
   event.waitUntil(
-    self.registration.showNotification('Refreshing Dews', options)
+    self.registration.showNotification('Painlesslyf', options)
   );
 });
 
-// Notification click event
 self.addEventListener('notificationclick', event => {
   console.log('Service Worker: Notification clicked', event);
   
@@ -210,19 +196,17 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
-// Handle offline fallback page
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
         .catch(() => {
-          return caches.match('/refreshing_dews/offline.html');
+          return caches.match('/painlesslyf/offline.html');
         })
     );
   }
 });
 
-// Cache version management
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();

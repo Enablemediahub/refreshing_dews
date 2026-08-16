@@ -49,7 +49,7 @@ if ($email && $token) {
     $message = "";
 }
 
-$site_title = getSetting('site_title', 'Refreshing Dews');
+$site_title = getSetting('site_title', 'Painlesslyf');
 $primary_color = getSetting('primary_color', '#4a7c59');
 ?>
 <!DOCTYPE html>

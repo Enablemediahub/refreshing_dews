@@ -1,24 +1,31 @@
 /* ===== GLOBAL STYLES ===== */
 :root {
-    --tea-green: #D0F0C0;
-    --tea-green-light: #E8F5E0;
-    --tea-green-dark: #A8C89C;
-    --tea-green-soft: rgba(208, 240, 192, 0.15);
+    --navy: #1a2744;
+    --navy-dark: #0f1824;
+    --gold: #C9A962;
+    --gold-dark: #A68844;
+    --gold-light: rgba(201, 169, 98, 0.15);
     --white: #FFFFFF;
-    --off-white: #F8FAF5;
+    --off-white: #F8F6F0;
     --cream: #FAF7F0;
     --light-gray: #F5F5F5;
     --medium-gray: #E0E0E0;
-    --text-dark: #1E293B;
-    --text-soft: #4A5568;
+    --text-dark: #1a2744;
+    --text-soft: #5a6478;
     --text-light: #64748B;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-    --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
-    --gradient-primary: linear-gradient(135deg, var(--tea-green) 0%, var(--tea-green-dark) 100%);
-    --gradient-soft: linear-gradient(135deg, rgba(208, 240, 192, 0.1) 0%, rgba(168, 200, 156, 0.1) 100%);
+    --shadow-sm: 0 1px 3px rgba(26, 39, 68, 0.12), 0 1px 2px rgba(26, 39, 68, 0.24);
+    --shadow-md: 0 4px 6px -1px rgba(26, 39, 68, 0.1), 0 2px 4px -1px rgba(26, 39, 68, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(26, 39, 68, 0.1), 0 4px 6px -2px rgba(26, 39, 68, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(26, 39, 68, 0.1), 0 10px 10px -5px rgba(26, 39, 68, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(26, 39, 68, 0.25);
+    --gradient-primary: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    --gradient-soft: linear-gradient(135deg, rgba(201, 169, 98, 0.1) 0%, rgba(26, 39, 68, 0.05) 100%);
+    /* Legacy aliases for existing styles */
+    --tea-green: var(--gold);
+    --tea-green-light: #D4BC7A;
+    --tea-green-dark: var(--navy);
+    --tea-green-soft: var(--gold-light);
 }
 
 * {
@@ -35,7 +42,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background-color: var(--white);
+    background-color: var(--cream);
     overflow-x: hidden;
 }
 

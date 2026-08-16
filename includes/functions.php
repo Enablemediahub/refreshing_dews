@@ -1,6 +1,6 @@
 <?php
 /**
- * Refreshing Dews - Functions File
+ * Painlesslyf - Functions File
  * Contains all helper functions for the website
  */
 
@@ -196,35 +196,101 @@ function getPageHeroStyles() {
 }
 
 /**
- * Get shared footer styles (consistent blue dew gradient across all pages)
+ * Get shared footer styles (navy & gold gradient across all pages)
  */
 function getFooterStyles() {
-    $gradientStart = getSetting('footer_gradient_start', '#0a4d7a');
-    $gradientEnd = getSetting('footer_gradient_end', '#6ec5f0');
+    $gradientStart = getSetting('footer_gradient_start', '#07152e');
+    $gradientEnd = getSetting('footer_gradient_end', '#07152e');
     $textColor = getSetting('footer_text_color', '#ffffff');
-    $linkColor = getSetting('footer_link_color', 'rgba(255,255,255,0.85)');
-    $linkHoverColor = getSetting('footer_link_hover_color', '#ffffff');
+    $linkColor = getSetting('footer_link_color', 'rgba(255,255,255,0.82)');
+    $linkHoverColor = getSetting('footer_link_hover_color', '#f6dfb3');
     $headingColor = getSetting('footer_heading_color', '#ffffff');
-    $borderColor = getSetting('footer_border_color', 'rgba(255,255,255,0.2)');
+    $borderColor = getSetting('footer_border_color', 'rgba(255,255,255,0.18)');
 
     return "
         <style>
             .footer {
                 background: linear-gradient(135deg, {$gradientStart} 0%, {$gradientEnd} 100%);
                 color: {$textColor};
-                padding: 60px 0 24px;
+                padding: 0 0 24px;
+                position: relative;
+                overflow: hidden;
+            }
+            .footer::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at top left, rgba(255,255,255,0.12), transparent 38%);
+                pointer-events: none;
+            }
+            .footer .container {
+                position: relative;
+                z-index: 1;
+            }
+            .footer-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+                padding: 30px 32px;
+                margin: 0 0 28px;
+                border: 1px solid rgba(255,255,255,0.14);
+                border-radius: 24px;
+                background: rgba(255,255,255,0.06);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .footer-top .footer-kicker {
+                display: block;
+                font-size: 12px;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: rgba(255,255,255,0.72);
+                margin-bottom: 8px;
+            }
+            .footer-top h3 {
+                margin: 0;
+                font-size: clamp(20px, 2vw, 28px);
+                font-weight: 700;
+                color: {$headingColor};
+            }
+            .footer-cta {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 12px 22px;
+                border-radius: 999px;
+                text-decoration: none;
+                background: linear-gradient(135deg, #f6dfb3 0%, #d9b46a 100%);
+                color: #1a2744;
+                font-weight: 700;
+                box-shadow: 0 8px 24px rgba(214, 180, 106, 0.35);
+                transition: transform 0.25s ease, box-shadow 0.25s ease;
+                white-space: nowrap;
+            }
+            .footer-cta:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 30px rgba(214, 180, 106, 0.45);
             }
             .footer-grid {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 28px;
+                padding-top: 8px;
                 margin-bottom: 30px;
             }
             @media (min-width: 576px) {
                 .footer-grid { grid-template-columns: repeat(2, 1fr); }
             }
             @media (min-width: 992px) {
-                .footer-grid { grid-template-columns: repeat(4, 1fr); gap: 40px; }
+                .footer-grid { grid-template-columns: repeat(4, 1fr); gap: 36px; }
+            }
+            .footer-col {
+                padding: 22px 18px;
+                border: 1px solid rgba(255,255,255,0.09);
+                border-radius: 18px;
+                background: rgba(255,255,255,0.03);
             }
             .footer-logo img {
                 width: 72px;
@@ -232,7 +298,7 @@ function getFooterStyles() {
                 object-fit: cover;
                 border-radius: 50%;
                 border: 3px solid rgba(255,255,255,0.9);
-                box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.18);
                 margin-bottom: 16px;
                 background: #fff;
             }
@@ -252,15 +318,16 @@ function getFooterStyles() {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
-                background: rgba(255,255,255,0.15);
+                background: rgba(255,255,255,0.12);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 transition: all 0.3s ease;
                 text-decoration: none;
+                border: 1px solid rgba(255,255,255,0.14);
             }
             .footer-social a:hover {
-                background: rgba(255,255,255,0.3);
+                background: rgba(255,255,255,0.22);
                 transform: translateY(-2px);
                 color: {$linkHoverColor};
             }
@@ -277,6 +344,7 @@ function getFooterStyles() {
             }
             .footer-links li {
                 margin-bottom: 12px;
+                color: {$linkColor};
             }
             .footer-links a {
                 color: {$linkColor};
@@ -311,40 +379,7 @@ function getFooterStyles() {
             }
             .footer-credit strong {
                 color: {$headingColor};
-                font-weight: 600;
-            }
-            .footer-newsletter-form {
-                display: flex;
-                gap: 10px;
-                margin-top: 16px;
-                flex-wrap: wrap;
-            }
-            .footer-newsletter-form input[type=\"email\"] {
-                flex: 1;
-                min-width: 160px;
-                padding: 10px 14px;
-                border: none;
-                border-radius: 50px;
-                background: rgba(255,255,255,0.15);
-                color: {$textColor};
-                font-size: 14px;
-            }
-            .footer-newsletter-form input[type=\"email\"]::placeholder {
-                color: rgba(255,255,255,0.7);
-            }
-            .footer-newsletter-form button {
-                padding: 10px 20px;
-                background: rgba(255,255,255,0.25);
-                color: {$textColor};
-                border: 1px solid rgba(255,255,255,0.4);
-                border-radius: 50px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 13px;
-                transition: background 0.3s ease;
-            }
-            .footer-newsletter-form button:hover {
-                background: rgba(255,255,255,0.35);
+                font-weight: 700;
             }
         </style>
     ";
@@ -781,8 +816,8 @@ function generatePagination($currentPage, $totalPages, $baseUrl) {
  * Send email (basic function - enhance with PHPMailer for production)
  */
 function sendEmail($to, $subject, $message, $from = '') {
-    $headers = 'From: ' . ($from ?: getSetting('contact_email', 'noreply@refreshingdews.com')) . "\r\n" .
-               'Reply-To: ' . ($from ?: getSetting('contact_email', 'noreply@refreshingdews.com')) . "\r\n" .
+    $headers = 'From: ' . ($from ?: getSetting('contact_email', 'noreply@painlesslyf.com')) . "\r\n" .
+               'Reply-To: ' . ($from ?: getSetting('contact_email', 'noreply@painlesslyf.com')) . "\r\n" .
                'X-Mailer: PHP/' . phpversion() . "\r\n" .
                'MIME-Version: 1.0' . "\r\n" .
                'Content-Type: text/html; charset=UTF-8';

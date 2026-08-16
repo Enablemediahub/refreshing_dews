@@ -75,13 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Get site settings for branding
-$site_title = 'Refreshing Dews';
-$site_logo = '../assets/logo/refreshing-dews-logo.png';
+$site_title = 'Painlesslyf';
+$site_logo = '../assets/logo/painlesslyf-logo.png';
 
 // Try to get settings from database if available
 if (isset($conn) && !$conn->connect_error && function_exists('getSetting')) {
-    $site_title = getSetting('site_title', 'Refreshing Dews');
-    $site_logo = getSetting('site_logo', '../assets/logo/refreshing-dews-logo.png');
+    $site_title = getSetting('site_title', 'Painlesslyf');
+    $site_logo = getSetting('site_logo', '../assets/logo/painlesslyf-logo.png');
 }
 ?>
 <!DOCTYPE html>

@@ -176,10 +176,10 @@ function getAllPostsWithFilters($page = 1, $per_page = 9, $search = '', $categor
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_description = getSetting('site_description', 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_description = getSetting('site_description', 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
 
 // Get current page for pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -211,18 +211,18 @@ $social_links = [
     'pinterest' => getSetting('pinterest_url', '#')
 ];
 
-// Theme colors (blue & green — matches homepage)
-$theme_blue = getSetting('theme_blue_color', '#2563eb');
-$theme_blue_dark = getSetting('theme_blue_dark_color', '#1d4ed8');
-$theme_green = getSetting('theme_green_color', '#4a7c59');
-$theme_green_dark = getSetting('theme_green_dark_color', '#2c4a3b');
+// Theme colors (navy & gold — matches homepage)
+$theme_blue = getSetting('theme_blue_color', '#1a2744');
+$theme_blue_dark = getSetting('theme_blue_dark_color', '#0f1824');
+$theme_green = getSetting('theme_green_color', '#C9A962');
+$theme_green_dark = getSetting('theme_green_dark_color', '#A68844');
 
 // Blog header settings
 $blog_header_bg_type = getSetting('blog_header_background_type', 'gradient');
 $blog_header_text_color = getSetting('blog_header_text_color', '#ffffff');
 $blog_header_gradient_start = getSetting('blog_header_background_gradient_start', $theme_blue);
 $blog_header_gradient_end = getSetting('blog_header_background_gradient_end', $theme_green);
-$blog_header_solid_color = getSetting('blog_header_background_color', '#4a7c59');
+$blog_header_solid_color = getSetting('blog_header_background_color', '#1a2744');
 $blog_header_bg_image = getSetting('blog_header_background_image', '');
 
 // Sidebar settings
@@ -237,7 +237,7 @@ $blog_newsletter_bg_type = getSetting('blog_newsletter_background_type', 'gradie
 $blog_newsletter_text_color = getSetting('blog_newsletter_text_color', '#ffffff');
 $blog_newsletter_gradient_start = getSetting('blog_newsletter_gradient_start', $theme_blue);
 $blog_newsletter_gradient_end = getSetting('blog_newsletter_gradient_end', $theme_green);
-$blog_newsletter_solid_color = getSetting('blog_newsletter_background_color', '#4a7c59');
+$blog_newsletter_solid_color = getSetting('blog_newsletter_background_color', '#1a2744');
 $blog_newsletter_bg_image = getSetting('blog_newsletter_background_image', '');
 $blog_newsletter_button_bg = getSetting('blog_newsletter_button_bg', '#ffffff');
 $blog_newsletter_button_text = getSetting('blog_newsletter_button_text', $theme_blue);
@@ -289,8 +289,8 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
     
     <!-- Meta Tags -->
     <meta name="description" content="<?php echo htmlspecialchars($site_description); ?>">
-    <meta name="keywords" content="blog, personal blog, stories, experiences, thoughts, inspiration">
-    <meta name="author" content="Refreshing Dews">
+    <meta name="keywords" content="marriage, faith, grace, Christian blog, truth, divine assignment">
+    <meta name="author" content="Painlesslyf">
     
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Blog - <?php echo htmlspecialchars($site_title); ?>">
@@ -619,19 +619,19 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(201, 169, 98, 0.2);
             transition: var(--transition);
             position: relative;
         }
 
         .blog-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.22);
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(26, 39, 68, 0.22);
+            background: linear-gradient(135deg, #1a2744 0%, #0f1824 100%);
+            border-color: #C9A962;
         }
 
         .blog-card:hover .card-title a,
@@ -651,7 +651,7 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
         }
 
         .card-image {
-            height: 220px;
+            aspect-ratio: 1 / 1;
             overflow: hidden;
             position: relative;
         }
@@ -660,6 +660,7 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 0;
             transition: transform 0.5s ease;
         }
 

@@ -8,7 +8,7 @@ require_once 'includes/db-connection.php';
 
 // Fallback function in case includes/functions.php didn't load getSeoImageUrl
 if (!function_exists('getSeoImageUrl')) {
-    function getSeoImageUrl($imagePath = '', $fallback = 'assets/logo/refreshing-dews-logo.png') {
+    function getSeoImageUrl($imagePath = '', $fallback = 'assets/logo/painlesslyf-logo.png') {
         $path = trim((string) $imagePath);
         if ($path === '') {
             $path = $fallback;
@@ -26,12 +26,12 @@ if (!function_exists('getSeoImageUrl')) {
 // Fallback function in case includes/functions.php didn't load renderSeoMetaTags
 if (!function_exists('renderSeoMetaTags')) {
     function renderSeoMetaTags($options = []) {
-        $title = $options['title'] ?? 'Refreshing Dews';
-        $description = $options['description'] ?? 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.';
+        $title = $options['title'] ?? 'Painlesslyf';
+        $description = $options['description'] ?? 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.';
         $canonical = $options['canonical'] ?? '';
         $image = $options['image'] ?? '';
         $type = $options['type'] ?? 'website';
-        $author = $options['author'] ?? 'Refreshing Dews';
+        $author = $options['author'] ?? 'Painlesslyf';
         $keywords = $options['keywords'] ?? '';
 
         $html = [];
@@ -42,7 +42,7 @@ if (!function_exists('renderSeoMetaTags')) {
             $html[] = '<link rel="canonical" href="' . htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8') . '">';
         }
         $html[] = '<meta name="author" content="' . htmlspecialchars($author, ENT_QUOTES, 'UTF-8') . '">';
-        $html[] = '<meta property="og:site_name" content="Refreshing Dews">';
+        $html[] = '<meta property="og:site_name" content="Painlesslyf">';
         $html[] = '<meta property="og:title" content="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '">';
         $html[] = '<meta property="og:description" content="' . htmlspecialchars($description, ENT_QUOTES, 'UTF-8') . '">';
         if ($canonical) {
@@ -231,8 +231,8 @@ $author_thumbnail_image = getSetting('blog_author_thumbnail_image', '');
 if ($author_thumbnail_image === '') {
     $author_thumbnail_image = getSetting('blog_author_profile_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
 }
-$author_name = getSetting('about_name', 'Refreshing Dews');
-$author_bio = getSetting('about_bio', 'Hello! I\'m the voice and heart behind Refreshing Dews. I created this space to share honest thoughts, daily experiences, and audio messages that I hope will inspire, encourage, and connect with you on your own journey.');
+$author_name = getSetting('about_name', 'Painlesslyf');
+$author_bio = getSetting('about_bio', 'Welcome, friend. If you are here, you likely know that life is tortuous. It twists, it turns, and it often leaves us breathless.');
 $author_sidebar_name = getSetting('blog_author_name', 'COMANDA1');
 
 // Get related posts (same category or recent)
@@ -299,11 +299,11 @@ if ($table_check->num_rows > 0) {
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_description = getSetting('site_description', 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
-$primary_color = getSetting('primary_color', '#4a7c59');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_description = getSetting('site_description', 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$primary_color = getSetting('primary_color', '#C9A962');
 $font_family = getSetting('font_family', 'Inter, sans-serif');
 $enable_animated_bg = getSetting('enable_animated_background', '0');
 
@@ -317,7 +317,7 @@ $blog_toc_enabled = getSetting('blog_toc_enabled', '1');
 $blog_background_color = getSetting('blog_background_color', '#f9fbf9');
 $blog_text_color = getSetting('blog_text_color', '#1a2a1f');
 $blog_meta_color = getSetting('blog_meta_color', '#6c757d');
-$blog_link_color = getSetting('blog_button_color', '#4a7c59');
+$blog_link_color = getSetting('blog_button_color', '#C9A962');
 $blog_link_hover_color = getSetting('blog_button_hover_color', '#2c4a3b');
 $blog_code_background = getSetting('blog_code_background', '#2d2d2d');
 $blog_code_color = getSetting('blog_code_color', '#f8f9fa');
@@ -325,9 +325,9 @@ $blog_code_color = getSetting('blog_code_color', '#f8f9fa');
 // Blog/post header (Admin → Blog Settings → Header Live Preview)
 $blog_header_bg_type = getSetting('blog_header_background_type', 'gradient');
 $blog_header_text_color = getSetting('blog_header_text_color', '#ffffff');
-$blog_header_gradient_start = getSetting('blog_header_background_gradient_start', '#2563eb');
-$blog_header_gradient_end = getSetting('blog_header_background_gradient_end', '#4a7c59');
-$blog_header_solid_color = getSetting('blog_header_background_color', '#4a7c59');
+$blog_header_gradient_start = getSetting('blog_header_background_gradient_start', '#1a2744');
+$blog_header_gradient_end = getSetting('blog_header_background_gradient_end', '#C9A962');
+$blog_header_solid_color = getSetting('blog_header_background_color', '#1a2744');
 $blog_header_bg_image = getSetting('blog_header_background_image', '');
 
 $post_header_bg_style = '';
@@ -494,7 +494,7 @@ function getAuthorAvatarUrl() {
     <link rel="apple-touch-icon" href="<?php echo $site_logo; ?>">
     
     <!-- Web App Manifest -->
-    <link rel="manifest" href="/refreshing_dews/manifest.json">
+    <link rel="manifest" href="/painlesslyf/manifest.json">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">

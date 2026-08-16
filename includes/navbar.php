@@ -20,7 +20,7 @@ function getNavbarSetting($key, $default = '') {
 }
 
 // Get settings from database
-$site_logo = getNavbarSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
+$site_logo = getNavbarSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
 $navbar_bg = getNavbarSetting('navbar_background', 'rgba(250, 247, 240, 0.92)');
 $navbar_text = getNavbarSetting('navbar_text_color', '#2c3e2f');
 $navbar_hover_color = getNavbarSetting('navbar_hover_color', '#4a7c59');
@@ -95,6 +95,7 @@ if ($navbar_background_type == 'frosted') {
     --nav-primary: <?php echo $primary_color; ?>;
     --nav-accent: <?php echo $navbar_accent; ?>;
     --nav-green: <?php echo $navbar_hover_color; ?>;
+    --nav-blue: #1a2744;
     --nav-text: <?php echo $navbar_text; ?>;
     --nav-bg: <?php echo $navbar_bg; ?>;
     --nav-cream: #faf7f0;
@@ -208,9 +209,9 @@ if ($navbar_background_type == 'frosted') {
 }
 
 .nav-links li a.active {
-    background: linear-gradient(135deg, var(--nav-green) 0%, #3d6b4a 100%);
+    background: linear-gradient(135deg, var(--nav-blue) 0%, #2d3f60 100%);
     color: #ffffff;
-    box-shadow: 0 4px 16px rgba(74, 124, 89, 0.3);
+    box-shadow: 0 6px 18px rgba(26, 39, 68, 0.28);
 }
 
 .nav-links li a.active i {
@@ -700,7 +701,7 @@ body.dark-theme .mobile-drawer-footer {
             <?php endif; ?>
         </div>
         <div class="mobile-drawer-meta">
-            <span>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(getNavbarSetting('site_title', 'Refreshing Dews')); ?></span>
+            <span>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(getNavbarSetting('site_title', 'Painlesslyf')); ?></span>
             <?php if ($show_theme_toggle == '1'): ?>
             <button class="drawer-theme-toggle" id="drawerThemeToggle" type="button" aria-label="Toggle theme">
                 <i class="fas fa-moon"></i>

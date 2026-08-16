@@ -29,7 +29,7 @@ function sendEmailWithErrorHandling($to, $subject, $message, $from_name = '', $f
     global $error;
     
     if (empty($from_name)) {
-        $from_name = getSetting('site_title', 'Refreshing Dews');
+        $from_name = getSetting('site_title', 'Painlesslyf');
     }
     if (empty($from_email)) {
         $from_email = getSetting('contact_email_display', 'noreply@' . $_SERVER['HTTP_HOST']);
@@ -161,7 +161,7 @@ if (isset($_POST['send_test_email'])) {
     } elseif (!filter_var($test_email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
     } else {
-        $site_title = getSetting('site_title', 'Refreshing Dews');
+        $site_title = getSetting('site_title', 'Painlesslyf');
         
         $html_message = "
         <!DOCTYPE html>
@@ -287,7 +287,7 @@ if (!function_exists('formatDate')) {
     }
 }
 
-$site_title = getSetting('site_title', 'Refreshing Dews');
+$site_title = getSetting('site_title', 'Painlesslyf');
 ?>
 <!DOCTYPE html>
 <html lang="en">

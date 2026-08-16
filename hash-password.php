@@ -1,5 +1,5 @@
 <?php
-// Save this as hash-password.php in your refreshing_dews folder
+// Save this as hash-password.php in your painlesslyf folder
 // Delete it after use for security
 
 require_once 'includes/config.php';

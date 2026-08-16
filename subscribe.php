@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Send welcome email (optional)
             $send_welcome = getSetting('subscribe_send_welcome_email', '0'); // Default to off
             if ($send_welcome == '1') {
-                $site_title = getSetting('site_title', 'Refreshing Dews');
+                $site_title = getSetting('site_title', 'Painlesslyf');
                 $welcome_subject = "Welcome to " . $site_title . " Newsletter!";
                 $headers = "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
