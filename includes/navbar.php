@@ -357,8 +357,9 @@ if ($navbar_background_type == 'frosted') {
     width: min(360px, 88vw);
     height: 100vh;
     height: 100dvh;
-    background: var(--nav-cream);
-    z-index: 9999;
+    background: var(--nav-bg);
+    <?php echo $navbar_style; ?>
+    z-index: 10001;
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -8px 0 40px rgba(44, 62, 47, 0.12);
@@ -377,7 +378,7 @@ if ($navbar_background_type == 'frosted') {
     background: rgba(44, 62, 47, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: 9998;
+    z-index: 10000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.35s ease;
@@ -407,8 +408,8 @@ if ($navbar_background_type == 'frosted') {
 }
 
 .mobile-drawer-close {
-    background: rgba(186, 166, 142, 0.15);
-    border: none;
+    background: rgba(186, 166, 142, 0.12);
+    border: 1px solid rgba(186, 166, 142, 0.25);
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -419,7 +420,7 @@ if ($navbar_background_type == 'frosted') {
 }
 
 .mobile-drawer-close:hover {
-    background: var(--nav-green);
+    background: var(--nav-blue);
     color: #ffffff;
 }
 
@@ -438,8 +439,8 @@ if ($navbar_background_type == 'frosted') {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px 18px;
-    border-radius: 14px;
+    padding: 12px 16px;
+    border-radius: 50px;
     text-decoration: none;
     color: var(--nav-text);
     font-weight: 500;
@@ -456,8 +457,9 @@ if ($navbar_background_type == 'frosted') {
 
 .mobile-drawer-links a:hover,
 .mobile-drawer-links a.active {
-    background: linear-gradient(135deg, var(--nav-green) 0%, #3d6b4a 100%);
+    background: linear-gradient(135deg, var(--nav-blue) 0%, #2d3f60 100%);
     color: #ffffff;
+    box-shadow: 0 6px 18px rgba(26, 39, 68, 0.22);
 }
 
 .mobile-drawer-links a:hover i,
@@ -483,7 +485,7 @@ if ($navbar_background_type == 'frosted') {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 50%;
     background: rgba(186, 166, 142, 0.12);
     color: var(--nav-text);
     font-size: 18px;
@@ -520,7 +522,7 @@ if ($navbar_background_type == 'frosted') {
 }
 
 .drawer-theme-toggle:hover {
-    background: var(--nav-green);
+    background: var(--nav-blue);
     color: #ffffff;
 }
 
@@ -536,7 +538,7 @@ body.dark-theme .mobile-drawer-links a {
 }
 
 body.dark-theme .mobile-drawer {
-    background: #1a1a1a;
+    background: rgba(26, 26, 26, 0.95);
 }
 
 body.dark-theme .mobile-drawer-header,
@@ -567,7 +569,38 @@ body.dark-theme .mobile-drawer-footer {
     }
 }
 
+@media (min-width: 769px) and (max-width: <?php echo intval($mobile_breakpoint); ?>px) {
+    .navbar-inner {
+        padding: 0 20px;
+    }
+
+    .navbar-bar {
+        padding: 9px 12px 9px 18px;
+    }
+}
+
 @media (max-width: 768px) {
+    .modern-navbar {
+        padding: 10px 0;
+    }
+
+    .modern-navbar.scrolled {
+        padding: 8px 0;
+    }
+
+    .navbar-inner {
+        padding: 0 10px;
+    }
+
+    .navbar-bar {
+        padding: 7px 8px 7px 12px;
+        border-radius: 18px;
+    }
+
+    .mobile-toggle {
+        padding: 9px 10px;
+    }
+
     .modern-navbar .logo img {
         height: <?php echo max(30, intval($navbar_logo_height) - 10); ?>px;
         width: <?php echo max(30, intval($navbar_logo_height) - 10); ?>px;

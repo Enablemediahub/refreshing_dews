@@ -186,6 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $excerpt = trim($_POST['excerpt'] ?? '');
     $category = trim($_POST['category'] ?? '');
     $status = $_POST['status'] ?? 'draft';
+    $status = in_array($status, ['draft', 'published'], true) ? $status : 'draft';
     $content = $_POST['content'] ?? '';
     $is_featured = isset($_POST['is_featured']) ? (int)$_POST['is_featured'] : 0;
     
@@ -293,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $insert_sql = "INSERT INTO posts (title, slug, content, excerpt, category, featured_image, author_id, status, is_featured, views, created_at, updated_at) 
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(), NOW())";
                 $stmt = $conn->prepare($insert_sql);
-                $stmt->bind_param("sssssssii", $title, $slug, $compressed_content, $excerpt, $category, $featured_image_path, $admin_id, $status, $is_featured);
+                $stmt->bind_param("ssssssisi", $title, $slug, $compressed_content, $excerpt, $category, $featured_image_path, $admin_id, $status, $is_featured);
                 
                 if ($stmt->execute()) {
                     $new_id = $conn->insert_id;
@@ -1125,24 +1126,6 @@ $primary_color = getSetting('primary_color', '#4a7c59');
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="status">Post Status</label>
-                                <div class="status-toggle">
-                                    <div class="status-option">
-                                        <input type="radio" id="status_draft" name="status" value="draft" <?php echo $status === 'draft' ? 'checked' : ''; ?>>
-                                        <label for="status_draft">
-                                            <i class="fas fa-pencil-alt"></i> Draft
-                                        </label>
-                                    </div>
-                                    <div class="status-option">
-                                        <input type="radio" id="status_published" name="status" value="published" <?php echo $status === 'published' ? 'checked' : ''; ?>>
-                                        <label for="status_published">
-                                            <i class="fas fa-globe"></i> Publish
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
                                 <label for="is_featured">Featured Post</label>
                                 <div class="status-toggle">
                                     <div class="status-option">
@@ -1225,6 +1208,27 @@ $primary_color = getSetting('primary_color', '#4a7c59');
                 </div>
                 
                 <!-- Form Actions -->
+                <div class="form-card">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="status">Post Status</label>
+                            <div class="status-toggle">
+                                <div class="status-option">
+                                    <input type="radio" id="status_draft" name="status" value="draft" <?php echo $status === 'draft' ? 'checked' : ''; ?> required>
+                                    <label for="status_draft">
+                                        <i class="fas fa-pencil-alt"></i> Draft
+                                    </label>
+                                </div>
+                                <div class="status-option">
+                                    <input type="radio" id="status_published" name="status" value="published" <?php echo $status === 'published' ? 'checked' : ''; ?>>
+                                    <label for="status_published">
+                                        <i class="fas fa-globe"></i> Publish
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <i class="fas fa-save"></i> <?php echo $is_edit ? 'Update Post' : 'Publish Post'; ?>

@@ -381,6 +381,53 @@ function getFooterStyles() {
                 color: {$headingColor};
                 font-weight: 700;
             }
+            @media (max-width: 991px) {
+                .footer {
+                    padding-bottom: 20px;
+                }
+                .footer-top {
+                    padding: 24px;
+                    margin-bottom: 20px;
+                }
+                .footer-col {
+                    padding: 20px 16px;
+                }
+            }
+            @media (max-width: 575px) {
+                .footer-top {
+                    align-items: flex-start;
+                    flex-direction: column;
+                    gap: 16px;
+                    padding: 22px 18px;
+                    border-radius: 18px;
+                }
+                .footer-top h3 {
+                    font-size: 22px;
+                    line-height: 1.25;
+                }
+                .footer-cta {
+                    width: 100%;
+                    padding: 12px 16px;
+                }
+                .footer-grid {
+                    gap: 14px;
+                    margin-bottom: 22px;
+                }
+                .footer-col {
+                    padding: 18px 16px;
+                    border-radius: 14px;
+                }
+                .footer-col h3 {
+                    margin-bottom: 14px;
+                }
+                .footer-bottom {
+                    padding: 20px 8px 0;
+                    font-size: 13px;
+                }
+                .footer-credit {
+                    line-height: 1.5;
+                }
+            }
         </style>
     ";
 }
