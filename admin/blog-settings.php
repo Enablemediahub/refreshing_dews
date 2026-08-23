@@ -94,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'blog_sidebar_enabled' => isset($_POST['blog_sidebar_enabled']) ? '1' : '0',
                     'blog_featured_enabled' => isset($_POST['blog_featured_enabled']) ? '1' : '0',
                     'blog_author_profile_image' => $_POST['blog_author_profile_image'] ?? '',
+                    'blog_author_thumbnail_image' => $_POST['blog_author_thumbnail_image'] ?? '',
                     'blog_author_name' => trim($_POST['blog_author_name'] ?? 'COMANDA1'),
                     
                     // Newsletter settings
@@ -153,6 +154,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $settings_to_update['blog_newsletter_background_image'] = '';
                 }
 
+                // Handle author thumbnail upload
+                if (isset($_FILES['blog_author_thumbnail_upload']) && $_FILES['blog_author_thumbnail_upload']['error'] === UPLOAD_ERR_OK) {
+                    $upload_result = uploadImage($_FILES['blog_author_thumbnail_upload'], 'blog_author_thumb');
+                    if ($upload_result['success']) {
+                        $settings_to_update['blog_author_thumbnail_image'] = $upload_result['path'];
+                        $success_message = ($success_message ?: '') . ' Author thumbnail uploaded successfully!';
+                    } else {
+                        $error_message = $upload_result['error'];
+                    }
+                }
+
+                if (isset($_POST['remove_author_thumbnail']) && $_POST['remove_author_thumbnail'] == '1') {
+                    $settings_to_update['blog_author_thumbnail_image'] = '';
+                }
+
                 // Handle writer profile image upload
                 if (isset($_FILES['blog_author_profile_image_upload']) && $_FILES['blog_author_profile_image_upload']['error'] === UPLOAD_ERR_OK) {
                     $upload_result = uploadImage($_FILES['blog_author_profile_image_upload'], 'blog_writer');
@@ -206,6 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'blog_sidebar_enabled' => '1',
                     'blog_featured_enabled' => '1',
                     'blog_author_profile_image' => '',
+                    'blog_author_thumbnail_image' => '',
                     'blog_author_name' => 'COMANDA1',
                     
                     // Newsletter settings
@@ -642,6 +659,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             border: 2px solid #e0e0e0;
         }
+
+        .author-thumbnail-preview {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 3px solid #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(74, 124, 89, 0.15);
+            display: block;
+            margin-top: 12px;
+        }
         
         /* Checkbox */
         .checkbox-group {
@@ -1035,32 +1063,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
 
                             <div class="form-group full-width">
-                                <label>Writer Display Name</label>
+                                <label>Author Display Name</label>
                                 <input type="text" name="blog_author_name" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('blog_author_name', 'COMANDA1')); ?>" placeholder="COMANDA1">
-                                <div class="file-info">Shown in the &ldquo;The Writer&rdquo; box on individual blog post pages.</div>
+                                <div class="file-info">Shown in the &ldquo;The Author&rdquo; box on individual blog post pages.</div>
                             </div>
 
                             <div class="form-group full-width">
-                                <label>Writer Profile Picture</label>
+                                <label>Author Thumbnail</label>
                                 <div class="file-upload">
-                                    <input type="file" name="blog_author_profile_image_upload" id="blog_author_profile_image_upload" accept="image/*">
-                                    <label for="blog_author_profile_image_upload" class="file-upload-label">
+                                    <input type="file" name="blog_author_thumbnail_upload" id="blog_author_thumbnail_upload" accept="image/*">
+                                    <label for="blog_author_thumbnail_upload" class="file-upload-label">
                                         <i class="fas fa-cloud-upload-alt"></i>
-                                        <span>Choose Writer Profile Picture</span>
+                                        <span>Choose Author Thumbnail</span>
                                     </label>
-                                    <?php $blog_author_profile_image = getSettingValue('blog_author_profile_image'); ?>
-                                    <?php if (!empty($blog_author_profile_image)): ?>
-                                    <img src="../<?php echo htmlspecialchars($blog_author_profile_image); ?>" class="preview-image" id="blog_author_profile_image_preview" alt="Writer Profile Preview">
+                                    <?php $blog_author_thumbnail_image = getSettingValue('blog_author_thumbnail_image'); ?>
+                                    <?php if (!empty($blog_author_thumbnail_image)): ?>
+                                    <img src="../<?php echo htmlspecialchars($blog_author_thumbnail_image); ?>" class="author-thumbnail-preview" id="blog_author_thumbnail_preview" alt="Author Thumbnail Preview">
                                     <div style="margin-top: 10px;">
-                                        <button type="button" class="btn btn-warning" onclick="document.getElementById('remove_author_image').value='1'; this.form.submit();">
-                                            <i class="fas fa-trash"></i> Remove Writer Image
+                                        <button type="button" class="btn btn-warning" onclick="document.getElementById('remove_author_thumbnail').value='1'; this.form.submit();">
+                                            <i class="fas fa-trash"></i> Remove Author Thumbnail
                                         </button>
                                     </div>
                                     <?php endif; ?>
-                                    <input type="hidden" name="blog_author_profile_image" value="<?php echo htmlspecialchars($blog_author_profile_image ?? ''); ?>">
-                                    <input type="hidden" name="remove_author_image" id="remove_author_image" value="0">
+                                    <input type="hidden" name="blog_author_thumbnail_image" value="<?php echo htmlspecialchars($blog_author_thumbnail_image ?? ''); ?>">
+                                    <input type="hidden" name="remove_author_thumbnail" id="remove_author_thumbnail" value="0">
                                 </div>
-                                <div class="file-info">Used only in the blog post writer box. Falls back to the About page image if empty.</div>
+                                <div class="file-info">Square crop works best (e.g. 400&times;400px). Used only in &ldquo;The Author&rdquo; sidebar on blog posts.</div>
+                                <?php $blog_author_profile_image = getSettingValue('blog_author_profile_image'); ?>
+                                <input type="hidden" name="blog_author_profile_image" value="<?php echo htmlspecialchars($blog_author_profile_image ?? ''); ?>">
+                                <input type="hidden" name="remove_author_image" id="remove_author_image" value="0">
                             </div>
                         </div>
                         

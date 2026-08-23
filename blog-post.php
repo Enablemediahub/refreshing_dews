@@ -226,8 +226,11 @@ $author_stmt->execute();
 $author_result = $author_stmt->get_result();
 $author = $author_result->fetch_assoc();
 
-// Get blog-specific writer profile image, with fallback to About page profile image
-$author_profile_image = getSetting('blog_author_profile_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
+// Author sidebar — dedicated thumbnail (separate from About page profile)
+$author_thumbnail_image = getSetting('blog_author_thumbnail_image', '');
+if ($author_thumbnail_image === '') {
+    $author_thumbnail_image = getSetting('blog_author_profile_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
+}
 $author_name = getSetting('about_name', 'Refreshing Dews');
 $author_bio = getSetting('about_bio', 'Hello! I\'m the voice and heart behind Refreshing Dews. I created this space to share honest thoughts, daily experiences, and audio messages that I hope will inspire, encourage, and connect with you on your own journey.');
 $author_sidebar_name = getSetting('blog_author_name', 'COMANDA1');
@@ -438,21 +441,18 @@ function getHeaderStyle() {
     return $post_header_bg_style;
 }
 
-// Function to get author avatar URL
+// Function to get author thumbnail URL for the sidebar
 function getAuthorAvatarUrl() {
-    global $author_profile_image;
-    if (empty($author_profile_image)) {
+    global $author_thumbnail_image;
+    if (empty($author_thumbnail_image)) {
         return 'assets/images/default-avatar.jpg';
     }
     
-    // If it's already a full URL
-    if (preg_match('/^https?:\/\//', $author_profile_image)) {
-        return $author_profile_image;
+    if (preg_match('/^https?:\/\//', $author_thumbnail_image)) {
+        return $author_thumbnail_image;
     }
     
-    // Remove leading slash if any
-    $image_path = ltrim($author_profile_image, '/');
-    return $image_path;
+    return ltrim($author_thumbnail_image, '/');
 }
 ?>
 <!DOCTYPE html>
@@ -868,18 +868,21 @@ function getAuthorAvatarUrl() {
         }
 
         .author-avatar {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            margin: 0 auto 12px;
+            width: 96px;
+            height: 96px;
+            border-radius: 14px;
+            margin: 0 auto 14px;
             overflow: hidden;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: 3px solid #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(74, 124, 89, 0.15);
         }
 
         .author-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .author-name {
@@ -1527,7 +1530,7 @@ function getAuthorAvatarUrl() {
                     <!-- Author Widget -->
                     <?php if ($blog_author_box_enabled == '1'): ?>
                     <div class="sidebar-widget">
-                        <h3>The Writer</h3>
+                        <h3>The Author</h3>
                         <div class="author-info">
                             <div class="author-avatar">
                                 <img src="<?php echo getAuthorAvatarUrl(); ?>" 
