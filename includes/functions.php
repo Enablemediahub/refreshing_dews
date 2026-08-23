@@ -55,6 +55,35 @@ function updateSetting($key, $value) {
 }
 
 /**
+ * Get blog categories configured by an administrator and used by existing posts.
+ */
+function getBlogCategories() {
+    global $conn;
+
+    $categories = [];
+    $configured = json_decode(getSetting('blog_categories', '[]'), true);
+    if (is_array($configured)) {
+        foreach ($configured as $category) {
+            $category = trim((string) $category);
+            if ($category !== '') {
+                $categories[] = $category;
+            }
+        }
+    }
+
+    $result = $conn->query("SELECT DISTINCT category FROM posts WHERE category IS NOT NULL AND category != ''");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = trim($row['category']);
+        }
+    }
+
+    $categories = array_values(array_unique(array_filter($categories)));
+    natcasesort($categories);
+    return $categories;
+}
+
+/**
  * Get hero background style with opacity
  */
 function getHeroBackgroundStyle() {

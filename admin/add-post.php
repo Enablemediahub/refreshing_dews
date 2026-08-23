@@ -134,6 +134,21 @@ if (!function_exists('handleImageUploadForEditor')) {
     }
 }
 
+// Helper function to log admin actions if not exists
+if (!function_exists('logAdminAction')) {
+    function logAdminAction($action, $details = '') {
+        global $conn;
+        $admin_id = $_SESSION['admin_id'] ?? null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+
+        $stmt = $conn->prepare("INSERT INTO admin_logs (admin_id, action, details, ip_address) VALUES (?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("isss", $admin_id, $action, $details, $ip);
+            $stmt->execute();
+        }
+    }
+}
+
 // Handle AJAX image upload from TinyMCE
 if (isset($_POST['tinymce_image_upload']) && isset($_FILES['image'])) {
     header('Content-Type: application/json');
@@ -146,14 +161,8 @@ if (isset($_POST['tinymce_image_upload']) && isset($_FILES['image'])) {
     exit();
 }
 
-// Get all categories from existing posts for dropdown
-$categories = [];
-$cat_result = $conn->query("SELECT DISTINCT category FROM posts WHERE category IS NOT NULL AND category != '' ORDER BY category ASC");
-if ($cat_result) {
-    while ($row = $cat_result->fetch_assoc()) {
-        $categories[] = $row['category'];
-    }
-}
+// Get configured categories and categories already used by posts for dropdown
+$categories = getBlogCategories();
 
 // If editing, load existing post data
 if ($is_edit) {
@@ -293,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $insert_sql = "INSERT INTO posts (title, slug, content, excerpt, category, featured_image, author_id, status, is_featured, views, created_at, updated_at) 
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(), NOW())";
                 $stmt = $conn->prepare($insert_sql);
-                $stmt->bind_param("sssssssii", $title, $slug, $compressed_content, $excerpt, $category, $featured_image_path, $admin_id, $status, $is_featured);
+                $stmt->bind_param("ssssssisi", $title, $slug, $compressed_content, $excerpt, $category, $featured_image_path, $admin_id, $status, $is_featured);
                 
                 if ($stmt->execute()) {
                     $new_id = $conn->insert_id;
@@ -308,19 +317,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
             }
         }
-    }
-}
-
-// Helper function to log admin actions if not exists
-if (!function_exists('logAdminAction')) {
-    function logAdminAction($action, $details = '') {
-        global $conn;
-        $admin_id = $_SESSION['admin_id'] ?? null;
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        
-        $stmt = $conn->prepare("INSERT INTO admin_logs (admin_id, action, details, ip_address) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $admin_id, $action, $details, $ip);
-        $stmt->execute();
     }
 }
 

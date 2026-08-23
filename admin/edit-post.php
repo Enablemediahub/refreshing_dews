@@ -195,13 +195,7 @@ if (isset($_POST['tinymce_image_upload']) && isset($_FILES['image'])) {
 }
 
 // Get all categories from existing posts for dropdown
-$categories = [];
-$cat_result = $conn->query("SELECT DISTINCT category FROM posts WHERE category IS NOT NULL AND category != '' ORDER BY category ASC");
-if ($cat_result) {
-    while ($row = $cat_result->fetch_assoc()) {
-        $categories[] = $row['category'];
-    }
-}
+$categories = getBlogCategories();
 
 // Load existing post data with proper decompression
 $stmt = $conn->prepare("SELECT * FROM posts WHERE id = ?");

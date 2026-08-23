@@ -37,6 +37,21 @@ function getSettingValue($key, $default = '') {
     return isset($settings[$key]) ? $settings[$key] : $default;
 }
 
+function getManagedBlogCategories() {
+    $categories = json_decode(getSettingValue('blog_categories', '[]'), true);
+    if (!is_array($categories)) {
+        return [];
+    }
+
+    return array_values(array_filter(array_map(function ($category) {
+        return trim((string) $category);
+    }, $categories)));
+}
+
+function saveManagedBlogCategories($categories) {
+    return updateSetting('blog_categories', json_encode(array_values($categories)));
+}
+
 // Helper function to upload image
 function uploadImage($file, $type = 'blog') {
     $upload_dir = '../assets/uploads/blog/';
@@ -76,6 +91,79 @@ function uploadImage($file, $type = 'blog') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
+            case 'add_blog_category':
+                $new_category = trim($_POST['category_name'] ?? '');
+                $categories = getManagedBlogCategories();
+                $exists = false;
+                foreach ($categories as $existing_category) {
+                    if (strcasecmp($existing_category, $new_category) === 0) {
+                        $exists = true;
+                        break;
+                    }
+                }
+
+                if ($new_category === '') {
+                    $error_message = 'Please enter a category name.';
+                } elseif ($exists) {
+                    $error_message = 'That category already exists.';
+                } elseif (saveManagedBlogCategories(array_merge($categories, [$new_category]))) {
+                    $success_message = 'Category added successfully.';
+                } else {
+                    $error_message = 'Failed to add the category.';
+                }
+                break;
+
+            case 'edit_blog_category':
+                $old_category = trim($_POST['old_category'] ?? '');
+                $new_category = trim($_POST['category_name'] ?? '');
+                $categories = getManagedBlogCategories();
+                $category_index = null;
+                foreach ($categories as $index => $existing_category) {
+                    if (strcasecmp($existing_category, $old_category) === 0) {
+                        $category_index = $index;
+                    }
+                }
+
+                $duplicate = false;
+                foreach ($categories as $index => $existing_category) {
+                    if ($index !== $category_index && strcasecmp($existing_category, $new_category) === 0) {
+                        $duplicate = true;
+                        break;
+                    }
+                }
+
+                if ($new_category === '') {
+                    $error_message = 'Please enter a category name.';
+                } elseif ($category_index === null) {
+                    $error_message = 'Category not found.';
+                } elseif ($duplicate) {
+                    $error_message = 'That category already exists.';
+                } else {
+                    $categories[$category_index] = $new_category;
+                    if (saveManagedBlogCategories($categories)) {
+                        $success_message = 'Category updated successfully.';
+                    } else {
+                        $error_message = 'Failed to update the category.';
+                    }
+                }
+                break;
+
+            case 'delete_blog_category':
+                $category_to_delete = trim($_POST['category_name'] ?? '');
+                $categories = getManagedBlogCategories();
+                $filtered_categories = array_values(array_filter($categories, function ($category) use ($category_to_delete) {
+                    return strcasecmp($category, $category_to_delete) !== 0;
+                }));
+
+                if (count($filtered_categories) === count($categories)) {
+                    $error_message = 'Category not found.';
+                } elseif (saveManagedBlogCategories($filtered_categories)) {
+                    $success_message = 'Category deleted successfully. Existing posts were not changed.';
+                } else {
+                    $error_message = 'Failed to delete the category.';
+                }
+                break;
+
             case 'update_blog_settings':
                 $settings_to_update = [
                     // Blog header settings
@@ -271,6 +359,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$managed_blog_categories = getManagedBlogCategories();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -1303,6 +1393,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" id="resetForm" style="display: none;">
                         <input type="hidden" name="action" value="reset_blog_settings">
                     </form>
+                </div>
+
+                <div class="settings-panel" style="margin-top: 24px;">
+                    <div class="panel-header">
+                        <h2>Blog Categories</h2>
+                        <p>Add categories for the post editor, or rename and remove categories you no longer use.</p>
+                    </div>
+
+                    <form method="POST" class="form-grid" style="align-items: end;">
+                        <input type="hidden" name="action" value="add_blog_category">
+                        <div class="form-group">
+                            <label for="category_name">New Category</label>
+                            <input type="text" id="category_name" name="category_name" class="form-control" maxlength="100" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Category</button>
+                        </div>
+                    </form>
+
+                    <?php if ($managed_blog_categories): ?>
+                        <div style="display: grid; gap: 10px; margin-top: 20px;">
+                            <?php foreach ($managed_blog_categories as $managed_category): ?>
+                                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                    <form method="POST" style="display: flex; gap: 10px; flex: 1; min-width: 240px;">
+                                        <input type="hidden" name="action" value="edit_blog_category">
+                                        <input type="hidden" name="old_category" value="<?php echo htmlspecialchars($managed_category); ?>">
+                                        <input type="text" name="category_name" class="form-control" value="<?php echo htmlspecialchars($managed_category); ?>" maxlength="100" required>
+                                        <button type="submit" class="btn btn-primary" title="Save category"><i class="fas fa-save"></i> Edit</button>
+                                    </form>
+                                    <form method="POST" onsubmit="return confirm('Delete this category? Existing posts will keep their category.');">
+                                        <input type="hidden" name="action" value="delete_blog_category">
+                                        <input type="hidden" name="category_name" value="<?php echo htmlspecialchars($managed_category); ?>">
+                                        <button type="submit" class="btn btn-danger" title="Delete category"><i class="fas fa-trash"></i> Delete</button>
+                                    </form>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p style="margin-top: 20px; color: #666;">No managed categories yet. Categories already used by posts remain available in the editor.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
