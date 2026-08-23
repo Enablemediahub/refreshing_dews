@@ -67,10 +67,10 @@ if (is_dir($images_dir)) {
 
 echo "<h2>Recommended Fix</h2>";
 echo "<p>If you're having permission issues, run this in Command Prompt as Administrator:</p>";
-echo "<pre>icacls \"C:\\xampp\\htdocs\\refreshing_dews\\uploads\" /grant Everyone:F /T</pre>";
+echo "<pre>icacls \"C:\\xampp\\htdocs\\painlesslyf\\uploads\" /grant Everyone:F /T</pre>";
 echo "<p>Or manually set permissions:</p>";
 echo "<ol>";
-echo "<li>Right-click the 'uploads' folder in C:\\xampp\\htdocs\\refreshing_dews\\</li>";
+echo "<li>Right-click the 'uploads' folder in C:\\xampp\\htdocs\\painlesslyf\\</li>";
 echo "<li>Select Properties</li>";
 echo "<li>Go to Security tab</li>";
 echo "<li>Click Edit</li>";

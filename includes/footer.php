@@ -8,11 +8,11 @@ if (!function_exists('getSetting')) {
     require_once __DIR__ . '/functions.php';
 }
 
-$footer_site_title = getSetting('site_title', 'Refreshing Dews');
-$footer_site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$footer_description = getSetting('footer_description', 'Everyday stories. Faith-filled reflections. Words to bring hope, strengthen hearts, and refresh lives.');
-$footer_copyright = getSetting('footer_copyright', '© 2026 Refreshing Dews. All rights reserved.');
-$footer_contact_email = getSetting('contact_email_display', 'contact@refreshingdews.com');
+$footer_site_title = getSetting('site_title', 'Painlesslyf');
+$footer_site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$footer_description = getSetting('footer_description', 'A space for the brave. No sugarcoating. No fluff. Just truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$footer_copyright = getSetting('footer_copyright', '© 2026 Painlesslyf. All rights reserved.');
+$footer_contact_email = getSetting('contact_email_display', 'contact@painlesslyf.com');
 $footer_contact_address = getSetting('contact_address', 'Worldwide');
 $footer_response_time = getSetting('contact_response_time', 'Always open');
 
@@ -34,6 +34,14 @@ if (!defined('FOOTER_STYLES_LOADED')) {
 ?>
 <footer class="footer">
     <div class="container">
+        <div class="footer-top">
+            <div>
+                <span class="footer-kicker">Stay connected</span>
+                <h3>Let truth, grace, and purpose find you.</h3>
+            </div>
+            <a href="subscribe.php" class="footer-cta">Join the newsletter <i class="fas fa-arrow-right"></i></a>
+        </div>
+
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">

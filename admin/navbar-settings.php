@@ -1057,7 +1057,7 @@ if (preg_match('/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\)/', $current_
                             <div class="form-group full-width">
                                 <label>Current Logo</label>
                                 <div class="file-upload">
-                                    <img src="../<?php echo getSettingValue('site_logo', 'assets/logo/refreshing-dews-logo.png'); ?>" class="preview-image" alt="Current Logo">
+                                    <img src="../<?php echo getSettingValue('site_logo', 'assets/logo/painlesslyf-logo.png'); ?>" class="preview-image" alt="Current Logo">
                                 </div>
                             </div>
                             

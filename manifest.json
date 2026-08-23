@@ -1,26 +1,26 @@
 {
-  "name": "Refreshing Dews",
-  "short_name": "RefreshDews",
-  "description": "Daily inspiration, honest reflections, and audio messages for spiritual refreshment.",
-  "start_url": "/refreshing_dews/index.php",
-  "scope": "/refreshing_dews/",
+  "name": "Painlesslyf",
+  "short_name": "Painlesslyf",
+  "description": "Truth, grace, and the roadmap back to God's heart for your life and your marriage.",
+  "start_url": "/painlesslyf/index.php",
+  "scope": "/painlesslyf/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
-  "background_color": "#4a7c59",
-  "theme_color": "#4a7c59",
-  "categories": ["blog", "lifestyle", "personal development"],
+  "background_color": "#FAF7F0",
+  "theme_color": "#1a2744",
+  "categories": ["blog", "lifestyle", "faith"],
   "lang": "en",
   "dir": "ltr",
   "icons": [
     {
-      "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+      "src": "/painlesslyf/assets/logo/painlesslyf-logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+      "src": "/painlesslyf/assets/logo/painlesslyf-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -31,10 +31,10 @@
       "name": "Blog",
       "short_name": "Blog",
       "description": "Read latest blog posts",
-      "url": "/refreshing_dews/blog.php",
+      "url": "/painlesslyf/blog.php",
       "icons": [
         {
-          "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+          "src": "/painlesslyf/assets/logo/painlesslyf-logo.png",
           "sizes": "192x192"
         }
       ]
@@ -43,10 +43,10 @@
       "name": "Audio",
       "short_name": "Audio",
       "description": "Listen to audio messages",
-      "url": "/refreshing_dews/audio.php",
+      "url": "/painlesslyf/audio.php",
       "icons": [
         {
-          "src": "/refreshing_dews/assets/logo/refreshing-dews-logo.png",
+          "src": "/painlesslyf/assets/logo/painlesslyf-logo.png",
           "sizes": "192x192"
         }
       ]

@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($_POST['action']) {
             // General Settings
             case 'update_general':
-                updateSetting('site_title', $_POST['site_title'] ?? 'Refreshing Dews');
+                updateSetting('site_title', $_POST['site_title'] ?? 'Painlesslyf');
                 updateSetting('site_description', $_POST['site_description'] ?? '');
                 updateSetting('footer_copyright', $_POST['footer_copyright'] ?? '');
                 updateSetting('footer_description', $_POST['footer_description'] ?? '');
@@ -109,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Hero Settings
             case 'update_hero':
-                updateSetting('hero_title', $_POST['hero_title'] ?? 'Refreshing Dews');
+                updateSetting('hero_title', $_POST['hero_title'] ?? 'Painlesslyf');
                 updateSetting('hero_subtitle', $_POST['hero_subtitle'] ?? '');
-                updateSetting('hero_badge', $_POST['hero_badge'] ?? 'Welcome to Refreshing Dews');
+                updateSetting('hero_badge', $_POST['hero_badge'] ?? 'Welcome, friend');
                 updateSetting('hero_logo_enabled', isset($_POST['hero_logo_enabled']) ? '1' : '0');
                 updateSetting('hero_title_font_weight', $_POST['hero_title_font_weight'] ?? '900');
                 updateSetting('hero_slideshow_effect', $_POST['hero_slideshow_effect'] ?? 'slide');
@@ -334,19 +334,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Reset All Settings
             case 'reset_settings':
                 $default_settings = [
-                    'site_title' => 'Refreshing Dews',
-                    'site_description' => 'Personal Blog & Audio Messages',
-                    'hero_title' => 'Refreshing Dews',
-                    'hero_subtitle' => 'Daily inspiration. Honest reflections. Messages to refresh your spirit.',
-                    'hero_badge' => 'Welcome to Refreshing Dews',
+                    'site_title' => 'Painlesslyf',
+                    'site_description' => 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.',
+                    'hero_title' => 'Painlesslyf',
+                    'hero_subtitle' => 'Turn your tortuous path into a walking melody.',
+                    'hero_badge' => 'Welcome, friend',
                     'hero_logo_enabled' => '1',
                     'hero_title_font_weight' => '900',
                     'hero_slideshow_effect' => 'slide',
                     'hero_slideshow_interval' => '5000',
                     'hero_button_text' => 'Read the latest',
                     'hero_button_link' => 'blog.php',
-                    'cards_section_title' => 'Explore the journey',
-                    'cards_section_subtitle' => 'Thanks to words and audio, we are able to share experiences and bridge distances.',
+                    'cards_section_title' => 'Faith · Grace · Purpose · Melody',
+                    'cards_section_subtitle' => 'A painless life is not far fetched—it is practical when we allow God to navigate.',
                     'cards_background_type' => 'gradient',
                     'cards_background_color' => '#faf7f0',
                     'cards_background_gradient_start' => '#faf7f0',
@@ -357,14 +357,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'cards_card_background' => '#ffffff',
                     'cards_card_hover_background' => '#ffffff',
                     'cards_card_text_color' => '#6b6b6b',
-                    'cards_card_title_color' => '#2c3e2f',
-                    'cards_card_icon_color' => '#2563eb',
+                    'cards_card_title_color' => '#1a2744',
+                    'cards_card_icon_color' => '#C9A962',
                     'shared_wallpaper_overlay_color' => '#faf7f0',
                     'shared_wallpaper_overlay_opacity' => '0.2',
                     'shared_wallpaper_card_opacity' => '0.94',
-                    'cards_icon_blue_color' => '#2563eb',
+                    'cards_icon_blue_color' => '#1a2744',
                     'blog_section_title' => 'Latest from the blog',
-                    'blog_section_subtitle' => 'Recent thoughts and experiences',
+                    'blog_section_subtitle' => 'Truth, grace, and the roadmap for your journey',
                     'blog_background_type' => 'solid',
                     'blog_background_color' => '#ffffff',
                     'blog_background_gradient_start' => '#ffffff',
@@ -375,9 +375,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'blog_card_background' => '#ffffff',
                     'blog_card_hover_background' => '#ffffff',
                     'blog_card_text_color' => '#6b6b6b',
-                    'blog_card_title_color' => '#2c3e2f',
-                    'blog_card_button_color' => '#2563eb',
-                    'blog_card_button_hover_color' => '#1d4ed8',
+                    'blog_card_title_color' => '#1a2744',
+                    'blog_card_button_color' => '#C9A962',
+                    'blog_card_button_hover_color' => '#A68844',
                     'blog_card_shadow' => '0 5px 15px rgba(0,0,0,0.05)',
                     'blog_card_hover_shadow' => '0 15px 30px rgba(0,0,0,0.1)',
                     'blog_enable_animated_background' => '0',
@@ -399,35 +399,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'audio_card_shadow' => '0 5px 15px rgba(0,0,0,0.05)',
                     'audio_card_hover_shadow' => '0 15px 30px rgba(0,0,0,0.1)',
                     'audio_enable_animated_background' => '0',
-                    'footer_gradient_start' => '#0a4d7a',
-                    'footer_gradient_end' => '#6ec5f0',
+                    'footer_gradient_start' => '#1a2744',
+                    'footer_gradient_end' => '#0f1824',
                     'footer_text_color' => '#ffffff',
                     'footer_link_color' => 'rgba(255,255,255,0.7)',
-                    'footer_link_hover_color' => '#2563eb',
+                    'footer_link_hover_color' => '#C9A962',
                     'footer_heading_color' => '#ffffff',
-                    'footer_border_color' => 'rgba(255,255,255,0.1)',
-                    'footer_copyright' => '© 2025 Refreshing Dews. All rights reserved.',
-                    'footer_description' => 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.',
-                    'primary_color' => '#2563eb',
-                    'theme_blue_color' => '#2563eb',
-                    'theme_blue_dark_color' => '#1d4ed8',
-                    'theme_green_color' => '#4a7c59',
-                    'theme_green_dark_color' => '#2c4a3b',
+                    'footer_border_color' => 'rgba(201, 169, 98, 0.2)',
+                    'footer_copyright' => '© 2026 Painlesslyf. All rights reserved.',
+                    'footer_description' => 'A space for the brave. No sugarcoating. No fluff. Just truth, grace, and the roadmap back to God\'s heart for your life and your marriage.',
+                    'primary_color' => '#C9A962',
+                    'theme_blue_color' => '#1a2744',
+                    'theme_blue_dark_color' => '#0f1824',
+                    'theme_green_color' => '#C9A962',
+                    'theme_green_dark_color' => '#A68844',
                     'navbar_background' => 'rgba(255,255,255,0.95)',
                     'navbar_text_color' => '#333333',
-                    'card_1_title' => 'Daily Blog',
-                    'card_1_description' => 'Thoughts, stories, and experiences from the everyday.',
+                    'card_1_title' => 'Truth & Grace',
+                    'card_1_description' => 'Pure, unvarnished truth on marriage, faith, and the journey back to God\'s design.',
                     'card_1_icon' => '📝',
                     'card_1_link' => 'blog.php',
                     'card_2_title' => 'Audio Messages',
-                    'card_2_description' => 'Listen to personal messages and reflections, directly from me to you.',
+                    'card_2_description' => 'Listen to messages of truth and grace—words to illuminate, not to shame.',
                     'card_2_icon' => '🎧',
                     'card_2_link' => 'audio.php',
-                    'card_3_title' => 'Connect',
-                    'card_3_description' => 'Learn more about the person behind the words or just say hello.',
+                    'card_3_title' => 'About Me',
+                    'card_3_description' => 'The vision behind Painlesslyf—a space for the brave seeking practical peace.',
                     'card_3_icon' => '🤝',
                     'card_3_link' => 'about.php',
-                    'crawling_announcements' => 'Welcome to Refreshing Dews | New audio message every week | Latest blog post: Finding Peace in Chaos',
+                    'crawling_announcements' => 'Welcome to Painlesslyf | Faith · Grace · Purpose · Melody | Truth for the brave',
                     'announcement_speed' => '20'
                 ];
                 
@@ -1080,7 +1080,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label><i class="fas fa-tag"></i> Site Title</label>
-                                <input type="text" name="site_title" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('site_title', 'Refreshing Dews')); ?>">
+                                <input type="text" name="site_title" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('site_title', 'Painlesslyf')); ?>">
                             </div>
                             <div class="form-group full-width">
                                 <label><i class="fas fa-align-left"></i> Site Description</label>
@@ -1088,7 +1088,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="form-group full-width">
                                 <label><i class="fas fa-copyright"></i> Footer Copyright</label>
-                                <input type="text" name="footer_copyright" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('footer_copyright', '© 2025 Refreshing Dews. All rights reserved.')); ?>">
+                                <input type="text" name="footer_copyright" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('footer_copyright', '© 2025 Painlesslyf. All rights reserved.')); ?>">
                             </div>
                             <div class="form-group full-width">
                                 <label><i class="fas fa-info-circle"></i> Footer Description</label>
@@ -1112,11 +1112,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label><i class="fas fa-certificate"></i> Hero Badge Text</label>
-                                <input type="text" name="hero_badge" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('hero_badge', 'Welcome to Refreshing Dews')); ?>">
+                                <input type="text" name="hero_badge" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('hero_badge', 'Welcome, friend')); ?>">
                             </div>
                             <div class="form-group full-width">
-                                <label><i class="fas fa-heading"></i> Hero Title (e.g. Refreshing Dews)</label>
-                                <input type="text" name="hero_title" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('hero_title', 'Refreshing Dews')); ?>">
+                                <label><i class="fas fa-heading"></i> Hero Title (e.g. Painlesslyf)</label>
+                                <input type="text" name="hero_title" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('hero_title', 'Painlesslyf')); ?>">
                             </div>
                             <div class="form-group">
                                 <label><i class="fas fa-bold"></i> Title Font Weight</label>
@@ -1186,7 +1186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label><i class="fas fa-list"></i> Announcements (separate with | )</label>
-                                <textarea name="crawling_announcements" class="form-control" rows="4"><?php echo htmlspecialchars(getSettingValue('crawling_announcements', 'Welcome to Refreshing Dews | New audio message every week | Latest blog post: Finding Peace in Chaos')); ?></textarea>
+                                <textarea name="crawling_announcements" class="form-control" rows="4"><?php echo htmlspecialchars(getSettingValue('crawling_announcements', 'Welcome, friend | New audio message every week | Latest blog post: Finding Peace in Chaos')); ?></textarea>
                             </div>
                             <div class="form-group">
                                 <label><i class="fas fa-tachometer-alt"></i> Scroll Speed (seconds)</label>
@@ -1800,8 +1800,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="form-group full-width">
                                 <label>Current Logo</label>
                                 <div style="display: flex; gap: 20px; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
-                                    <img src="../<?php echo htmlspecialchars(getSettingValue('site_logo', 'assets/logo/refreshing-dews-logo.png')); ?>" style="max-width: 100px; max-height: 60px; object-fit: contain;">
-                                    <div><?php echo basename(getSettingValue('site_logo', 'assets/logo/refreshing-dews-logo.png')); ?></div>
+                                    <img src="../<?php echo htmlspecialchars(getSettingValue('site_logo', 'assets/logo/painlesslyf-logo.png')); ?>" style="max-width: 100px; max-height: 60px; object-fit: contain;">
+                                    <div><?php echo basename(getSettingValue('site_logo', 'assets/logo/painlesslyf-logo.png')); ?></div>
                                 </div>
                             </div>
                             <div class="form-group full-width">
@@ -1814,8 +1814,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="form-group full-width">
                                 <label>Current Favicon</label>
                                 <div style="display: flex; gap: 20px; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
-                                    <img src="../<?php echo htmlspecialchars(getSettingValue('favicon', 'assets/logo/refreshing-dews-logo.png')); ?>" style="width: 32px; height: 32px; object-fit: contain;">
-                                    <div><?php echo basename(getSettingValue('favicon', 'assets/logo/refreshing-dews-logo.png')); ?></div>
+                                    <img src="../<?php echo htmlspecialchars(getSettingValue('favicon', 'assets/logo/painlesslyf-logo.png')); ?>" style="width: 32px; height: 32px; object-fit: contain;">
+                                    <div><?php echo basename(getSettingValue('favicon', 'assets/logo/painlesslyf-logo.png')); ?></div>
                                 </div>
                             </div>
                             <div class="form-group full-width">

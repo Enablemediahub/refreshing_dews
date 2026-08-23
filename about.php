@@ -9,33 +9,33 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_description = getSetting('site_description', 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
-$primary_color = getSetting('primary_color', '#4a7c59');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_description = getSetting('site_description', 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$primary_color = getSetting('primary_color', '#C9A962');
 $font_family = getSetting('font_family', 'Inter, sans-serif');
 $enable_animated_bg = getSetting('enable_animated_background', '0');
 
 // Theme colors (blue & green — matches homepage, blog, and audio)
-$theme_blue = getSetting('theme_blue_color', '#2563eb');
-$theme_blue_dark = getSetting('theme_blue_dark_color', '#1d4ed8');
-$theme_green = getSetting('theme_green_color', '#4a7c59');
-$theme_green_dark = getSetting('theme_green_dark_color', '#2c4a3b');
+$theme_blue = getSetting('theme_blue_color', '#1a2744');
+$theme_blue_dark = getSetting('theme_blue_dark_color', '#0f1824');
+$theme_green = getSetting('theme_green_color', '#C9A962');
+$theme_green_dark = getSetting('theme_green_dark_color', '#A68844');
 
 // Get about page content from settings
 $about_title = getSetting('about_title', 'About Me');
-$about_subtitle = getSetting('about_subtitle', 'Writer, Creator, Storyteller');
+$about_subtitle = getSetting('about_subtitle', 'Faith · Grace · Purpose · Melody');
 $about_hero_text_color = getSetting('about_hero_text_color', '#ffffff');
 $about_profile_image = getSetting('about_profile_image', 'assets/images/profile.jpg');
-$about_name = getSetting('about_name', 'Sarah Johnson');
-$about_role = getSetting('about_role', 'Founder & Content Creator');
-$about_bio = getSetting('about_bio', 'Hello! I\'m the voice and heart behind Refreshing Dews. I created this space to share honest thoughts, daily experiences, and audio messages that I hope will inspire, encourage, and connect with you on your own journey.');
-$about_long_bio = getSetting('about_long_bio', 'I started this journey several years ago when I realized that the stories we tell and the words we share have the power to heal, connect, and transform. What began as a personal journal has evolved into a community of like-minded souls seeking authenticity and depth in a surface-level world.\n\nMy background is in creative writing and communications, but my real education has come from life experiences—the joys, the struggles, the mundane moments, and the extraordinary encounters. I believe that every person has a story worth telling, and every voice deserves to be heard.\n\nWhen I\'m not writing or recording audio messages, you can find me hiking in nature, reading poetry by the window, having deep conversations with friends over coffee, or simply sitting in silence, observing the beauty of everyday life.\n\nThis space is an extension of my heart. Thank you for being here.');
-$about_signature = getSetting('about_signature', 'With gratitude,');
-$about_signature_name = getSetting('about_signature_name', 'Sarah');
-$about_background_color = getSetting('about_background_color', '#faf7f0');
-$about_text_color = getSetting('about_text_color', '#1e4d72');
+$about_name = getSetting('about_name', '');
+$about_role = getSetting('about_role', 'Writer & Marriage Advocate');
+$about_bio = getSetting('about_bio', 'Welcome, friend. If you are here, you likely know that life is tortuous. It twists, it turns, and it often leaves us breathless.');
+$about_long_bio = getSetting('about_long_bio', 'Welcome, friend.\n\nIf you are here, you likely know that life is tortuous. It twists, it turns, and it often leaves us breathless. I have walked those sharp curves more times than I care to count, and I have learned this: the journey only becomes unbearably painful when disobedience—whether willful or born of ignorance—takes the lead.\n\nBut here is what I want you to hear, deep in your spirit: A painless life is not far fetched, neither is it chimerical. It is practical. It is not a fantasy reserved for the "perfect" Christians. It is an attainable reality when we stop fighting the map and allow God to navigate.\n\nI have made mistakes. Multiplications of them at every phase of my life. Some were small missteps. Others were catastrophic detours. I carry the scars, but I also carry the wisdom. And I would hate—truly hate—to see another woman take my path or anything resembling it.\n\nThat is why I speak pure, unvarnished truth. Not to shame, but to illuminate.\n\nI am passionate about marriage. I want to challenge the norms, ask the hard questions, and inspire young women to see marriage not as a fairytale, but as a divine assignment. Let\'s understand exactly what we got ourselves into. Let\'s stop romanticizing the wedding and start stewarding the covenant. And most importantly, let\'s realign our agendas to match God\'s original design—because that is where the painless, practical peace begins.\n\nThis is a space for the brave. No sugarcoating. No fluff. Just truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$about_signature = getSetting('about_signature', 'With truth and grace,');
+$about_signature_name = getSetting('about_signature_name', '');
+$about_background_color = getSetting('about_background_color', '#FAF7F0');
+$about_text_color = getSetting('about_text_color', '#1a2744');
 $about_accent_color = getSetting('about_accent_color', $theme_blue);
 $about_cta_enabled = getSetting('about_cta_enabled', '1');
 
@@ -158,7 +158,7 @@ function getAboutHeaderStyle() {
     <link rel="apple-touch-icon" href="<?php echo $site_logo; ?>">
     
     <!-- Web App Manifest -->
-    <link rel="manifest" href="/refreshing_dews/manifest.json">
+    <link rel="manifest" href="/painlesslyf/manifest.json">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">

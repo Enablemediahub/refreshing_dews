@@ -93,11 +93,11 @@ if ($featured_audio_enabled == '1' && $page == 1 && empty($search) && empty($cat
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_description = getSetting('site_description', 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
-$primary_color = getSetting('primary_color', '#4a7c59');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_description = getSetting('site_description', 'Truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$primary_color = getSetting('primary_color', '#C9A962');
 $font_family = getSetting('font_family', 'Inter, sans-serif');
 $enable_animated_bg = getSetting('enable_animated_background', '0');
 
@@ -106,9 +106,9 @@ $audio_header_title = getSetting('audio_header_title', 'Audio Messages');
 $audio_header_subtitle = getSetting('audio_header_subtitle', 'Heartfelt messages, Words of Hope from me to you.');
 $audio_header_text_color = getSetting('audio_header_text_color', '#ffffff');
 $audio_header_background_type = getSetting('audio_header_background_type', 'gradient');
-$audio_header_background_solid = getSetting('audio_header_background_solid', '#4a7c59');
-$audio_header_background_gradient_start = getSetting('audio_header_background_gradient_start', '#4a7c59');
-$audio_header_background_gradient_end = getSetting('audio_header_background_gradient_end', '#2c4a3b');
+$audio_header_background_solid = getSetting('audio_header_background_solid', '#1a2744');
+$audio_header_background_gradient_start = getSetting('audio_header_background_gradient_start', '#1a2744');
+$audio_header_background_gradient_end = getSetting('audio_header_background_gradient_end', '#0f1824');
 $audio_header_background_image = getSetting('audio_header_background_image', '');
 $audio_header_background_overlay = getSetting('audio_header_background_overlay', '0.6');
 
@@ -127,20 +127,20 @@ $audio_card_hover_shadow = getSetting('audio_card_hover_shadow', '0 20px 40px rg
 $audio_title_color = getSetting('audio_title_color', '#1a2a1f');
 $audio_text_color = getSetting('audio_text_color', '#6c757d');
 $audio_meta_color = getSetting('audio_meta_color', '#6c757d');
-$audio_category_background = getSetting('audio_category_background', '#4a7c59');
+$audio_category_background = getSetting('audio_category_background', '#C9A962');
 $audio_category_color = getSetting('audio_category_color', '#ffffff');
 $audio_duration_background = getSetting('audio_duration_background', 'rgba(0,0,0,0.7)');
 $audio_duration_color = getSetting('audio_duration_color', '#ffffff');
-$audio_button_color = getSetting('audio_button_color', '#4a7c59');
+$audio_button_color = getSetting('audio_button_color', '#C9A962');
 $audio_button_hover_color = getSetting('audio_button_hover_color', '#2c4a3b');
-$audio_play_button_background = getSetting('audio_play_button_background', '#4a7c59');
+$audio_play_button_background = getSetting('audio_play_button_background', '#1a2744');
 $audio_play_button_hover_background = getSetting('audio_play_button_hover_background', '#2c4a3b');
 $audio_play_button_color = getSetting('audio_play_button_color', '#ffffff');
 
 // Mini player settings
 $mini_player_background = getSetting('mini_player_background', '#ffffff');
 $mini_player_text_color = getSetting('mini_player_text_color', '#333333');
-$mini_player_button_background = getSetting('mini_player_button_background', '#4a7c59');
+$mini_player_button_background = getSetting('mini_player_button_background', '#1a2744');
 $mini_player_button_color = getSetting('mini_player_button_color', '#ffffff');
 
 // Typography settings
@@ -263,7 +263,7 @@ $recent_posts = getRecentPosts(3);
     <link rel="apple-touch-icon" href="<?php echo $site_logo; ?>">
     
     <!-- Web App Manifest -->
-    <link rel="manifest" href="/refreshing_dews/manifest.json">
+    <link rel="manifest" href="/painlesslyf/manifest.json">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($audio_heading_font); ?>:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1537,7 +1537,7 @@ $recent_posts = getRecentPosts(3);
             <img src="" alt="Now Playing" class="mini-player-cover" id="miniPlayerCover">
             <div class="mini-player-info">
                 <div class="mini-player-title" id="miniPlayerTitle"></div>
-                <div class="mini-player-author" id="miniPlayerAuthor">Refreshing Dews</div>
+                <div class="mini-player-author" id="miniPlayerAuthor">Painlesslyf</div>
             </div>
             <div class="mini-player-controls">
                 <button class="mini-player-btn" id="miniPlayerPlayPause">
@@ -1644,7 +1644,7 @@ $recent_posts = getRecentPosts(3);
                     miniPlayerTitle.textContent = title;
                 }
                 
-                miniPlayerAuthor.textContent = 'Refreshing Dews';
+                miniPlayerAuthor.textContent = 'Painlesslyf';
                 miniPlayer.classList.add('show');
                 miniPlayerPlayPause.innerHTML = '<i class="fas fa-pause"></i>';
                 

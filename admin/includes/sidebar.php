@@ -10,11 +10,11 @@ $nav = require __DIR__ . '/nav-config.php';
 $active_file = $nav['active_map'][$current_page] ?? $current_page;
 
 $site_logo = function_exists('getSetting')
-    ? getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png')
-    : 'assets/logo/refreshing-dews-logo.png';
+    ? getSetting('site_logo', 'assets/logo/painlesslyf-logo.png')
+    : 'assets/logo/painlesslyf-logo.png';
 $site_title = function_exists('getSetting')
-    ? getSetting('site_title', 'Refreshing Dews')
-    : 'Refreshing Dews';
+    ? getSetting('site_title', 'Painlesslyf')
+    : 'Painlesslyf';
 
 $is_active = function ($file) use ($active_file) {
     return $file === $active_file ? ' active' : '';

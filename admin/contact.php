@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_reply'])) {
             // Send email using PHP mail() function
             $headers = "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-            $headers .= "From: " . getSetting('site_title', 'Refreshing Dews') . " <" . getSetting('contact_email_display', 'noreply@' . $_SERVER['HTTP_HOST']) . ">\r\n";
+            $headers .= "From: " . getSetting('site_title', 'Painlesslyf') . " <" . getSetting('contact_email_display', 'noreply@' . $_SERVER['HTTP_HOST']) . ">\r\n";
             $headers .= "Reply-To: " . getSetting('contact_email_display', 'contact@' . $_SERVER['HTTP_HOST']) . "\r\n";
             
             $html_message = "
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_reply'])) {
             <body>
                 <div class='email-container'>
                     <div class='email-header'>
-                        <h2>" . htmlspecialchars(getSetting('site_title', 'Refreshing Dews')) . "</h2>
+                        <h2>" . htmlspecialchars(getSetting('site_title', 'Painlesslyf')) . "</h2>
                     </div>
                     <div class='email-content'>
                         <div class='greeting'>
@@ -84,11 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_reply'])) {
                             " . nl2br(htmlspecialchars($reply_body)) . "
                         </div>
                         <p>Best regards,<br>
-                        <strong>" . htmlspecialchars(getSetting('site_title', 'Refreshing Dews')) . "</strong></p>
+                        <strong>" . htmlspecialchars(getSetting('site_title', 'Painlesslyf')) . "</strong></p>
                     </div>
                     <div class='footer'>
                         <p>This email was sent in response to your message. If you have any further questions, feel free to reply to this email.</p>
-                        <p>&copy; " . date('Y') . " " . htmlspecialchars(getSetting('site_title', 'Refreshing Dews')) . ". All rights reserved.</p>
+                        <p>&copy; " . date('Y') . " " . htmlspecialchars(getSetting('site_title', 'Painlesslyf')) . ". All rights reserved.</p>
                     </div>
                 </div>
             </body>

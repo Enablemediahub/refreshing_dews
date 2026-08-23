@@ -1,13 +1,13 @@
 /**
- * Refreshing Dews Admin Theme — Blue & Grass Green (logo colors)
+ * Painlesslyf Admin Theme — Navy & Gold (logo colors)
  */
 :root {
-    --theme-blue: #2563eb;
-    --theme-blue-dark: #1d4ed8;
-    --theme-blue-light: rgba(37, 99, 235, 0.1);
-    --theme-green: #4a7c59;
-    --theme-green-dark: #2c4a3b;
-    --theme-green-light: rgba(74, 124, 89, 0.12);
+    --theme-blue: #1a2744;
+    --theme-blue-dark: #0f1824;
+    --theme-blue-light: rgba(26, 39, 68, 0.1);
+    --theme-green: #C9A962;
+    --theme-green-dark: #A68844;
+    --theme-green-light: rgba(201, 169, 98, 0.12);
 }
 
 /* Primary buttons */
@@ -23,7 +23,7 @@ input[type="submit"].btn-primary {
 button.btn-primary:hover {
     background: linear-gradient(135deg, var(--theme-blue-dark) 0%, var(--theme-green-dark) 100%) !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 6px 20px rgba(26, 39, 68, 0.3);
 }
 
 /* Tab navigation */

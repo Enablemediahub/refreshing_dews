@@ -25,7 +25,7 @@ $admin_id = $_SESSION['admin_id'] ?? 0;
 $admin_username = $_SESSION['admin_username'] ?? 'Admin';
 
 // Define upload directories (relative to project root)
-$project_root = dirname(__DIR__); // This goes to C:\xampp\htdocs\refreshing_dews
+$project_root = dirname(__DIR__); // Project root: painlesslyf
 $upload_base_dir = $project_root . '/uploads/events/';
 $gallery_base_dir = $upload_base_dir . 'gallery/';
 

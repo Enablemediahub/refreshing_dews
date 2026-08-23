@@ -204,8 +204,8 @@ if ($result->num_rows > 0) {
 }
 
 // Get site settings for header
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
 $primary_color = getSetting('primary_color', '#4a7c59');
 ?>
 <!DOCTYPE html>

@@ -14,7 +14,7 @@ if (isset($conn) && !$conn->connect_error) {
         // Create admin user
         $username = 'admin';
         $password = password_hash('admin123', PASSWORD_DEFAULT);
-        $email = 'admin@refreshingdews.com';
+        $email = 'admin@painlesslyf.com';
         
         $stmt = $conn->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $username, $password, $email);
@@ -23,7 +23,7 @@ if (isset($conn) && !$conn->connect_error) {
             echo "<p style='color: green'>✓ Admin user created successfully!</p>";
             echo "<p>Username: admin</p>";
             echo "<p>Password: admin123</p>";
-            echo "<p>Email: admin@refreshingdews.com</p>";
+            echo "<p>Email: admin@painlesslyf.com</p>";
         } else {
             echo "<p style='color: red'>✗ Failed to create admin user: " . $stmt->error . "</p>";
         }

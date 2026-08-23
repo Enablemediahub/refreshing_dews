@@ -9,11 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_description = getSetting('site_description', 'Sharing daily life experiences and audio messages of hope, inspiration, and personal growth.');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
-$primary_color = getSetting('primary_color', '#baa68e');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_description = getSetting('site_description', 'Painlesslyf is a faith-driven space for truth, grace, healing, and purpose—where painful seasons become a walking melody of restoration.');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$primary_color = getSetting('primary_color', '#C9A962');
 
 // Hero slideshow settings
 $hero_slideshow_enabled = getSetting('hero_slideshow_enabled', '1');
@@ -25,38 +25,38 @@ $hero_text_color = getSetting('hero_text_color', '#ffffff');
 $hero_button_style = getSetting('hero_button_style', 'cream');
 $hero_button_bg_color = getSetting('hero_button_bg_color', '#f5e6d3');
 $hero_button_text_color = getSetting('hero_button_text_color', '#333333');
-$hero_button_text = getSetting('hero_button_text', 'Read the latest');
+$hero_button_text = getSetting('hero_button_text', 'Explore the journey');
 $hero_button_link = getSetting('hero_button_link', 'blog.php');
-$hero_title = getSetting('hero_title', 'Refreshing Dews');
-$hero_subtitle = getSetting('hero_subtitle', 'Daily inspiration. Honest reflections. Messages to refresh your spirit.');
-$hero_badge = getSetting('hero_badge', 'Welcome to Refreshing Dews');
+$hero_title = getSetting('hero_title', 'Painlesslyf');
+$hero_subtitle = getSetting('hero_subtitle', 'Turn your tortuous path into a walking melody.');
+$hero_badge = getSetting('hero_badge', 'Faith • Grace • Purpose • Melody');
 $hero_logo_enabled = getSetting('hero_logo_enabled', '1');
 $hero_title_font_weight = getSetting('hero_title_font_weight', '900');
 $hero_slideshow_effect = getSetting('hero_slideshow_effect', 'slide');
 
 // Get crawling announcements
-$crawling_announcements = getSetting('crawling_announcements', 'Welcome to Refreshing Dews | New audio message every week | Latest blog post: Finding Peace in Chaos');
+$crawling_announcements = getSetting('crawling_announcements', 'Welcome to Painlesslyf | Faith · Grace · Purpose · Melody | Truth for the brave');
 $announcement_speed = getSetting('announcement_speed', '20');
 
 // Get card settings
-$card_1_title = getSetting('card_1_title', 'Daily Blog');
-$card_1_description = getSetting('card_1_description', 'Thoughts, stories, and experiences from the everyday. Honest and unfiltered.');
+$card_1_title = getSetting('card_1_title', 'Truth in the Middle of the Pain');
+$card_1_description = getSetting('card_1_description', 'Real faith, honest grace, and practical wisdom for walking out of pain and back toward healing.');
 $card_1_icon = getSetting('card_1_icon', 'fas fa-feather-pointed');
 $card_1_link = getSetting('card_1_link', 'blog.php');
 
 $card_2_title = getSetting('card_2_title', 'Audio Messages');
-$card_2_description = getSetting('card_2_description', 'Listen to personal messages and reflections, directly from me to you.');
+$card_2_description = getSetting('card_2_description', 'Listen to life-giving teachings designed to bring clarity, courage, and peace to your journey.');
 $card_2_icon = getSetting('card_2_icon', 'fas fa-podcast');
 $card_2_link = getSetting('card_2_link', 'audio.php');
 
-$card_3_title = getSetting('card_3_title', 'Connect');
-$card_3_description = getSetting('card_3_description', 'Learn more about the person behind the words or just say hello.');
-$card_3_icon = getSetting('card_3_icon', 'fas fa-compass');
+$card_3_title = getSetting('card_3_title', 'The Heart Behind Painlesslyf');
+$card_3_description = getSetting('card_3_description', 'A space for restoration, encouragement, and the reminder that your story can still become a beautiful melody.');
+$card_3_icon = getSetting('card_3_icon', 'fas fa-heart');
 $card_3_link = getSetting('card_3_link', 'about.php');
 
 // Get cards section header settings
-$cards_section_title = getSetting('cards_section_title', 'Explore the journey');
-$cards_section_subtitle = getSetting('cards_section_subtitle', 'Thanks to words and audio, we are able to share experiences and bridge distances.');
+$cards_section_title = getSetting('cards_section_title', 'Faith · Grace · Purpose · Melody');
+$cards_section_subtitle = getSetting('cards_section_subtitle', 'Painlesslyf is for the brave-hearted—people learning how to move from hurt to healing, confusion to clarity, and survival to a life that sings.');
 
 // Cards section background settings
 $cards_background_type = getSetting('cards_background_type', 'gradient');
@@ -71,20 +71,20 @@ $cards_subtitle_color = getSetting('cards_subtitle_color', 'rgba(255,255,255,0.8
 $cards_card_background = getSetting('cards_card_background', '#ffffff');
 $cards_card_hover_background = getSetting('cards_card_hover_background', '#ffffff');
 $cards_card_text_color = getSetting('cards_card_text_color', '#6b6b6b');
-$cards_card_title_color = getSetting('cards_card_title_color', '#2c3e2f');
-$cards_card_icon_color = getSetting('cards_card_icon_color', '#baa68e');
+$cards_card_title_color = getSetting('cards_card_title_color', '#1a2744');
+$cards_card_icon_color = getSetting('cards_card_icon_color', '#C9A962');
 $cards_card_border_color = getSetting('cards_card_border_color', 'rgba(0,0,0,0.08)');
 $cards_card_hover_border_color = getSetting('cards_card_hover_border_color', 'rgba(186,166,142,0.3)');
 $cards_enable_animated_background = getSetting('cards_enable_animated_background', '0');
-$cards_icon_blue_color = getSetting('cards_icon_blue_color', '#2563eb');
-$theme_blue = getSetting('theme_blue_color', $cards_icon_blue_color);
-$theme_blue_dark = getSetting('theme_blue_dark_color', '#1d4ed8');
-$theme_green = getSetting('theme_green_color', '#4a7c59');
-$theme_green_dark = getSetting('theme_green_dark_color', '#2c4a3b');
+$cards_icon_blue_color = getSetting('cards_icon_blue_color', '#1a2744');
+$theme_blue = getSetting('theme_blue_color', '#1a2744');
+$theme_blue_dark = getSetting('theme_blue_dark_color', '#0f1824');
+$theme_green = getSetting('theme_green_color', '#C9A962');
+$theme_green_dark = getSetting('theme_green_dark_color', '#A68844');
 
 // BLOG SECTION SETTINGS
-$blog_section_title = getSetting('blog_section_title', 'Latest from the blog');
-$blog_section_subtitle = getSetting('blog_section_subtitle', 'Recent thoughts and experiences');
+$blog_section_title = getSetting('blog_section_title', 'Latest from the journey');
+$blog_section_subtitle = getSetting('blog_section_subtitle', 'Stories, reflections, and teachings for turning pain into purpose and purpose into peace.');
 $blog_background_type = getSetting('blog_background_type', 'solid');
 $blog_background_color = getSetting('blog_background_color', '#ffffff');
 $blog_background_gradient_start = getSetting('blog_background_gradient_start', '#ffffff');
@@ -96,9 +96,9 @@ $blog_subtitle_color = getSetting('blog_subtitle_color', 'rgba(255,255,255,0.88)
 $blog_card_background = getSetting('blog_card_background', '#ffffff');
 $blog_card_hover_background = getSetting('blog_card_hover_background', '#ffffff');
 $blog_card_text_color = getSetting('blog_card_text_color', '#6b6b6b');
-$blog_card_title_color = getSetting('blog_card_title_color', '#2c3e2f');
-$blog_card_button_color = getSetting('blog_card_button_color', '#2563eb');
-$blog_card_button_hover_color = getSetting('blog_card_button_hover_color', '#1d4ed8');
+$blog_card_title_color = getSetting('blog_card_title_color', '#1a2744');
+$blog_card_button_color = getSetting('blog_card_button_color', '#C9A962');
+$blog_card_button_hover_color = getSetting('blog_card_button_hover_color', '#A68844');
 $blog_card_shadow = getSetting('blog_card_shadow', '0 5px 15px rgba(0,0,0,0.05)');
 $blog_card_hover_shadow = getSetting('blog_card_hover_shadow', '0 15px 30px rgba(0,0,0,0.1)');
 $blog_enable_animated_background = getSetting('blog_enable_animated_background', '0');
@@ -133,7 +133,7 @@ function hexToRgba($hex, $opacity) {
 $shared_wallpaper_overlay = hexToRgba($shared_wallpaper_overlay_color, floatval($shared_wallpaper_overlay_opacity));
 
 // Footer settings (styles handled by includes/footer.php)
-$footer_copyright_text = getSetting('footer_copyright', '© 2026 Refreshing Dews. All rights reserved.');
+$footer_copyright_text = getSetting('footer_copyright', '© 2026 Painlesslyf. All rights reserved.');
 
 // Get recent posts
 $recent_posts = getRecentPosts(3);
@@ -223,10 +223,10 @@ function getBlogBackgroundStyle() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <title><?php echo $site_title; ?> - Personal Blog & Audio Messages</title>
+    <title><?php echo $site_title; ?> - Faith, Grace, Purpose & Melody</title>
     
     <meta name="description" content="<?php echo $site_description; ?>">
-    <meta name="keywords" content="blog, audio messages, personal blog, inspiration, daily experiences">
+    <meta name="keywords" content="marriage, faith, grace, Christian blog, divine assignment, painless life, truth">
     
     <meta property="og:title" content="<?php echo $site_title; ?>">
     <meta property="og:description" content="<?php echo $site_description; ?>">
@@ -237,7 +237,7 @@ function getBlogBackgroundStyle() {
     <link rel="manifest" href="manifest.json">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -250,19 +250,23 @@ function getBlogBackgroundStyle() {
     <style>
         :root {
             --primary: <?php echo $primary_color; ?>;
-            --primary-dark: #9b8a6b;
-            --primary-light: #d4c5ae;
+            --primary-dark: #A68844;
+            --primary-light: #D4BC7A;
+            --navy: #1a2744;
+            --navy-dark: #0f1824;
+            --gold: #C9A962;
+            --gold-dark: #A68844;
             --theme-blue: <?php echo $theme_blue; ?>;
             --theme-blue-dark: <?php echo $theme_blue_dark; ?>;
             --theme-green: <?php echo $theme_green; ?>;
             --theme-green-dark: <?php echo $theme_green_dark; ?>;
-            --text-dark: #2c3e2f;
-            --text-light: #6b6b6b;
-            --bg-light: #faf7f0;
+            --text-dark: #1a2744;
+            --text-light: #5a6478;
+            --bg-light: #FAF7F0;
             --white: #ffffff;
-            --shadow-sm: 0 4px 20px rgba(0,0,0,0.05);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
-            --shadow-lg: 0 20px 40px rgba(0,0,0,0.1);
+            --shadow-sm: 0 4px 20px rgba(26, 39, 68, 0.05);
+            --shadow-md: 0 8px 30px rgba(26, 39, 68, 0.08);
+            --shadow-lg: 0 20px 40px rgba(26, 39, 68, 0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
@@ -385,14 +389,15 @@ function getBlogBackgroundStyle() {
         }
         
         .hero-title {
-            font-size: clamp(40px, 7vw, 84px);
-            font-weight: <?php echo intval($hero_title_font_weight); ?>;
-            line-height: 1.08;
-            margin-bottom: 24px;
-            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 7vw, 92px);
+            font-weight: 900;
+            line-height: 0.92;
+            margin-bottom: 18px;
+            font-family: 'Montserrat', 'Arial Black', sans-serif;
             color: white;
-            letter-spacing: -0.02em;
-            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.35);
+            letter-spacing: 0.02em;
+            text-transform: none;
+            text-shadow: 0 6px 28px rgba(0, 0, 0, 0.52), 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         
         .hero-subtitle {
@@ -644,8 +649,8 @@ function getBlogBackgroundStyle() {
         .priority-card:hover {
             transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.98);
-            border-color: rgba(37, 99, 235, 0.25);
-            box-shadow: 0 20px 50px rgba(37, 99, 235, 0.12);
+            border-color: rgba(201, 169, 98, 0.4);
+            box-shadow: 0 20px 50px rgba(26, 39, 68, 0.12);
         }
         
         .priority-card .card-icon {
@@ -656,29 +661,30 @@ function getBlogBackgroundStyle() {
             align-items: center;
             justify-content: center;
             border-radius: 20px;
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(74, 124, 89, 0.08) 100%);
-            border: 1px solid rgba(37, 99, 235, 0.2);
+            background: linear-gradient(135deg, rgba(26, 39, 68, 0.08) 0%, rgba(201, 169, 98, 0.12) 100%);
+            border: 1px solid rgba(201, 169, 98, 0.3);
             font-size: 28px;
-            color: var(--theme-blue);
+            color: var(--navy);
             transition: var(--transition);
         }
         
         .priority-card:hover .card-icon {
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: var(--gold);
             transform: scale(1.05);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 8px 24px rgba(26, 39, 68, 0.35);
         }
         
         .cards-section .priority-card h3 {
             font-size: 22px;
             margin-bottom: 14px;
-            color: var(--theme-blue);
+            color: var(--navy);
             font-weight: 700;
+            font-family: 'Playfair Display', serif;
         }
         
         .cards-section .priority-card p {
-            color: var(--theme-blue);
+            color: var(--navy);
             opacity: 0.85;
             line-height: 1.6;
             margin-bottom: 20px;
@@ -727,18 +733,18 @@ function getBlogBackgroundStyle() {
             background: rgba(255, 255, 255, <?php echo floatval($shared_wallpaper_card_opacity); ?>);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 20px;
+            border-radius: 0;
             overflow: hidden;
             transition: var(--transition);
             box-shadow: <?php echo $blog_card_shadow; ?>;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(201, 169, 98, 0.2);
         }
         
         .blog-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(26, 39, 68, 0.25);
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border-color: var(--gold);
         }
         
         .blog-card:hover .blog-title,
@@ -753,8 +759,11 @@ function getBlogBackgroundStyle() {
         
         .blog-image {
             width: 100%;
-            height: 220px;
+            aspect-ratio: 1 / 1;
+            height: auto;
             object-fit: cover;
+            border-radius: 0;
+            display: block;
         }
         
         .blog-content {
@@ -767,6 +776,7 @@ function getBlogBackgroundStyle() {
             margin: 0 0 10px;
             color: <?php echo $blog_card_title_color; ?>;
             line-height: 1.4;
+            font-family: 'Playfair Display', serif;
         }
         
         .blog-excerpt {
@@ -777,11 +787,11 @@ function getBlogBackgroundStyle() {
         }
         
         .blog-section .card-link {
-            color: var(--theme-blue);
+            color: var(--gold);
         }
         
         .blog-section .card-link:hover {
-            color: var(--theme-blue-dark);
+            color: var(--gold-dark);
         }
         
         .blog-section .btn-outline {
@@ -939,10 +949,6 @@ function getBlogBackgroundStyle() {
             .priority-card {
                 padding: 28px 20px;
             }
-            
-            .blog-image {
-                height: 200px;
-            }
         }
         
         @media (max-width: 480px) {
@@ -986,10 +992,7 @@ function getBlogBackgroundStyle() {
             .priority-card {
                 padding: 24px 16px;
             }
-            
-            .blog-image {
-                height: 180px;
-            }
+        }
         }
         
         @media (hover: none) and (pointer: coarse) {
@@ -1054,17 +1057,6 @@ function getBlogBackgroundStyle() {
                     <span class="hero-badge" data-aos="fade-up"><?php echo htmlspecialchars($hero_badge); ?></span>
                     <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100"><?php echo htmlspecialchars($hero_title); ?></h1>
                     <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200"><?php echo htmlspecialchars($hero_subtitle); ?></p>
-                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
-                        <a href="blog.php" class="btn-primary-custom">
-                            <i class="fas fa-book-open"></i> Read the latest
-                        </a>
-                        <a href="about.php" class="btn-secondary-custom">
-                            <i class="fas fa-user"></i> About Me
-                        </a>
-                        <a href="audio.php" class="btn-outline-custom">
-                            <i class="fas fa-headphones"></i> Listen to Audio
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

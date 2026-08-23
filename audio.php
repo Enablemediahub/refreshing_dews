@@ -90,16 +90,16 @@ if ($featured_audio_enabled == '1' && $page == 1 && empty($search)) {
 }
 
 // Get settings
-$site_title = getSetting('site_title', 'Refreshing Dews');
-$site_logo = getSetting('site_logo', 'assets/logo/refreshing-dews-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/refreshing-dews-logo.png');
-$primary_color = getSetting('primary_color', '#4a7c59');
+$site_title = getSetting('site_title', 'Painlesslyf');
+$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$primary_color = getSetting('primary_color', '#C9A962');
 
-// Theme colors (blue & green — matches homepage and blog)
-$theme_blue = getSetting('theme_blue_color', '#2563eb');
-$theme_blue_dark = getSetting('theme_blue_dark_color', '#1d4ed8');
-$theme_green = getSetting('theme_green_color', '#4a7c59');
-$theme_green_dark = getSetting('theme_green_dark_color', '#2c4a3b');
+// Theme colors (navy & gold — matches homepage and blog)
+$theme_blue = getSetting('theme_blue_color', '#1a2744');
+$theme_blue_dark = getSetting('theme_blue_dark_color', '#0f1824');
+$theme_green = getSetting('theme_green_color', '#C9A962');
+$theme_green_dark = getSetting('theme_green_dark_color', '#A68844');
 
 // Get audio page specific settings
 $audio_header_title = getSetting('audio_header_title', 'Audio Messages');
@@ -624,7 +624,7 @@ function getAudioHeaderStyle() {
                 <img src="" alt="Cover" class="audio-player-cover" id="playerCover">
                 <div class="audio-player-info">
                     <div class="audio-player-title" id="playerTitle">Select an audio</div>
-                    <div class="audio-player-author">Refreshing Dews</div>
+                    <div class="audio-player-author">Painlesslyf</div>
                 </div>
                 <div class="audio-player-controls">
                     <button class="audio-player-btn" id="playerPlayPause">

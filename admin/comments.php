@@ -173,7 +173,7 @@ function formatAdminDate($date) {
     return $date ? date('M j, Y g:i A', strtotime($date)) : '-';
 }
 
-$site_title = getSetting('site_title', 'Refreshing Dews');
+$site_title = getSetting('site_title', 'Painlesslyf');
 ?>
 <!DOCTYPE html>
 <html lang="en">
