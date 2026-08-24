@@ -134,6 +134,9 @@ $audio_button_hover_color = getSetting('audio_button_hover_color', $theme_blue_d
 $audio_play_button_background = getSetting('audio_play_button_background', $theme_blue);
 $audio_play_button_hover_background = getSetting('audio_play_button_hover_background', $theme_green);
 $audio_play_button_color = getSetting('audio_play_button_color', '#ffffff');
+$shared_button_color = getSetting('shared_button_color', '#2563eb');
+$shared_button_hover_color = getSetting('shared_button_hover_color', '#1d4ed8');
+$shared_button_text_color = getSetting('shared_button_text_color', '#ffffff');
 $audio_heading_font = getSetting('audio_heading_font', 'Playfair Display');
 $audio_body_font = getSetting('audio_body_font', 'Inter');
 $audio_heading_size = getSetting('audio_heading_size', '48');
@@ -267,6 +270,9 @@ function getAudioHeaderStyle() {
             --body-font: '<?php echo addslashes($audio_body_font); ?>', sans-serif;
             --heading-size: <?php echo (int) $audio_heading_size; ?>px;
             --body-size: <?php echo (int) $audio_body_size; ?>px;
+            --shared-button-color: <?php echo $shared_button_color; ?>;
+            --shared-button-hover-color: <?php echo $shared_button_hover_color; ?>;
+            --shared-button-text-color: <?php echo $shared_button_text_color; ?>;
             --shadow-sm: 0 4px 20px rgba(37, 99, 235, 0.08);
             --shadow-md: 0 8px 30px rgba(37, 99, 235, 0.12);
             --shadow-lg: 0 20px 50px rgba(37, 99, 235, 0.15);
@@ -317,17 +323,17 @@ function getAudioHeaderStyle() {
         .featured-play {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 72px; height: 72px;
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
+            background: var(--shared-button-color);
             border: 3px solid white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 28px; cursor: pointer; transition: var(--transition);
+            color: var(--shared-button-text-color); font-size: 28px; cursor: pointer; transition: var(--transition);
             box-shadow: 0 8px 28px rgba(37, 99, 235, 0.4);
         }
-        .featured-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+        .featured-play:hover { transform: translate(-50%, -50%) scale(1.08); background: var(--shared-button-hover-color); }
         .featured-content { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
         .featured-badge {
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            color: white; padding: 8px 18px; border-radius: 30px; font-size: 12px; font-weight: 600;
+            background: var(--shared-button-color);
+            color: var(--shared-button-text-color); padding: 8px 18px; border-radius: 30px; font-size: 12px; font-weight: 600;
             display: inline-flex; align-items: center; gap: 6px; margin-bottom: 15px; width: fit-content;
             box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
         }
@@ -369,13 +375,13 @@ function getAudioHeaderStyle() {
         .card-play-btn {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 52px; height: 52px;
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
+            background: var(--shared-button-color);
             border: 2px solid white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 18px; cursor: pointer; transition: var(--transition);
+            color: var(--shared-button-text-color); font-size: 18px; cursor: pointer; transition: var(--transition);
             box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
         }
-        .card-play-btn:hover { transform: translate(-50%, -50%) scale(1.1); }
+        .card-play-btn:hover { transform: translate(-50%, -50%) scale(1.1); background: var(--shared-button-hover-color); }
         .card-duration { position: absolute; bottom: 12px; left: 12px; background: <?php echo $audio_duration_background; ?>; color: <?php echo $audio_duration_color; ?>; padding: 4px 10px; border-radius: 20px; font-size: 11px; }
         .card-content { padding: 20px; }
         .card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; font-family: var(--heading-font); }

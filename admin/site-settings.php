@@ -330,6 +330,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 updateSetting('custom_js', $_POST['custom_js'] ?? '');
                 $success_message = 'Appearance settings updated successfully!';
                 break;
+
+            // Shared Button Settings
+            case 'update_shared_buttons':
+                updateSetting('shared_button_color', $_POST['shared_button_color'] ?? '#2563eb');
+                updateSetting('shared_button_hover_color', $_POST['shared_button_hover_color'] ?? '#1d4ed8');
+                updateSetting('shared_button_text_color', $_POST['shared_button_text_color'] ?? '#ffffff');
+                $success_message = 'Shared button colors updated successfully!';
+                break;
             
             // Reset All Settings
             case 'reset_settings':
@@ -399,6 +407,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'audio_card_shadow' => '0 5px 15px rgba(0,0,0,0.05)',
                     'audio_card_hover_shadow' => '0 15px 30px rgba(0,0,0,0.1)',
                     'audio_enable_animated_background' => '0',
+                    'shared_button_color' => '#2563eb',
+                    'shared_button_hover_color' => '#1d4ed8',
+                    'shared_button_text_color' => '#ffffff',
                     'footer_gradient_start' => '#1a2744',
                     'footer_gradient_end' => '#0f1824',
                     'footer_text_color' => '#ffffff',
@@ -1067,6 +1078,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button class="tab-btn" onclick="showTab('social')"><i class="fas fa-share-alt"></i> Social</button>
                     <button class="tab-btn" onclick="showTab('logo')"><i class="fas fa-paint-brush"></i> Logo</button>
                     <button class="tab-btn" onclick="showTab('appearance')"><i class="fas fa-palette"></i> Appearance</button>
+                    <button class="tab-btn" onclick="showTab('shared-buttons')"><i class="fas fa-hand-pointer"></i> Shared Buttons</button>
                 </div>
                 
                 <!-- General Settings Panel -->
@@ -1832,6 +1844,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                 </div>
                 
+                <!-- Shared Buttons Panel -->
+                <div id="shared-buttons-panel" class="settings-panel">
+                    <div class="panel-header">
+                        <h2>Shared Button Colors</h2>
+                        <p>Control the common colors used by featured messages, play buttons, featured posts, article links, and post filters.</p>
+                    </div>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update_shared_buttons">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Button Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="shared_button_color" value="<?php echo htmlspecialchars(getSettingValue('shared_button_color', '#2563eb')); ?>">
+                                    <input type="text" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('shared_button_color', '#2563eb')); ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Button Hover Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="shared_button_hover_color" value="<?php echo htmlspecialchars(getSettingValue('shared_button_hover_color', '#1d4ed8')); ?>">
+                                    <input type="text" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('shared_button_hover_color', '#1d4ed8')); ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Button Text and Icon Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="shared_button_text_color" value="<?php echo htmlspecialchars(getSettingValue('shared_button_text_color', '#ffffff')); ?>">
+                                    <input type="text" class="form-control" value="<?php echo htmlspecialchars(getSettingValue('shared_button_text_color', '#ffffff')); ?>" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Shared Button Colors</button>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Appearance Panel -->
                 <div id="appearance-panel" class="settings-panel">
                     <div class="panel-header">

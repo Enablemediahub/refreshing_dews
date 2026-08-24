@@ -216,6 +216,9 @@ $theme_blue = getSetting('theme_blue_color', '#1a2744');
 $theme_blue_dark = getSetting('theme_blue_dark_color', '#0f1824');
 $theme_green = getSetting('theme_green_color', '#C9A962');
 $theme_green_dark = getSetting('theme_green_dark_color', '#A68844');
+$shared_button_color = getSetting('shared_button_color', '#2563eb');
+$shared_button_hover_color = getSetting('shared_button_hover_color', '#1d4ed8');
+$shared_button_text_color = getSetting('shared_button_text_color', '#ffffff');
 
 // Blog header settings
 $blog_header_bg_type = getSetting('blog_header_background_type', 'gradient');
@@ -319,6 +322,9 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
             --theme-blue-dark: <?php echo $theme_blue_dark; ?>;
             --theme-green: <?php echo $theme_green; ?>;
             --theme-green-dark: <?php echo $theme_green_dark; ?>;
+            --shared-button-color: <?php echo $shared_button_color; ?>;
+            --shared-button-hover-color: <?php echo $shared_button_hover_color; ?>;
+            --shared-button-text-color: <?php echo $shared_button_text_color; ?>;
             --primary: <?php echo $blog_button_color; ?>;
             --primary-dark: <?php echo $blog_button_hover_color; ?>;
             --dark: <?php echo $blog_title_color; ?>;
@@ -449,9 +455,9 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
 
         .filter-btn:hover,
         .filter-btn.active {
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            border-color: transparent;
-            color: white;
+            background: var(--shared-button-color);
+            border-color: var(--shared-button-color);
+            color: var(--shared-button-text-color);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
         }
@@ -532,8 +538,8 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
         }
 
         .featured-badge {
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            color: white;
+            background: var(--shared-button-color);
+            color: var(--shared-button-text-color);
             padding: 8px 20px;
             border-radius: 30px;
             font-size: 14px;
@@ -585,8 +591,8 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
             align-items: center;
             gap: 10px;
             padding: 15px 30px;
-            background: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-green) 100%);
-            color: white;
+            background: var(--shared-button-color);
+            color: var(--shared-button-text-color);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
@@ -599,7 +605,8 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
             gap: 15px;
             transform: translateY(-3px);
             box-shadow: 0 8px 28px rgba(37, 99, 235, 0.4);
-            color: white;
+            background: var(--shared-button-hover-color);
+            color: var(--shared-button-text-color);
         }
 
         /* Blog Grid */

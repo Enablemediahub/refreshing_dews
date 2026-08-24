@@ -8,11 +8,11 @@ if (!function_exists('getSetting')) {
     require_once __DIR__ . '/functions.php';
 }
 
-$footer_site_title = getSetting('site_title', 'Painlesslyf');
-$footer_site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
+$footer_site_title = getSetting('site_title', 'refreshing_dews');
+$footer_site_logo = getSetting('site_logo', 'assets/logo/refreshing_dews-logo.png');
 $footer_description = getSetting('footer_description', 'A space for the brave. No sugarcoating. No fluff. Just truth, grace, and the roadmap back to God\'s heart for your life and your marriage.');
-$footer_copyright = getSetting('footer_copyright', '© 2026 Painlesslyf. All rights reserved.');
-$footer_contact_email = getSetting('contact_email_display', 'contact@painlesslyf.com');
+$footer_copyright = getSetting('footer_copyright', '© 2026 refreshing_dews. All rights reserved.');
+$footer_contact_email = getSetting('contact_email_display', 'contact@refreshing_dews.com');
 $footer_contact_address = getSetting('contact_address', 'Worldwide');
 $footer_response_time = getSetting('contact_response_time', 'Always open');
 

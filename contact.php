@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                         <p><a href='" . SITE_URL . "/admin/contact.php'>View in Admin Panel</a></p>
                     </body></html>";
                     $admin_headers = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n";
-                    $admin_headers .= 'From: ' . getSetting('site_title', 'Painlesslyf') . ' <' . getSetting('contact_email_display', 'noreply@' . $_SERVER['HTTP_HOST']) . ">\r\n";
+                    $admin_headers .= 'From: ' . getSetting('site_title', 'refreshing_dews') . ' <' . getSetting('contact_email_display', 'noreply@' . $_SERVER['HTTP_HOST']) . ">\r\n";
                     @mail($admin_email, $admin_subject, $admin_message, $admin_headers);
                 }
             } else {
@@ -82,9 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
     }
 }
 
-$site_title = getSetting('site_title', 'Painlesslyf');
-$site_logo = getSetting('site_logo', 'assets/logo/painlesslyf-logo.png');
-$favicon = getSetting('favicon', 'assets/logo/painlesslyf-logo.png');
+$site_title = getSetting('site_title', 'refreshing_dews');
+$site_logo = getSetting('site_logo', 'assets/logo/refreshing_dews-logo.png');
+$favicon = getSetting('favicon', 'assets/logo/refreshing_dews-logo.png');
 
 $theme_blue = getSetting('theme_blue_color', '#2563eb');
 $theme_blue_dark = getSetting('theme_blue_dark_color', '#1d4ed8');
@@ -95,7 +95,7 @@ $contact_title = getSetting('contact_title', 'Get in Touch');
 $contact_subtitle = getSetting('contact_subtitle', 'I\'d love to hear from you. Whether you have a question, feedback, or just want to say hello.');
 $contact_address = getSetting('contact_address', 'Worldwide');
 $contact_phone = getSetting('contact_phone', '');
-$contact_email_display = getSetting('contact_email_display', 'contact@painlesslyf.com');
+$contact_email_display = getSetting('contact_email_display', 'contact@refreshing_dews.com');
 $contact_response_time = getSetting('contact_response_time', 'Within 24-48 hours');
 $contact_map_embed = getSetting('contact_map_embed', '');
 $contact_faq_title = getSetting('contact_faq_title', 'Frequently Asked Questions');
@@ -142,7 +142,7 @@ function getContactHeaderStyle() {
     <meta property="og:url" content="<?php echo SITE_URL; ?>/contact.php">
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($favicon); ?>">
     <link rel="apple-touch-icon" href="<?php echo htmlspecialchars($site_logo); ?>">
-    <link rel="manifest" href="/painlesslyf/manifest.json">
+    <link rel="manifest" href="/refreshing_dews/manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">

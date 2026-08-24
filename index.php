@@ -33,6 +33,9 @@ $hero_badge = getSetting('hero_badge', 'Faith • Grace • Purpose • Melody')
 $hero_logo_enabled = getSetting('hero_logo_enabled', '1');
 $hero_title_font_weight = getSetting('hero_title_font_weight', '900');
 $hero_slideshow_effect = getSetting('hero_slideshow_effect', 'slide');
+$shared_button_color = getSetting('shared_button_color', '#2563eb');
+$shared_button_hover_color = getSetting('shared_button_hover_color', '#1d4ed8');
+$shared_button_text_color = getSetting('shared_button_text_color', '#ffffff');
 
 // Get crawling announcements
 $crawling_announcements = getSetting('crawling_announcements', 'Welcome to Painlesslyf | Faith · Grace · Purpose · Melody | Truth for the brave');
@@ -260,6 +263,9 @@ function getBlogBackgroundStyle() {
             --theme-blue-dark: <?php echo $theme_blue_dark; ?>;
             --theme-green: <?php echo $theme_green; ?>;
             --theme-green-dark: <?php echo $theme_green_dark; ?>;
+            --shared-button-color: <?php echo $shared_button_color; ?>;
+            --shared-button-hover-color: <?php echo $shared_button_hover_color; ?>;
+            --shared-button-text-color: <?php echo $shared_button_text_color; ?>;
             --text-dark: #1a2744;
             --text-light: #5a6478;
             --bg-light: #FAF7F0;
@@ -361,11 +367,13 @@ function getBlogBackgroundStyle() {
         .hero-content-inner {
             max-width: 900px;
             padding: 0 20px;
+            position: relative;
+            top: 90px;
         }
 
         .hero-logo {
-            width: 140px;
-            height: 140px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid rgba(255, 255, 255, 0.95);
@@ -692,7 +700,7 @@ function getBlogBackgroundStyle() {
         }
         
         .cards-section .card-link {
-            color: var(--theme-blue);
+            color: var(--shared-button-color);
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
@@ -704,7 +712,7 @@ function getBlogBackgroundStyle() {
         
         .cards-section .card-link:hover {
             gap: 12px;
-            color: var(--theme-blue-dark);
+            color: var(--shared-button-hover-color);
         }
         
         .card-link {
@@ -787,11 +795,11 @@ function getBlogBackgroundStyle() {
         }
         
         .blog-section .card-link {
-            color: var(--gold);
+            color: var(--shared-button-color);
         }
         
         .blog-section .card-link:hover {
-            color: var(--gold-dark);
+            color: var(--shared-button-hover-color);
         }
         
         .blog-section .btn-outline {
@@ -810,7 +818,7 @@ function getBlogBackgroundStyle() {
         }
         
         .blog-section .btn-outline:hover {
-            background: var(--theme-blue);
+            background: var(--shared-button-color);
             border-color: var(--theme-blue);
             color: var(--white);
             transform: translateY(-3px);
@@ -876,6 +884,10 @@ function getBlogBackgroundStyle() {
             body {
                 padding-top: 60px;
             }
+
+            .hero-content-inner {
+                top: 70px;
+            }
             
             .hero-slideshow {
                 aspect-ratio: auto;
@@ -922,8 +934,8 @@ function getBlogBackgroundStyle() {
             }
             
             .hero-logo {
-                width: 110px;
-                height: 110px;
+                width: 90px;
+                height: 90px;
             }
             
             .cards-section,
@@ -961,8 +973,8 @@ function getBlogBackgroundStyle() {
             }
             
             .hero-logo {
-                width: 90px;
-                height: 90px;
+                width: 72px;
+                height: 72px;
             }
             
             .hero-title {
