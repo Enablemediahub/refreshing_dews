@@ -1122,7 +1122,7 @@ $recent_posts = getRecentPosts(3);
 
         /* Footer */
         .footer {
-            background: var(--dark);
+            background: linear-gradient(135deg, #4a7c59 0%, #2c4a3b 100%);
             color: white;
             padding: 40px 0 20px;
         }

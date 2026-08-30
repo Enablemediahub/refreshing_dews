@@ -277,8 +277,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Footer Settings
             case 'update_footer':
-                updateSetting('footer_gradient_start', $_POST['footer_gradient_start'] ?? '#0a4d7a');
-                updateSetting('footer_gradient_end', $_POST['footer_gradient_end'] ?? '#6ec5f0');
+                updateSetting('footer_gradient_start', $_POST['footer_gradient_start'] ?? '#4a7c59');
+                updateSetting('footer_gradient_end', $_POST['footer_gradient_end'] ?? '#2c4a3b');
                 updateSetting('footer_text_color', $_POST['footer_text_color'] ?? '#ffffff');
                 updateSetting('footer_link_color', $_POST['footer_link_color'] ?? 'rgba(255,255,255,0.85)');
                 updateSetting('footer_link_hover_color', $_POST['footer_link_hover_color'] ?? '#ffffff');
@@ -410,8 +410,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'shared_button_color' => '#2563eb',
                     'shared_button_hover_color' => '#1d4ed8',
                     'shared_button_text_color' => '#ffffff',
-                    'footer_gradient_start' => '#1a2744',
-                    'footer_gradient_end' => '#0f1824',
+                    'footer_gradient_start' => '#4a7c59',
+                    'footer_gradient_end' => '#2c4a3b',
                     'footer_text_color' => '#ffffff',
                     'footer_link_color' => 'rgba(255,255,255,0.7)',
                     'footer_link_hover_color' => '#C9A962',
@@ -1723,17 +1723,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="hidden" name="action" value="update_footer">
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Gradient Start (Deep Blue)</label>
+                                <label>Gradient Start (Forest Green)</label>
                                 <div class="color-input-group">
-                                    <input type="color" name="footer_gradient_start" value="<?php echo getSettingValue('footer_gradient_start', '#0a4d7a'); ?>">
-                                    <input type="text" class="form-control" value="<?php echo getSettingValue('footer_gradient_start', '#0a4d7a'); ?>" readonly>
+                                    <input type="color" name="footer_gradient_start" value="<?php echo getSettingValue('footer_gradient_start', '#4a7c59'); ?>">
+                                    <input type="text" class="form-control" value="<?php echo getSettingValue('footer_gradient_start', '#4a7c59'); ?>" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Gradient End (Dew Blue)</label>
+                                <label>Gradient End (Emerald Dark)</label>
                                 <div class="color-input-group">
-                                    <input type="color" name="footer_gradient_end" value="<?php echo getSettingValue('footer_gradient_end', '#6ec5f0'); ?>">
-                                    <input type="text" class="form-control" value="<?php echo getSettingValue('footer_gradient_end', '#6ec5f0'); ?>" readonly>
+                                    <input type="color" name="footer_gradient_end" value="<?php echo getSettingValue('footer_gradient_end', '#2c4a3b'); ?>">
+                                    <input type="text" class="form-control" value="<?php echo getSettingValue('footer_gradient_end', '#2c4a3b'); ?>" readonly>
                                 </div>
                             </div>
                             <div class="form-group">

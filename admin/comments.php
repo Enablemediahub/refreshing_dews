@@ -92,6 +92,31 @@ if (isset($_POST['comment_action'], $_POST['comment_id'])) {
     }
 }
 
+// Handle bulk actions
+if (isset($_POST['bulk_action']) && isset($_POST['comment_ids']) && is_array($_POST['comment_ids'])) {
+    $comment_ids = array_filter(array_map('intval', $_POST['comment_ids']));
+    $bulk_action = $_POST['bulk_action'];
+
+    if (empty($comment_ids)) {
+        $error = 'No comments selected.';
+    } elseif ($bulk_action === 'delete') {
+        $del = $conn->prepare("DELETE FROM comments WHERE id = ? OR parent_id = ?");
+        foreach ($comment_ids as $cid) {
+            $del->bind_param("ii", $cid, $cid);
+            $del->execute();
+        }
+        $del->close();
+        $message = count($comment_ids) . ' comment(s) deleted successfully.';
+        logAdminAction('bulk_delete_comments', 'Deleted ' . count($comment_ids) . ' comments');
+    } elseif (in_array($bulk_action, ['approve', 'pending', 'spam'], true)) {
+        $new_status = $bulk_action === 'approve' ? 'approved' : $bulk_action;
+        $ids = implode(',', $comment_ids);
+        $conn->query("UPDATE comments SET status = '$new_status' WHERE id IN ($ids)");
+        $message = count($comment_ids) . ' comment(s) marked as ' . $new_status . '.';
+        logAdminAction('bulk_status_comments', 'Bulk ' . $new_status . ' on ' . count($comment_ids) . ' comments');
+    }
+}
+
 $status_filter = $_GET['status'] ?? '';
 $search = trim($_GET['search'] ?? '');
 $page = max(1, (int) ($_GET['page'] ?? 1));
@@ -118,7 +143,57 @@ if ($search !== '') {
     $types .= 'ssss';
 }
 
-$where_clause = $where_conditions ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
+$where_clause = $where_conditions ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
+// Handle "delete all matching current filter" bulk action
+if (isset($_POST['bulk_action']) && $_POST['bulk_action'] === 'delete_all') {
+    error_log('[comments.php] delete_all triggered. GET: ' . json_encode($_GET) . ' POST: ' . json_encode($_POST));
+    $id_sql = "SELECT c.id FROM comments c LEFT JOIN posts p ON c.post_id = p.id $where_clause";
+    error_log('[comments.php] delete_all SQL: ' . $id_sql . ' params: ' . json_encode($params) . ' types: ' . $types);
+
+    $id_stmt = $conn->prepare($id_sql);
+    if (!$id_stmt) {
+        $error = 'Failed to prepare delete_all query: ' . $conn->error;
+        error_log('[comments.php] delete_all prepare error: ' . $conn->error);
+    } else {
+        if (!empty($params)) {
+            $bind_result = $id_stmt->bind_param($types, ...$params);
+            if (!$bind_result) {
+                $error = 'Failed to bind params: ' . $id_stmt->error;
+                error_log('[comments.php] delete_all bind error: ' . $id_stmt->error);
+            }
+        }
+        $exec_result = $id_stmt->execute();
+        if (!$exec_result) {
+            $error = 'Failed to execute delete_all query: ' . $id_stmt->error;
+            error_log('[comments.php] delete_all execute error: ' . $id_stmt->error);
+        } else {
+            $matching_ids = [];
+            $id_res = $id_stmt->get_result();
+            while ($r = $id_res->fetch_assoc()) { $matching_ids[] = (int) $r['id']; }
+            $id_stmt->close();
+            error_log('[comments.php] delete_all found IDs: ' . json_encode($matching_ids));
+
+            if (!empty($matching_ids)) {
+                $in_list = implode(',', $matching_ids);
+                $del_sql = "DELETE FROM comments WHERE id IN ($in_list) OR parent_id IN ($in_list)";
+                error_log('[comments.php] delete_all DELETE SQL: ' . $del_sql);
+                $del_result = $conn->query($del_sql);
+                if ($del_result === false) {
+                    $error = 'Delete query failed: ' . $conn->error;
+                    error_log('[comments.php] delete_all DELETE error: ' . $conn->error);
+                } else {
+                    $affected = $conn->affected_rows;
+                    $message = count($matching_ids) . ' comment(s) (and their replies) deleted successfully. Affected rows: ' . $affected;
+                    logAdminAction('bulk_delete_all_comments', 'Deleted all ' . count($matching_ids) . ' comments matching current filter');
+                    error_log('[comments.php] delete_all success: ' . $message);
+                }
+            } else {
+                $message = 'No comments match the current filter.';
+                error_log('[comments.php] delete_all: no matching comments');
+            }
+        }
+    }
+}
 
 $stats = [
     'total' => 0,
@@ -266,7 +341,12 @@ $site_title = getSetting('site_title', 'Painlesslyf');
         .empty-state { text-align: center; padding: 50px 20px; color: #667; }
         .empty-state i { font-size: 56px; margin-bottom: 15px; opacity: 0.45; }
         @media (max-width: 1024px) { .mobile-menu-toggle { display: flex; } .admin-sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); z-index: 2000; width: 280px; } .admin-sidebar.sidebar-open { transform: translateX(0); } .admin-main { padding: 80px 20px 20px 20px; } }
-    </style>
+    .bulk-actions { background:#f8f9fa; border-radius:12px; padding:15px; margin-bottom:15px; display:none; align-items:center; gap:12px; flex-wrap:wrap; }
+.bulk-actions.visible { display:flex; }
+.bulk-select-all { display:flex; align-items:center; gap:8px; }
+.bulk-select-all input { width:18px; height:18px; cursor:pointer; }
+.comment-checkbox { width:18px; height:18px; cursor:pointer; vertical-align:middle; }
+</style>
 </head>
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle"><i class="fas fa-bars"></i></button>
@@ -313,7 +393,26 @@ $site_title = getSetting('site_title', 'Painlesslyf');
                 </form>
             </div>
             <div class="panel comments-table">
-                <table>
+                <div class="bulk-actions" id="bulkActions">
+    <div class="bulk-select-all">
+        <input type="checkbox" id="selectAll">
+        <label for="selectAll">Select All</label>
+    </div>
+    <select id="bulkActionSelect" class="form-control" style="width:auto;">
+        <option value="">Bulk Actions</option>
+        <option value="approve">Approve</option>
+        <option value="pending">Mark Pending</option>
+        <option value="spam">Mark Spam</option>
+        <option value="delete">Delete</option>
+        <option value="delete_all" style="color:#dc3545;">Delete All Matching</option>
+    </select>
+    <button type="button" class="btn btn-danger btn-sm" onclick="applyBulkAction()">Apply</button>
+    <span id="selectedCount" style="font-size:12px;color:#667;"></span>
+</div>
+<form method="POST" action="" id="bulkSubmitForm" style="display:none;">
+    <input type="hidden" name="bulk_action" id="bulkActionInput">
+</form>
+<table>
                     <thead>
                         <tr>
                             <th>Author</th>
@@ -329,7 +428,7 @@ $site_title = getSetting('site_title', 'Painlesslyf');
                             <?php while ($comment = $comments->fetch_assoc()): ?>
                             <tr>
                                 <td>
-                                    <strong><?php echo htmlspecialchars($comment['name']); ?></strong>
+                                    <input type="checkbox" name="comment_ids[]" value="<?php echo (int) $comment['id']; ?>" class="comment-checkbox" style="margin-right:8px;vertical-align:middle;"> <strong><?php echo htmlspecialchars($comment['name']); ?></strong>
                                     <div class="comment-meta"><?php echo htmlspecialchars($comment['email']); ?></div>
                                     <?php if ($comment['parent_id']): ?>
                                     <div class="comment-meta reply-indicator">Reply to: <?php echo htmlspecialchars($comment['parent_name']); ?></div>
@@ -457,6 +556,63 @@ $site_title = getSetting('site_title', 'Painlesslyf');
                 }
             });
         });
+            // Bulk actions for comments
+        var checkboxes = document.querySelectorAll('.comment-checkbox');
+        var selectAll = document.getElementById('selectAll');
+        var bulkActions = document.getElementById('bulkActions');
+        var selectedCount = document.getElementById('selectedCount');
+
+        function updateBulk() {
+            var checked = document.querySelectorAll('.comment-checkbox:checked');
+            var n = checked.length;
+            if (bulkActions) { bulkActions.classList.toggle('visible', n > 0); }
+            if (selectedCount) { selectedCount.textContent = n + ' selected'; }
+            if (selectAll) { selectAll.checked = (n > 0 && n === checkboxes.length); }
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                for (var i = 0; i < checkboxes.length; i++) { checkboxes[i].checked = this.checked; }
+                updateBulk();
+            });
+        }
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].addEventListener('change', updateBulk);
+        }
+
+        function applyBulkAction() {
+            var sel = document.getElementById('bulkActionSelect');
+            var action = sel ? sel.value : '';
+            if (!action) { alert('Please select a bulk action.'); return; }
+            if (action === 'delete_all') {
+                if (!confirm('Delete ALL comments matching the current filter? This cannot be undone. Replies to these comments will also be removed.')) { return; }
+                var form = document.getElementById('bulkSubmitForm');
+                var actionInput = document.getElementById('bulkActionInput');
+                if (!form || !actionInput) { alert('Bulk form not available.'); return; }
+                actionInput.value = action;
+                var old = form.querySelectorAll('input[name="comment_ids[]"]');
+                for (var j = 0; j < old.length; j++) { old[j].parentNode.removeChild(old[j]); }
+                form.submit();
+                return;
+            }
+            var checked = document.querySelectorAll('.comment-checkbox:checked');
+            if (checked.length === 0) { alert('Please select at least one comment.'); return; }
+            if (action === 'delete' && !confirm('Delete the selected ' + checked.length + ' comment(s)? Replies are removed too.')) return;
+            var form = document.getElementById('bulkSubmitForm');
+            var actionInput = document.getElementById('bulkActionInput');
+            if (!form || !actionInput) { alert('Bulk form not available.'); return; }
+            actionInput.value = action;
+            var old = form.querySelectorAll('input[name="comment_ids[]"]');
+            for (var j = 0; j < old.length; j++) { old[j].parentNode.removeChild(old[j]); }
+            checked.forEach(function(cb) {
+                var hi = document.createElement('input');
+                hi.type = 'hidden';
+                hi.name = 'comment_ids[]';
+                hi.value = cb.value;
+                form.appendChild(hi);
+            });
+            form.submit();
+        }
     </script>
 </body>
 </html>

@@ -225,11 +225,11 @@ function getPageHeroStyles() {
 }
 
 /**
- * Get shared footer styles (navy & gold gradient across all pages)
+ * Get shared footer styles (green gradient across all pages)
  */
 function getFooterStyles() {
-    $gradientStart = getSetting('footer_gradient_start', '#07152e');
-    $gradientEnd = getSetting('footer_gradient_end', '#07152e');
+    $gradientStart = getSetting('footer_gradient_start', '#4a7c59');
+    $gradientEnd = getSetting('footer_gradient_end', '#2c4a3b');
     $textColor = getSetting('footer_text_color', '#ffffff');
     $linkColor = getSetting('footer_link_color', 'rgba(255,255,255,0.82)');
     $linkHoverColor = getSetting('footer_link_hover_color', '#f6dfb3');

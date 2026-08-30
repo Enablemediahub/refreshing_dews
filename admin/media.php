@@ -1196,6 +1196,10 @@ $primary_color = getSetting('primary_color', '#4a7c59');
             
             <!-- Bulk Actions -->
             <form method="POST" action="" id="bulkForm">
+                <!-- Preserve current filters -->
+                <input type="hidden" name="type" value="<?php echo htmlspecialchars($media_type); ?>">
+                <input type="hidden" name="directory" value="<?php echo htmlspecialchars($directory_filter); ?>">
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
                 <div class="bulk-actions" id="bulkActions">
                     <div class="bulk-select-all">
                         <input type="checkbox" id="selectAll">

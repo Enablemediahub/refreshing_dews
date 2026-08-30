@@ -226,8 +226,8 @@ $author_stmt->execute();
 $author_result = $author_stmt->get_result();
 $author = $author_result->fetch_assoc();
 
-// Get blog-specific writer profile image, with fallback to About page profile image
-$author_profile_image = getSetting('blog_author_profile_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
+// Get author thumbnail image uploaded via Admin → Blog Settings (Author Thumbnail field)
+$author_profile_image = getSetting('blog_author_thumbnail_image', getSetting('about_profile_image', 'assets/images/profile.jpg'));
 $author_name = getSetting('about_name', 'Refreshing Dews');
 $author_bio = getSetting('about_bio', 'Hello! I\'m the voice and heart behind Refreshing Dews. I created this space to share honest thoughts, daily experiences, and audio messages that I hope will inspire, encourage, and connect with you on your own journey.');
 $author_sidebar_name = getSetting('blog_author_name', 'COMANDA1');
@@ -440,16 +440,16 @@ function getHeaderStyle() {
 
 // Function to get author thumbnail URL for the sidebar
 function getAuthorAvatarUrl() {
-    global $author_thumbnail_image;
-    if (empty($author_thumbnail_image)) {
+    global $author_profile_image;
+    if (empty($author_profile_image)) {
         return 'assets/images/default-avatar.jpg';
     }
     
-    if (preg_match('/^https?:\/\//', $author_thumbnail_image)) {
-        return $author_thumbnail_image;
+    if (preg_match('/^https?:\/\//', $author_profile_image)) {
+        return $author_profile_image;
     }
     
-    return ltrim($author_thumbnail_image, '/');
+    return ltrim($author_profile_image, '/');
 }
 ?>
 <!DOCTYPE html>
@@ -1293,7 +1293,7 @@ function getAuthorAvatarUrl() {
 
         /* Footer */
         .footer {
-            background: #1a2a1f;
+            background: linear-gradient(135deg, #4a7c59 0%, #2c4a3b 100%);
             color: white;
             padding: 60px 0 20px;
         }

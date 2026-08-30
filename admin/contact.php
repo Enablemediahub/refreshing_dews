@@ -24,6 +24,10 @@ $message_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $reply_message = '';
 $reply_error = '';
 
+// Get filter values early so handlers can use them
+$status_filter = isset($_GET['status']) ? $_GET['status'] : '';
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 // Handle reply submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_reply'])) {
     $message_id = intval($_POST['message_id']);
@@ -136,6 +140,14 @@ if (isset($_POST['delete_message'])) {
     $stmt->bind_param("i", $message_id);
     $stmt->execute();
     $stmt->close();
+    // Redirect to prevent form resubmission and preserve filters
+    $redirect = 'contact.php';
+    $redirect_params = [];
+    if ($status_filter) $redirect_params[] = "status=" . urlencode($status_filter);
+    if ($search) $redirect_params[] = "search=" . urlencode($search);
+    if (!empty($redirect_params)) $redirect .= "?" . implode('&', $redirect_params);
+    header("Location: " . $redirect);
+    exit();
 }
 
 // Handle bulk delete
@@ -148,6 +160,14 @@ if (isset($_POST['bulk_delete']) && isset($_POST['selected_messages'])) {
     $stmt->bind_param($types, ...$selected);
     $stmt->execute();
     $stmt->close();
+    // Redirect to prevent form resubmission and preserve filters
+    $redirect = 'contact.php';
+    $redirect_params = [];
+    if ($status_filter) $redirect_params[] = "status=" . urlencode($status_filter);
+    if ($search) $redirect_params[] = "search=" . urlencode($search);
+    if (!empty($redirect_params)) $redirect .= "?" . implode('&', $redirect_params);
+    header("Location: " . $redirect);
+    exit();
 }
 
 // Get single message for viewing/reply
@@ -198,8 +218,7 @@ $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $per_page = 20;
 $offset = ($page - 1) * $per_page;
 
-$status_filter = isset($_GET['status']) ? $_GET['status'] : '';
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+// Filter variables already defined above for handlers
 
 $where_conditions = [];
 $params = [];
@@ -929,9 +948,18 @@ if (!function_exists('formatDate')) {
             
             <form method="POST" action="contact.php" id="bulkForm">
                 <div class="bulk-actions">
-                    <button type="submit" name="bulk_delete" class="btn-danger" onclick="return confirm('Are you sure you want to delete selected messages?')">
+                    <button type="button" id="bulkDeleteBtn" class="btn-danger">
                         <i class="fas fa-trash"></i> Delete Selected
                     </button>
+                    
+                    <!-- Hidden form for bulk delete (properly placed inside the wrapper) -->
+                    <form method="POST" action="contact.php" id="bulkDeleteForm" style="display:none;">
+                        <input type="hidden" name="bulk_delete" value="1">
+                        <!-- Preserve current filters -->
+                        <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
+                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                        <div id="bulkInputs"></div>
+                    </form>
                 </div>
                 
                 <div class="messages-table">
@@ -973,6 +1001,8 @@ if (!function_exists('formatDate')) {
                                         </a>
                                         <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this message?');">
                                             <input type="hidden" name="message_id" value="<?php echo $msg['id']; ?>">
+                                            <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
+                                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
                                             <button type="submit" name="delete_message" class="btn-icon btn-delete">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
@@ -1015,6 +1045,36 @@ if (!function_exists('formatDate')) {
     </div>
     
     <script>
+        // Select All checkbox functionality
+        document.getElementById("selectAll").addEventListener("change", function() {
+            var checkboxes = document.querySelectorAll(".message-checkbox");
+            checkboxes.forEach(function(cb) {
+                cb.checked = this.checked;
+            }, this);
+        });
+    
+        // Bulk delete via JS (avoids nested form issues)
+        document.getElementById("bulkDeleteBtn").addEventListener("click", function() {
+            var checkboxes = document.querySelectorAll(".message-checkbox:checked");
+            if (checkboxes.length === 0) {
+                alert("Please select at least one message.");
+                return false;
+            }
+            if (!confirm("Are you sure you want to delete selected messages?")) {
+                return false;
+            }
+            var container = document.getElementById("bulkInputs");
+            container.innerHTML = "";
+            checkboxes.forEach(function(cb) {
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "selected_messages[]";
+                input.value = cb.value;
+                container.appendChild(input);
+            });
+            document.getElementById("bulkDeleteForm").submit();
+        });
+    
         // Mobile Menu Toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const adminSidebar = document.getElementById('adminSidebar');
