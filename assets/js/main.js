@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initScrollEffects();
     initLazyLoading();
+    initConsentPopup();
+    initInstallPrompt();
+    initNewsletterModal();
+    bindReadAloudButtons();
 });
 
 // Mobile Menu
@@ -207,39 +211,311 @@ function validateForm(formId) {
     return isValid;
 }
 
-// Newsletter Subscription
-function subscribeNewsletter(form) {
-    event.preventDefault();
-    
-    const email = form.querySelector('input[type="email"]').value;
-    
+// Cookie Consent
+function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name, value, days = 365) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+}
+
+function openPopup(popupId) {
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+    popup.classList.add('show');
+    document.body.classList.add('modal-open');
+}
+
+function closePopup(popupId) {
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+    popup.classList.remove('show');
+    if (!document.querySelector('.site-popup.show')) {
+        document.body.classList.remove('modal-open');
+    }
+}
+
+function initConsentPopup() {
+    const popup = document.getElementById('cookieConsentPopup');
+    if (!popup) return;
+
+    if (getCookie('refreshing_dews_cookie_consent') === 'accepted') {
+        closePopup('cookieConsentPopup');
+        return;
+    }
+
+    openPopup('cookieConsentPopup');
+
+    const acceptBtn = popup.querySelector('.cookie-accept');
+    const declineBtn = popup.querySelector('.cookie-decline');
+
+    acceptBtn && acceptBtn.addEventListener('click', function() {
+        setCookie('refreshing_dews_cookie_consent', 'accepted', 365);
+        closePopup('cookieConsentPopup');
+        setTimeout(() => {
+            maybeShowInstallPrompt();
+        }, 300);
+    });
+
+    declineBtn && declineBtn.addEventListener('click', function() {
+        setCookie('refreshing_dews_cookie_consent', 'declined', 30);
+        closePopup('cookieConsentPopup');
+    });
+}
+
+function maybeShowInstallPrompt() {
+    const installPopup = document.getElementById('installAppPopup');
+    if (!installPopup) return;
+
+    const consentAccepted = getCookie('refreshing_dews_cookie_consent') === 'accepted';
+    if (!consentAccepted) return;
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || !!window.navigator.standalone;
+
+    if (!isMobile || isStandalone) {
+        setTimeout(() => openNewsletterPopup(), 700);
+        return;
+    }
+
+    const iOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const message = installPopup.querySelector('#installAppMessage');
+    if (iOS) {
+        if (message) {
+            message.textContent = 'On iPhone or iPad, tap the Share button and choose “Add to Home Screen” to install this app.';
+        }
+        installPopup.querySelector('.install-button').textContent = 'Got it';
+    } else if (message) {
+        message.textContent = 'Install this app for a faster, cleaner mobile experience.';
+    }
+
+    setTimeout(() => {
+        openPopup('installAppPopup');
+    }, 700);
+}
+
+function initInstallPrompt() {
+    const installPopup = document.getElementById('installAppPopup');
+    const installButton = installPopup ? installPopup.querySelector('.install-button') : null;
+    const dismissBtn = installPopup ? installPopup.querySelector('.install-dismiss') : null;
+
+    if (!installPopup) return;
+
+    if (installButton) {
+        installButton.addEventListener('click', function() {
+            const deferredEvent = window.deferredInstallPrompt;
+            if (deferredEvent) {
+                deferredEvent.prompt();
+                deferredEvent.userChoice.then(function(choiceResult) {
+                    if (choiceResult.outcome === 'accepted') {
+                        showNotification('App installed successfully!', 'success');
+                    }
+                    window.deferredInstallPrompt = null;
+                    closePopup('installAppPopup');
+                    setTimeout(() => openNewsletterPopup(), 500);
+                });
+                return;
+            }
+
+            closePopup('installAppPopup');
+            setTimeout(() => openNewsletterPopup(), 500);
+        });
+    }
+
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', function() {
+            closePopup('installAppPopup');
+            setTimeout(() => openNewsletterPopup(), 500);
+        });
+    }
+
+    window.addEventListener('beforeinstallprompt', function(event) {
+        event.preventDefault();
+        window.deferredInstallPrompt = event;
+        if (getCookie('refreshing_dews_cookie_consent') === 'accepted') {
+            setTimeout(() => {
+                openPopup('installAppPopup');
+            }, 700);
+        }
+    });
+}
+
+function openNewsletterPopup() {
+    const popup = document.getElementById('newsletterPopup');
+    if (!popup) return;
+    openPopup('newsletterPopup');
+}
+
+function closeNewsletterPopup() {
+    const popup = document.getElementById('newsletterPopup');
+    if (popup) {
+        popup.classList.remove('show');
+    }
+}
+
+function initNewsletterModal() {
+    const triggerButton = document.querySelector('.newsletter-trigger');
+    const closeButton = document.querySelector('.newsletter-close');
+    const form = document.getElementById('newsletterPopupForm');
+
+    triggerButton && triggerButton.addEventListener('click', function() {
+        openNewsletterPopup();
+    });
+
+    closeButton && closeButton.addEventListener('click', function() {
+        closeNewsletterPopup();
+    });
+
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            submitNewsletterForm(this);
+        });
+    }
+}
+
+function submitNewsletterForm(form) {
+    const emailInput = form.querySelector('input[name="email"], input[type="email"]');
+    const email = emailInput ? emailInput.value.trim() : '';
+
     if (!email) {
-        showNotification('Please enter your email', 'error');
+        showNotification('Please enter your email address.', 'error');
         return false;
     }
-    
-    // Send AJAX request
-    fetch('subscribe.php', {
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Subscribing...';
+    }
+
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('ajax', '1');
+
+    fetch(form.action || 'subscribe.php', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-        body: 'email=' + encodeURIComponent(email)
+        body: formData.toString()
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(async response => {
+        const data = await response.json().catch(() => ({ success: false, message: 'Unable to process your request.' }));
         if (data.success) {
-            showNotification('Successfully subscribed!', 'success');
+            showNotification(data.message || 'Successfully subscribed!', 'success');
             form.reset();
+            closeNewsletterPopup();
         } else {
-            showNotification(data.message || 'Subscription failed', 'error');
+            showNotification(data.message || 'Subscription failed. Please try again.', 'error');
         }
     })
-    .catch(error => {
-        showNotification('An error occurred', 'error');
+    .catch(() => {
+        showNotification('An error occurred while subscribing. Please try again.', 'error');
+    })
+    .finally(() => {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Subscribe';
+        }
     });
-    
+
     return false;
+}
+
+function speakText(text, button) {
+    if (!('speechSynthesis' in window)) {
+        showNotification('Text-to-speech is not supported on this device.', 'error');
+        return;
+    }
+
+    const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!normalized) {
+        showNotification('There is no article text to read.', 'error');
+        return;
+    }
+
+    const isPlaying = button.dataset.playing === 'true';
+    if (isPlaying) {
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+        button.dataset.playing = 'false';
+        button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+        return;
+    }
+
+    const syncSpeech = function() {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(normalized);
+        utterance.lang = 'en-US';
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        utterance.onstart = function() {
+            button.dataset.playing = 'true';
+            button.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
+        };
+        utterance.onend = function() {
+            button.dataset.playing = 'false';
+            button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+        };
+        utterance.onerror = function() {
+            button.dataset.playing = 'false';
+            button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+        };
+
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+        }
+
+        window.speechSynthesis.speak(utterance);
+    };
+
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        setTimeout(syncSpeech, 160);
+        return;
+    }
+
+    syncSpeech();
+}
+
+function bindReadAloudButtons() {
+    document.querySelectorAll('.read-aloud-btn').forEach(function(button) {
+        if (button.dataset.bound === 'true') return;
+        button.dataset.bound = 'true';
+
+        const handleRead = function(event) {
+            if (event && event.preventDefault) {
+                event.preventDefault();
+            }
+
+            let text = button.dataset.readText || '';
+            const targetSelector = button.dataset.target || '';
+
+            if (targetSelector) {
+                const target = document.querySelector(targetSelector);
+                if (target) {
+                    text = target.innerText || text;
+                }
+            }
+
+            if (!text) {
+                showNotification('Nothing to read right now.', 'error');
+                return;
+            }
+
+            speakText(text, button);
+        };
+
+        button.addEventListener('click', handleRead);
+        button.addEventListener('touchstart', handleRead, { passive: false });
+    });
 }
 
 // Notification System
@@ -339,6 +615,10 @@ style.textContent = `
     
     .notification-close:hover {
         opacity: 1;
+    }
+
+    body.modal-open {
+        overflow: hidden;
     }
     
     .nav-links.show {

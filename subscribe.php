@@ -12,20 +12,31 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-    
+    $is_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (!empty($_POST['ajax']));
+
     // Validate email
     if (empty($email)) {
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Please enter your email address.']);
+            exit;
+        }
         $_SESSION['subscribe_error'] = 'Please enter your email address.';
         header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php'));
         exit;
     }
-    
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Please enter a valid email address.']);
+            exit;
+        }
         $_SESSION['subscribe_error'] = 'Please enter a valid email address.';
         header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php'));
         exit;
     }
-    
+
     try {
         // Check if subscribers table exists
         $table_check = $conn->query("SHOW TABLES LIKE 'subscribers'");
@@ -42,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
             $conn->query($create_table);
         }
-        
+
         // Check if email exists
         $check_sql = "SELECT id, status FROM subscribers WHERE email = ?";
         $check_stmt = $conn->prepare($check_sql);
@@ -51,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $check_result = $check_stmt->get_result();
         $existing = $check_result->fetch_assoc();
         $check_stmt->close();
-        
+
         if ($existing) {
             if ($existing['status'] === 'unsubscribed') {
                 // Reactivate subscription
@@ -72,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_stmt->execute();
             $insert_stmt->close();
             $_SESSION['subscribe_success'] = getSetting('subscribe_success_message', 'Thank you for subscribing! You\'ll receive updates and new content directly in your inbox.');
-            
+
             // Send welcome email (optional)
             $send_welcome = getSetting('subscribe_send_welcome_email', '0'); // Default to off
             if ($send_welcome == '1') {
@@ -81,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $headers = "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: " . $site_title . " <" . getSetting('contact_email_display', 'newsletter@' . $_SERVER['HTTP_HOST']) . ">\r\n";
-                
+
                 $html_message = "
                 <!DOCTYPE html>
                 <html>
@@ -93,21 +104,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </body>
                 </html>
                 ";
-                
+
                 @mail($email, $welcome_subject, $html_message, $headers);
             }
         }
-        
+
     } catch (Exception $e) {
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Sorry, there was an error. Please try again.']);
+            exit;
+        }
         $_SESSION['subscribe_error'] = 'Sorry, there was an error. Please try again.';
         error_log("Subscription error: " . $e->getMessage());
     }
-    
+
+    if ($is_ajax) {
+        $message = $_SESSION['subscribe_success'] ?? 'Thank you for subscribing!';
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'message' => $message]);
+        exit;
+    }
+
     // Redirect back to the page they came from
     $redirect_url = $_SERVER['HTTP_REFERER'] ?? 'index.php';
     header('Location: ' . $redirect_url);
     exit;
-    
+
 } else {
     // If someone visits subscribe.php directly
     header('Location: index.php');

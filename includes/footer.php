@@ -39,7 +39,7 @@ if (!defined('FOOTER_STYLES_LOADED')) {
                 <span class="footer-kicker">Stay connected</span>
                 <h3>Let truth, grace, and purpose find you.</h3>
             </div>
-            <a href="subscribe.php" class="footer-cta">Join the newsletter <i class="fas fa-arrow-right"></i></a>
+            <button type="button" class="footer-cta newsletter-trigger">Join the newsletter <i class="fas fa-arrow-right"></i></button>
         </div>
 
         <div class="footer-grid">
@@ -99,3 +99,37 @@ if (!defined('FOOTER_STYLES_LOADED')) {
         </div>
     </div>
 </footer>
+
+<div id="cookieConsentPopup" class="site-popup cookie-popup" role="dialog" aria-modal="true" aria-labelledby="cookieConsentTitle">
+    <div class="site-popup-card">
+        <h3 id="cookieConsentTitle">We use cookies</h3>
+        <p>We use cookies to improve your experience, remember your choices, and help us keep the site working smoothly.</p>
+        <div class="site-popup-actions">
+            <button type="button" class="btn btn-secondary cookie-decline">Decline</button>
+            <button type="button" class="btn btn-primary cookie-accept">Accept</button>
+        </div>
+    </div>
+</div>
+
+<div id="installAppPopup" class="site-popup install-popup" role="dialog" aria-modal="true" aria-labelledby="installAppTitle">
+    <div class="site-popup-card">
+        <h3 id="installAppTitle">Install this app</h3>
+        <p id="installAppMessage">Get a faster, app-like experience on your device.</p>
+        <div class="site-popup-actions install-actions">
+            <button type="button" class="btn btn-secondary install-dismiss">Not now</button>
+            <button type="button" class="btn btn-primary install-button">Install now</button>
+        </div>
+    </div>
+</div>
+
+<div id="newsletterPopup" class="site-popup newsletter-popup" role="dialog" aria-modal="true" aria-labelledby="newsletterPopupTitle">
+    <div class="site-popup-card">
+        <button type="button" class="newsletter-close" aria-label="Close newsletter popup">×</button>
+        <h3 id="newsletterPopupTitle">Subscribe for updates</h3>
+        <p>Get encouragement, new blog posts, and thoughtful updates right in your inbox.</p>
+        <form id="newsletterPopupForm" class="newsletter-form" method="post" action="subscribe.php">
+            <input type="email" name="email" placeholder="Enter your full email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+    </div>
+</div>

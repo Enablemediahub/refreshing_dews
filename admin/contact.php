@@ -151,15 +151,19 @@ if (isset($_POST['delete_message'])) {
 }
 
 // Handle bulk delete
-if (isset($_POST['bulk_delete']) && isset($_POST['selected_messages'])) {
-    $selected = $_POST['selected_messages'];
-    $placeholders = implode(',', array_fill(0, count($selected), '?'));
-    $types = str_repeat('i', count($selected));
-    $sql = "DELETE FROM contact_messages WHERE id IN ($placeholders)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param($types, ...$selected);
-    $stmt->execute();
-    $stmt->close();
+if (isset($_POST['bulk_delete']) && isset($_POST['selected_messages']) && is_array($_POST['selected_messages'])) {
+    $selected = array_values(array_unique(array_filter(array_map('intval', $_POST['selected_messages']))));
+
+    if (!empty($selected)) {
+        $placeholders = implode(',', array_fill(0, count($selected), '?'));
+        $types = str_repeat('i', count($selected));
+        $sql = "DELETE FROM contact_messages WHERE id IN ($placeholders)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($types, ...$selected);
+        $stmt->execute();
+        $stmt->close();
+    }
+
     // Redirect to prevent form resubmission and preserve filters
     $redirect = 'contact.php';
     $redirect_params = [];
@@ -833,6 +837,13 @@ if (!function_exists('formatDate')) {
             
             <!-- Statistics -->
             <div class="stats-grid">
+                <form method="POST" action="contact.php" id="bulkDeleteForm" style="display:none;" class="standalone-bulk">
+                    <input type="hidden" name="bulk_delete" value="1">
+                    <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
+                    <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                    <div id="bulkInputs"></div>
+                </form>
+                
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-envelope"></i>
@@ -946,24 +957,14 @@ if (!function_exists('formatDate')) {
                 </form>
             </div>
             
-            <form method="POST" action="contact.php" id="bulkForm">
-                <div class="bulk-actions">
-                    <button type="button" id="bulkDeleteBtn" class="btn-danger">
-                        <i class="fas fa-trash"></i> Delete Selected
-                    </button>
-                    
-                    <!-- Hidden form for bulk delete (properly placed inside the wrapper) -->
-                    <form method="POST" action="contact.php" id="bulkDeleteForm" style="display:none;">
-                        <input type="hidden" name="bulk_delete" value="1">
-                        <!-- Preserve current filters -->
-                        <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
-                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-                        <div id="bulkInputs"></div>
-                    </form>
-                </div>
-                
-                <div class="messages-table">
-                    <table>
+            <div class="bulk-actions">
+                <button type="button" id="bulkDeleteBtn" class="btn-danger">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+            </div>
+            
+            <div class="messages-table">
+                <table>
                         <thead>
                             <tr>
                                 <th class="checkbox-column">
@@ -999,11 +1000,11 @@ if (!function_exists('formatDate')) {
                                         <a href="contact.php?action=view&id=<?php echo $msg['id']; ?>" class="btn-icon btn-view">
                                             <i class="fas fa-eye"></i> View
                                         </a>
-                                        <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this message?');">
+                                        <form method="POST" action="contact.php" style="display: inline;" onsubmit="return confirm('Delete this message?');">
                                             <input type="hidden" name="message_id" value="<?php echo $msg['id']; ?>">
                                             <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filter); ?>">
                                             <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-                                            <button type="submit" name="delete_message" class="btn-icon btn-delete">
+                                            <button type="submit" name="delete_message" value="1" class="btn-icon btn-delete">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
                                         </form>
@@ -1023,7 +1024,6 @@ if (!function_exists('formatDate')) {
                         </tbody>
                     </table>
                 </div>
-            </form>
             
             <?php if ($total_pages > 1): ?>
             <div class="pagination">
@@ -1045,35 +1045,55 @@ if (!function_exists('formatDate')) {
     </div>
     
     <script>
-        // Select All checkbox functionality
-        document.getElementById("selectAll").addEventListener("change", function() {
-            var checkboxes = document.querySelectorAll(".message-checkbox");
-            checkboxes.forEach(function(cb) {
-                cb.checked = this.checked;
-            }, this);
-        });
-    
-        // Bulk delete via JS (avoids nested form issues)
-        document.getElementById("bulkDeleteBtn").addEventListener("click", function() {
-            var checkboxes = document.querySelectorAll(".message-checkbox:checked");
-            if (checkboxes.length === 0) {
-                alert("Please select at least one message.");
-                return false;
-            }
-            if (!confirm("Are you sure you want to delete selected messages?")) {
-                return false;
-            }
-            var container = document.getElementById("bulkInputs");
-            container.innerHTML = "";
-            checkboxes.forEach(function(cb) {
-                var input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "selected_messages[]";
-                input.value = cb.value;
-                container.appendChild(input);
+        var selectAllCheckbox = document.getElementById("selectAll");
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener("change", function() {
+                var checkboxes = document.querySelectorAll(".message-checkbox");
+                checkboxes.forEach(function(cb) {
+                    cb.checked = selectAllCheckbox.checked;
+                });
             });
-            document.getElementById("bulkDeleteForm").submit();
-        });
+        }
+
+        var bulkDeleteButton = document.getElementById("bulkDeleteBtn");
+        if (bulkDeleteButton) {
+            bulkDeleteButton.addEventListener("click", function() {
+                var checkboxes = document.querySelectorAll(".message-checkbox:checked");
+                if (checkboxes.length === 0) {
+                    alert("Please select at least one message.");
+                    return false;
+                }
+                if (!confirm("Are you sure you want to delete selected messages?")) {
+                    return false;
+                }
+
+                var form = document.getElementById("bulkDeleteForm");
+                if (!form) {
+                    form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = "contact.php";
+                    form.id = "bulkDeleteForm";
+                    form.style.display = "none";
+                    document.body.appendChild(form);
+                }
+
+                var container = document.getElementById("bulkInputs") || document.createElement("div");
+                if (!container.id) {
+                    container.id = "bulkInputs";
+                    form.appendChild(container);
+                }
+
+                container.innerHTML = "";
+                checkboxes.forEach(function(cb) {
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "selected_messages[]";
+                    input.value = cb.value;
+                    container.appendChild(input);
+                });
+                form.submit();
+            });
+        }
     
         // Mobile Menu Toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');

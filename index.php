@@ -1127,6 +1127,13 @@ function getBlogBackgroundStyle() {
                         <h3 class="blog-title"><?php echo htmlspecialchars($post['title']); ?></h3>
                         <p class="blog-excerpt"><?php echo truncateText($post['excerpt'] ?: $post['content'], 120); ?></p>
                         <a href="blog-post.php?slug=<?php echo urlencode($post['slug']); ?>" class="card-link">Read more <i class="fas fa-arrow-right"></i></a>
+                        <?php
+                            $read_aloud_text = trim(preg_replace('/\s+/', ' ', strip_tags($post['excerpt'] ?: $post['content'])));
+                            $read_aloud_text = $post['title'] . '. ' . $read_aloud_text;
+                        ?>
+                        <button type="button" class="read-aloud-btn" data-slug="<?php echo urlencode($post['slug']); ?>" data-read-text="<?php echo htmlspecialchars($read_aloud_text, ENT_QUOTES, 'UTF-8'); ?>" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; background: #dc3545; color: #fff; border: none; border-radius: 999px; padding: 10px 16px; font-size: 0.92rem; font-weight: 600; cursor: pointer; box-shadow: 0 8px 18px rgba(220, 53, 69, 0.2);">
+                            <i class="fas fa-volume-up"></i> Read Aloud
+                        </button>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -1234,6 +1241,57 @@ function getBlogBackgroundStyle() {
             goToSlide(0);
         }
         
+        function readTextAloud(text, button) {
+            if (!('speechSynthesis' in window)) {
+                alert('Your browser does not support text-to-speech.');
+                return;
+            }
+
+            const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+            if (!normalized) {
+                return;
+            }
+
+            const isPlaying = button.dataset.playing === 'true';
+            if (isPlaying) {
+                window.speechSynthesis.cancel();
+                button.dataset.playing = 'false';
+                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(normalized);
+            utterance.lang = 'en-US';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.onend = function() {
+                button.dataset.playing = 'false';
+                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+            };
+            utterance.onerror = function() {
+                button.dataset.playing = 'false';
+                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+            };
+
+            button.dataset.playing = 'true';
+            button.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
+            if (window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        document.querySelectorAll('.read-aloud-btn').forEach(function(button) {
+            if (button.dataset.bound === 'true') return;
+            button.dataset.bound = 'true';
+            const text = button.dataset.readText || '';
+            if (!text) return;
+            button.addEventListener('click', function() {
+                readTextAloud(text, button);
+            });
+        });
+
         // Ticker pause on hover
         const ticker = document.querySelector('.ticker-container');
         if (ticker) {

@@ -283,6 +283,95 @@ function getFooterStyles() {
                 font-weight: 700;
                 color: {$headingColor};
             }
+            .site-popup {
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 24, 36, 0.62);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+                z-index: 9999;
+            }
+            .site-popup.show {
+                display: flex;
+            }
+            .site-popup-card {
+                position: relative;
+                width: min(100%, 440px);
+                background: #fff;
+                border-radius: 22px;
+                padding: 28px 24px 20px;
+                box-shadow: 0 30px 80px rgba(15, 24, 36, 0.25);
+                border: 1px solid rgba(17, 24, 39, 0.08);
+            }
+            .site-popup-card h3 {
+                margin: 0 0 12px;
+                font-size: 1.75rem;
+                color: #1a2744;
+            }
+            .site-popup-card p {
+                color: #5a6478;
+                margin: 0 0 22px;
+                font-size: 0.98rem;
+                line-height: 1.6;
+            }
+            .site-popup-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            .btn {
+                appearance: none;
+                border: none;
+                border-radius: 999px;
+                padding: 11px 20px;
+                font-size: 0.95rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: transform 0.2s ease, opacity 0.2s ease;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+            .btn-primary {
+                background: linear-gradient(135deg, #1a2744 0%, #2b3d66 100%);
+                color: #fff;
+            }
+            .btn-secondary {
+                background: #eef2f6;
+                color: #1a2744;
+            }
+            .newsletter-close {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                border: none;
+                background: transparent;
+                color: #64748B;
+                font-size: 1.8rem;
+                cursor: pointer;
+                line-height: 1;
+            }
+            .newsletter-form {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .newsletter-form input {
+                width: 100%;
+                border: 1px solid rgba(15, 24, 36, 0.12);
+                border-radius: 12px;
+                padding: 14px 16px;
+                font-size: 1rem;
+                color: #1a2744;
+                background: #fff;
+            }
+            .newsletter-form input:focus {
+                outline: 2px solid rgba(26, 39, 68, 0.14);
+                border-color: rgba(26, 39, 68, 0.2);
+            }
             .footer-cta {
                 display: inline-flex;
                 align-items: center;
@@ -297,6 +386,8 @@ function getFooterStyles() {
                 box-shadow: 0 8px 24px rgba(214, 180, 106, 0.35);
                 transition: transform 0.25s ease, box-shadow 0.25s ease;
                 white-space: nowrap;
+                border: none;
+                cursor: pointer;
             }
             .footer-cta:hover {
                 transform: translateY(-2px);
