@@ -1384,7 +1384,7 @@ $show_featured = ($featured_post && $page == 1 && empty($search) && empty($categ
         <div class="newsletter-content" data-aos="fade-up">
             <h2><?php echo htmlspecialchars($blog_newsletter_title); ?></h2>
             <p><?php echo htmlspecialchars($blog_newsletter_subtitle); ?></p>
-            <form class="newsletter-form" action="subscribe.php" method="POST">
+            <form class="newsletter-form" action="subscribe" method="POST">
                 <input type="email" name="email" placeholder="Enter your email" required>
                 <button type="submit">Subscribe</button>
             </form>

@@ -1,5 +1,5 @@
 // Service Worker for Painlesslyf PWA
-const CACHE_NAME = 'painlesslyf-v1';
+const CACHE_NAME = 'refreshing-dews-v2';
 
 // Assets to cache on install
 const urlsToCache = [

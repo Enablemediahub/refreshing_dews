@@ -1184,7 +1184,7 @@ function getBlogBackgroundStyle() {
     <?php include 'includes/footer.php'; ?>
     
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=20260904"></script>
     <?php echo getCustomJS(); ?>
     
     <script>
@@ -1241,57 +1241,6 @@ function getBlogBackgroundStyle() {
             goToSlide(0);
         }
         
-        function readTextAloud(text, button) {
-            if (!('speechSynthesis' in window)) {
-                alert('Your browser does not support text-to-speech.');
-                return;
-            }
-
-            const normalized = String(text || '').replace(/\s+/g, ' ').trim();
-            if (!normalized) {
-                return;
-            }
-
-            const isPlaying = button.dataset.playing === 'true';
-            if (isPlaying) {
-                window.speechSynthesis.cancel();
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-                return;
-            }
-
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(normalized);
-            utterance.lang = 'en-US';
-            utterance.rate = 1;
-            utterance.pitch = 1;
-            utterance.onend = function() {
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-            };
-            utterance.onerror = function() {
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-            };
-
-            button.dataset.playing = 'true';
-            button.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
-            if (window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-            }
-            window.speechSynthesis.speak(utterance);
-        }
-
-        document.querySelectorAll('.read-aloud-btn').forEach(function(button) {
-            if (button.dataset.bound === 'true') return;
-            button.dataset.bound = 'true';
-            const text = button.dataset.readText || '';
-            if (!text) return;
-            button.addEventListener('click', function() {
-                readTextAloud(text, button);
-            });
-        });
-
         // Ticker pause on hover
         const ticker = document.querySelector('.ticker-container');
         if (ticker) {

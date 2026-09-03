@@ -3,6 +3,9 @@ require_once 'includes/config.php';
 require_once 'includes/db-connection.php';
 require_once 'includes/functions.php';
 
+// Keep database failures inside the JSON/redirect response flow below.
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 // Start session if not started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -13,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
     $is_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (!empty($_POST['ajax']));
+    $subscription_success = false;
+    $subscription_message = '';
 
     // Validate email
     if (empty($email)) {
@@ -71,9 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $update_stmt->bind_param("i", $existing['id']);
                 $update_stmt->execute();
                 $update_stmt->close();
-                $_SESSION['subscribe_success'] = 'Welcome back! You have been resubscribed successfully.';
+                $subscription_message = 'Welcome back! You have been resubscribed successfully.';
             } else {
-                $_SESSION['subscribe_success'] = 'You are already subscribed to our newsletter!';
+                $subscription_message = 'You are already subscribed to our newsletter!';
             }
         } else {
             // Insert new subscriber
@@ -82,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_stmt->bind_param("ss", $email, $name);
             $insert_stmt->execute();
             $insert_stmt->close();
-            $_SESSION['subscribe_success'] = getSetting('subscribe_success_message', 'Thank you for subscribing! You\'ll receive updates and new content directly in your inbox.');
+            $subscription_message = getSetting('subscribe_success_message', 'Thank you for subscribing! You\'ll receive updates and new content directly in your inbox.');
 
             // Send welcome email (optional)
             $send_welcome = getSetting('subscribe_send_welcome_email', '0'); // Default to off
@@ -109,6 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+        $subscription_success = true;
+
     } catch (Exception $e) {
         if ($is_ajax) {
             header('Content-Type: application/json');
@@ -120,9 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($is_ajax) {
-        $message = $_SESSION['subscribe_success'] ?? 'Thank you for subscribing!';
         header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'message' => $message]);
+        echo json_encode([
+            'success' => $subscription_success,
+            'message' => $subscription_success ? $subscription_message : 'Sorry, there was an error. Please try again.'
+        ]);
         exit;
     }
 

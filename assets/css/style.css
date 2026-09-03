@@ -48,6 +48,88 @@ body {
     overflow-x: hidden;
 }
 
+.read-aloud-player {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 10000;
+    width: min(520px, calc(100vw - 32px));
+    padding: 14px 16px;
+    color: #fff;
+    background: #1a2744;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    box-shadow: 0 14px 36px rgba(15, 24, 36, 0.28);
+    transform: translateY(calc(100% + 36px));
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.read-aloud-player.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.read-aloud-player-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.read-aloud-player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.read-aloud-control {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    color: #1a2744;
+    background: #f6dfb3;
+    cursor: pointer;
+}
+
+.read-aloud-player label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.read-aloud-player select {
+    max-width: 160px;
+    padding: 7px 8px;
+    color: #1a2744;
+    background: #fff;
+    border: 0;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .read-aloud-player {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .read-aloud-voice-label {
+        width: 100%;
+    }
+
+    .read-aloud-voice-label select {
+        flex: 1;
+        max-width: none;
+    }
+}
+
 .container {
     width: 90%;
     max-width: 1280px;

@@ -76,12 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Get site settings for branding
 $site_title = 'Painlesslyf';
-$site_logo = '../assets/logo/painlesslyf-logo.png';
+$site_logo = '../assets/logo/refreshing-dews-logo.png';
 
-// Try to get settings from database if available
-if (isset($conn) && !$conn->connect_error && function_exists('getSetting')) {
-    $site_title = getSetting('site_title', 'Painlesslyf');
-    $site_logo = getSetting('site_logo', '../assets/logo/painlesslyf-logo.png');
+if (function_exists('getSetting')) {
+    $site_title = getSetting('site_title', 'REFRESHING DEWS');
+    $stored_logo = getSetting('site_logo', 'assets/logo/logo_1787495920_6a8b05f08b85f.jpeg');
+
+    if (!empty($stored_logo)) {
+        if (preg_match('#^(https?:)?//#', $stored_logo) || preg_match('#^data:#', $stored_logo)) {
+            $site_logo = $stored_logo;
+        } elseif (strpos($stored_logo, '../') === 0 || strpos($stored_logo, '/') === 0) {
+            $site_logo = $stored_logo;
+        } else {
+            $site_logo = '../' . ltrim($stored_logo, './');
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -685,8 +694,6 @@ if (isset($conn) && !$conn->connect_error && function_exists('getSetting')) {
             </form>
             
             <div class="login-footer">
-                <p>Default admin credentials: admin / admin123</p>
-                <p style="font-size: 11px; margin-top: 5px; color: #f00;">Please change after first login</p>
                 <p style="font-size: 11px; margin-top: 12px; color: #888;">Designed and Developed by <strong>DALE QUIST</strong> [Enable Technologies]</p>
             </div>
         </div>

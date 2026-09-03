@@ -127,7 +127,7 @@ if (!defined('FOOTER_STYLES_LOADED')) {
         <button type="button" class="newsletter-close" aria-label="Close newsletter popup">×</button>
         <h3 id="newsletterPopupTitle">Subscribe for updates</h3>
         <p>Get encouragement, new blog posts, and thoughtful updates right in your inbox.</p>
-        <form id="newsletterPopupForm" class="newsletter-form" method="post" action="subscribe.php">
+        <form id="newsletterPopupForm" class="newsletter-form" method="post" action="subscribe">
             <input type="email" name="email" placeholder="Enter your full email address" required>
             <button type="submit" class="btn btn-primary">Subscribe</button>
         </form>

@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initInstallPrompt();
     initNewsletterModal();
     bindReadAloudButtons();
+    initSpeechUnlock();
 });
 
 // Mobile Menu
@@ -277,10 +278,7 @@ function maybeShowInstallPrompt() {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || !!window.navigator.standalone;
 
-    if (!isMobile || isStandalone) {
-        setTimeout(() => openNewsletterPopup(), 700);
-        return;
-    }
+    if (!isMobile || isStandalone || getCookie('refreshing_dews_install_prompt_dismissed') === '1') return;
 
     const iOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const message = installPopup.querySelector('#installAppMessage');
@@ -296,6 +294,18 @@ function maybeShowInstallPrompt() {
     setTimeout(() => {
         openPopup('installAppPopup');
     }, 700);
+}
+
+function initSpeechUnlock() {
+    const unlockSpeech = function() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.resume && window.speechSynthesis.resume();
+        }
+    };
+
+    document.addEventListener('touchstart', unlockSpeech, { passive: true });
+    document.addEventListener('pointerdown', unlockSpeech, { passive: true });
+    document.addEventListener('click', unlockSpeech, { passive: true });
 }
 
 function initInstallPrompt() {
@@ -315,28 +325,36 @@ function initInstallPrompt() {
                         showNotification('App installed successfully!', 'success');
                     }
                     window.deferredInstallPrompt = null;
+                    setCookie('refreshing_dews_install_prompt_dismissed', '1', 180);
                     closePopup('installAppPopup');
-                    setTimeout(() => openNewsletterPopup(), 500);
                 });
                 return;
             }
 
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (isIOS) {
+                setCookie('refreshing_dews_install_prompt_dismissed', '1', 180);
+                closePopup('installAppPopup');
+                return;
+            }
+
+            setCookie('refreshing_dews_install_prompt_dismissed', '1', 180);
             closePopup('installAppPopup');
-            setTimeout(() => openNewsletterPopup(), 500);
         });
     }
 
     if (dismissBtn) {
         dismissBtn.addEventListener('click', function() {
+            setCookie('refreshing_dews_install_prompt_dismissed', '1', 180);
             closePopup('installAppPopup');
-            setTimeout(() => openNewsletterPopup(), 500);
         });
     }
 
     window.addEventListener('beforeinstallprompt', function(event) {
         event.preventDefault();
         window.deferredInstallPrompt = event;
-        if (getCookie('refreshing_dews_cookie_consent') === 'accepted') {
+        if (getCookie('refreshing_dews_cookie_consent') === 'accepted' &&
+            getCookie('refreshing_dews_install_prompt_dismissed') !== '1') {
             setTimeout(() => {
                 openPopup('installAppPopup');
             }, 700);
@@ -351,10 +369,8 @@ function openNewsletterPopup() {
 }
 
 function closeNewsletterPopup() {
-    const popup = document.getElementById('newsletterPopup');
-    if (popup) {
-        popup.classList.remove('show');
-    }
+    closePopup('newsletterPopup');
+    document.body.classList.remove('modal-open');
 }
 
 function initNewsletterModal() {
@@ -427,62 +443,244 @@ function submitNewsletterForm(form) {
     return false;
 }
 
+const readAloudState = {
+    text: '',
+    sourceButton: null,
+    utterance: null,
+    chunks: [],
+    chunkIndex: 0,
+    chunkOffset: 0,
+    paused: false,
+    rate: 1,
+    voice: null
+};
+
+function ensureReadAloudStyles() {
+    if (document.getElementById('readAloudPlayerStyles')) return;
+    const styles = document.createElement('style');
+    styles.id = 'readAloudPlayerStyles';
+    styles.textContent = `
+        .read-aloud-player { position: fixed; right: 24px; bottom: 24px; z-index: 10000; width: min(520px, calc(100vw - 32px)); padding: 14px 16px; color: #fff; background: #1a2744; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; box-shadow: 0 14px 36px rgba(15,24,36,.28); transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; transition: transform .25s ease, opacity .25s ease; }
+        .read-aloud-player.is-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .read-aloud-player-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; font-weight: 700; }
+        .read-aloud-close { border: 0; padding: 2px 5px; color: rgba(255,255,255,.72); background: transparent; font-size: 1rem; cursor: pointer; }
+        .read-aloud-progress { width: 100%; height: 5px; margin: 0 0 12px; accent-color: #f6dfb3; cursor: pointer; }
+        .read-aloud-player-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .read-aloud-control { width: 34px; height: 34px; border: 0; border-radius: 50%; color: #1a2744; background: #f6dfb3; cursor: pointer; }
+        .read-aloud-player label { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: rgba(255,255,255,.82); }
+        .read-aloud-player select { max-width: 160px; padding: 7px 8px; color: #1a2744; background: #fff; border: 0; border-radius: 6px; }
+        @media (max-width: 600px) { .read-aloud-player { right: 16px; bottom: 16px; } .read-aloud-voice-label { width: 100%; } .read-aloud-voice-label select { flex: 1; max-width: none; } }
+    `;
+    document.head.appendChild(styles);
+}
+
+function updateReadAloudButtons(isPlaying) {
+    document.querySelectorAll('.read-aloud-btn').forEach(function(button) {
+        const isSource = button === readAloudState.sourceButton;
+        button.dataset.playing = isSource && isPlaying ? 'true' : 'false';
+        button.innerHTML = isSource && isPlaying
+            ? '<i class="fas fa-stop"></i> Stop Reading'
+            : '<i class="fas fa-volume-up"></i> Read Aloud';
+    });
+}
+
+function createReadAloudPlayer() {
+    let player = document.getElementById('readAloudPlayer');
+    if (player) return player;
+
+    ensureReadAloudStyles();
+
+    player = document.createElement('aside');
+    player.id = 'readAloudPlayer';
+    player.className = 'read-aloud-player';
+    player.setAttribute('aria-label', 'Read aloud player');
+    player.innerHTML = `
+        <div class="read-aloud-player-title"><span><i class="fas fa-volume-up"></i> Read aloud</span><button type="button" class="read-aloud-close" aria-label="Close read aloud player"><i class="fas fa-times"></i></button></div>
+        <input type="range" class="read-aloud-progress" min="0" max="1000" value="0" aria-label="Reading position">
+        <div class="read-aloud-player-controls">
+            <button type="button" class="read-aloud-control read-aloud-play" aria-label="Play reading"><i class="fas fa-play"></i></button>
+            <button type="button" class="read-aloud-control read-aloud-stop" aria-label="Stop reading"><i class="fas fa-stop"></i></button>
+            <label>Speed <select class="read-aloud-rate" aria-label="Reading speed">
+                <option value="0.7">Slower</option>
+                <option value="1" selected>Normal</option>
+                <option value="1.2">Faster</option>
+            </select></label>
+            <label class="read-aloud-voice-label">Voice <select class="read-aloud-voice" aria-label="Reading voice"></select></label>
+        </div>`;
+    document.body.appendChild(player);
+
+    player.querySelector('.read-aloud-close').addEventListener('click', closeReadAloud);
+    player.querySelector('.read-aloud-progress').addEventListener('input', function() {
+        seekReadAloud(Number(this.value) / 1000);
+    });
+
+    player.querySelector('.read-aloud-play').addEventListener('click', function() {
+        if (!readAloudState.text) return;
+        if (readAloudState.paused) {
+            readAloudState.paused = false;
+            speakCurrentText();
+        } else if (window.speechSynthesis.speaking) {
+            readAloudState.paused = true;
+            window.speechSynthesis.cancel();
+            this.innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            speakCurrentText();
+        }
+    });
+    player.querySelector('.read-aloud-stop').addEventListener('click', stopReadAloud);
+    player.querySelector('.read-aloud-rate').addEventListener('change', function() {
+        readAloudState.rate = Number(this.value);
+        if (readAloudState.text) speakCurrentText();
+    });
+    player.querySelector('.read-aloud-voice').addEventListener('change', function() {
+        readAloudState.voice = getSpeechVoices().find(voice => voice.name === this.value) || null;
+        if (readAloudState.text) speakCurrentText();
+    });
+
+    populateReadAloudVoices(player);
+    if ('speechSynthesis' in window && !window.readAloudVoicesBound) {
+        window.speechSynthesis.addEventListener('voiceschanged', function() {
+            populateReadAloudVoices(player);
+        });
+        window.readAloudVoicesBound = true;
+    }
+    return player;
+}
+
+function getSpeechVoices() {
+    return 'speechSynthesis' in window ? window.speechSynthesis.getVoices() : [];
+}
+
+function populateReadAloudVoices(player) {
+    const voiceSelect = player.querySelector('.read-aloud-voice');
+    const voices = getSpeechVoices().filter(voice => voice.lang.toLowerCase().startsWith('en'));
+    voiceSelect.innerHTML = '';
+    (voices.length ? voices : getSpeechVoices()).forEach(function(voice) {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
+    });
+    if (readAloudState.voice) voiceSelect.value = readAloudState.voice.name;
+}
+
+function speakCurrentText() {
+    if (!readAloudState.text || !('speechSynthesis' in window)) return;
+    readAloudState.utterance = null;
+    window.speechSynthesis.cancel();
+    const fullChunk = readAloudState.chunks[readAloudState.chunkIndex] || readAloudState.text;
+    const startingOffset = readAloudState.chunkOffset;
+    const chunk = fullChunk.slice(startingOffset);
+    const utterance = new SpeechSynthesisUtterance(chunk);
+    utterance.lang = readAloudState.voice ? readAloudState.voice.lang : 'en-US';
+    utterance.rate = readAloudState.rate;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    if (readAloudState.voice) utterance.voice = readAloudState.voice;
+    utterance.onstart = function() {
+        updateReadAloudButtons(true);
+        document.getElementById('readAloudPlayer').classList.add('is-active');
+        document.querySelector('.read-aloud-play').innerHTML = '<i class="fas fa-pause"></i>';
+    };
+    utterance.onboundary = function(event) {
+        if (typeof event.charIndex === 'number') {
+            readAloudState.chunkOffset = startingOffset + event.charIndex;
+            updateReadAloudProgress();
+        }
+    };
+    utterance.onend = function() {
+        if (readAloudState.utterance !== utterance) return;
+        if (readAloudState.paused) return;
+        readAloudState.chunkIndex += 1;
+        readAloudState.chunkOffset = 0;
+        if (readAloudState.chunkIndex < readAloudState.chunks.length) {
+            speakCurrentText();
+            return;
+        }
+        readAloudState.utterance = null;
+        updateReadAloudButtons(false);
+        document.getElementById('readAloudPlayer').classList.remove('is-active');
+        document.querySelector('.read-aloud-play').innerHTML = '<i class="fas fa-play"></i>';
+    };
+    utterance.onerror = utterance.onend;
+    readAloudState.utterance = utterance;
+    window.speechSynthesis.speak(utterance);
+}
+
+function stopReadAloud() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    readAloudState.utterance = null;
+    readAloudState.paused = false;
+    updateReadAloudButtons(false);
+    const player = document.getElementById('readAloudPlayer');
+    if (player) {
+        player.classList.remove('is-active');
+        player.querySelector('.read-aloud-play').innerHTML = '<i class="fas fa-play"></i>';
+    }
+}
+
+function updateReadAloudProgress() {
+    const player = document.getElementById('readAloudPlayer');
+    if (!player || !readAloudState.text) return;
+    const completed = readAloudState.chunks.slice(0, readAloudState.chunkIndex).join('').length;
+    const position = completed + readAloudState.chunkOffset;
+    const progress = Math.min(1000, Math.round((position / readAloudState.text.length) * 1000));
+    player.querySelector('.read-aloud-progress').value = progress;
+}
+
+function seekReadAloud(progress) {
+    if (!readAloudState.text) return;
+    const target = Math.min(readAloudState.text.length - 1, Math.max(0, Math.round(progress * readAloudState.text.length)));
+    let offset = 0;
+    readAloudState.chunkIndex = 0;
+    readAloudState.chunkOffset = 0;
+    for (let index = 0; index < readAloudState.chunks.length; index += 1) {
+        const nextOffset = offset + readAloudState.chunks[index].length;
+        if (target < nextOffset) {
+            readAloudState.chunkIndex = index;
+            readAloudState.chunkOffset = target - offset;
+            break;
+        }
+        offset = nextOffset;
+    }
+    readAloudState.paused = false;
+    speakCurrentText();
+}
+
+function closeReadAloud() {
+    stopReadAloud();
+    const player = document.getElementById('readAloudPlayer');
+    if (player) player.classList.remove('is-visible');
+    readAloudState.text = '';
+    readAloudState.sourceButton = null;
+    readAloudState.chunks = [];
+    readAloudState.chunkIndex = 0;
+    readAloudState.chunkOffset = 0;
+}
+
 function speakText(text, button) {
     if (!('speechSynthesis' in window)) {
         showNotification('Text-to-speech is not supported on this device.', 'error');
         return;
     }
-
     const normalized = String(text || '').replace(/\s+/g, ' ').trim();
     if (!normalized) {
         showNotification('There is no article text to read.', 'error');
         return;
     }
-
-    const isPlaying = button.dataset.playing === 'true';
-    if (isPlaying) {
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
-        button.dataset.playing = 'false';
-        button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+    if (button === readAloudState.sourceButton && readAloudState.utterance) {
+        stopReadAloud();
         return;
     }
-
-    const syncSpeech = function() {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(normalized);
-        utterance.lang = 'en-US';
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        utterance.onstart = function() {
-            button.dataset.playing = 'true';
-            button.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
-        };
-        utterance.onend = function() {
-            button.dataset.playing = 'false';
-            button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-        };
-        utterance.onerror = function() {
-            button.dataset.playing = 'false';
-            button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-        };
-
-        if (window.speechSynthesis.paused) {
-            window.speechSynthesis.resume();
-        }
-
-        window.speechSynthesis.speak(utterance);
-    };
-
-    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        setTimeout(syncSpeech, 160);
-        return;
-    }
-
-    syncSpeech();
+    readAloudState.text = normalized;
+    readAloudState.sourceButton = button;
+    readAloudState.chunks = normalized.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [normalized];
+    readAloudState.chunkIndex = 0;
+    readAloudState.chunkOffset = 0;
+    readAloudState.paused = false;
+    const player = createReadAloudPlayer();
+    player.classList.add('is-visible');
+    speakCurrentText();
 }
 
 function bindReadAloudButtons() {
@@ -506,6 +704,13 @@ function bindReadAloudButtons() {
             }
 
             if (!text) {
+                const articleText = document.querySelector('.post-body');
+                if (articleText) {
+                    text = articleText.innerText || articleText.textContent || '';
+                }
+            }
+
+            if (!text) {
                 showNotification('Nothing to read right now.', 'error');
                 return;
             }
@@ -513,7 +718,7 @@ function bindReadAloudButtons() {
             speakText(text, button);
         };
 
-        button.addEventListener('click', handleRead);
+        button.addEventListener('click', handleRead, { passive: false });
         button.addEventListener('touchstart', handleRead, { passive: false });
     });
 }

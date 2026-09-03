@@ -652,7 +652,7 @@ function getAudioHeaderStyle() {
             <div class="newsletter-content">
                 <h2><?php echo htmlspecialchars($audio_newsletter_title); ?></h2>
                 <p><?php echo htmlspecialchars($audio_newsletter_subtitle); ?></p>
-                <form class="newsletter-form" action="subscribe.php" method="POST">
+                <form class="newsletter-form" action="subscribe" method="POST">
                     <input type="email" name="email" placeholder="Enter your email" required>
                     <button type="submit">Subscribe</button>
                 </form>

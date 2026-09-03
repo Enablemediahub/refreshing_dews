@@ -278,7 +278,7 @@ $recent_posts = getRecentPosts(3);
     <?php echo getPageHeroStyles(); ?>
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260904">
     
     <style>
         /* Modern Audio Page Styles - Fully Dynamic */
@@ -1556,7 +1556,7 @@ $recent_posts = getRecentPosts(3);
         <div class="newsletter-content" data-aos="fade-up">
             <h2><?php echo htmlspecialchars($audio_newsletter_title); ?></h2>
             <p><?php echo htmlspecialchars($audio_newsletter_subtitle); ?></p>
-            <form class="newsletter-form" action="subscribe.php" method="POST">
+            <form class="newsletter-form" action="subscribe" method="POST">
                 <input type="email" name="email" placeholder="Enter your email" required>
                 <button type="submit">Subscribe</button>
             </form>
@@ -1568,7 +1568,7 @@ $recent_posts = getRecentPosts(3);
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=20260904"></script>
 
     <script>
         // Initialize AOS with mobile optimization

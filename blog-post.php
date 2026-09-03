@@ -506,7 +506,7 @@ function getAuthorAvatarUrl() {
     <?php echo getPageHeroStyles(); ?>
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260904">
     
     <style>
         :root {
@@ -1710,67 +1710,9 @@ function getAuthorAvatarUrl() {
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=20260904"></script>
 
     <script>
-        function readTextAloud(text, button) {
-            if (!('speechSynthesis' in window)) {
-                alert('Your browser does not support text-to-speech.');
-                return;
-            }
-
-            const normalized = String(text || '').replace(/\s+/g, ' ').trim();
-            if (!normalized) {
-                return;
-            }
-
-            const isPlaying = button.dataset.playing === 'true';
-            if (isPlaying) {
-                window.speechSynthesis.cancel();
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-                return;
-            }
-
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(normalized);
-            utterance.lang = 'en-US';
-            utterance.rate = 1;
-            utterance.pitch = 1;
-            utterance.onend = function() {
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-            };
-            utterance.onerror = function() {
-                button.dataset.playing = 'false';
-                button.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
-            };
-
-            button.dataset.playing = 'true';
-            button.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
-            if (window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-            }
-            window.speechSynthesis.speak(utterance);
-        }
-
-        document.querySelectorAll('.read-aloud-btn').forEach(function(button) {
-            if (button.dataset.bound === 'true') return;
-            button.dataset.bound = 'true';
-            const targetSelector = button.dataset.target || null;
-            button.addEventListener('click', function() {
-                let text = button.dataset.readText || '';
-                if (targetSelector) {
-                    const target = document.querySelector(targetSelector);
-                    if (target) {
-                        text = target.innerText.trim();
-                    }
-                }
-                if (!text) return;
-                readTextAloud(text, button);
-            });
-        });
-
         // Initialize AOS with mobile optimization
         AOS.init({
             once: true,

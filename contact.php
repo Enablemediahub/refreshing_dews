@@ -592,7 +592,7 @@ function getContactHeaderStyle() {
     <?php include 'includes/footer.php'; ?>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=20260904"></script>
     <script>
         AOS.init({ once: true, duration: 800, easing: 'ease-in-out' });
 
